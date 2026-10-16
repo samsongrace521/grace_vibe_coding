@@ -396,44 +396,17 @@
   .lb-close{ position:absolute; top:calc(1rem + env(safe-area-inset-top,0px)); right:calc(1rem + env(safe-area-inset-right,0px)); width:2.75rem; height:2.75rem; border-radius:9999px; display:grid; place-items:center; color:#fff; background:rgba(255,255,255,.14); }
   .lb-close:hover{ background:rgba(255,255,255,.26); }
 
-  /* ===== 首頁背景影片 ===== */
-  .hero-video{ overflow:hidden; isolation:isolate; color:#fff; }
-  .hero-video > .container-x{ position:relative; z-index:2; }
-  .hero-media{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
-  /* 影片載入前（或無法播放時）顯示的品牌底色 */
-  .hero-fallback{ position:absolute; inset:0; background:
-      radial-gradient(60% 70% at 85% 30%, rgba(0,169,157,.45), transparent 70%),
-      radial-gradient(55% 60% at 15% 80%, rgba(47,140,255,.4), transparent 70%),
-      linear-gradient(135deg,#032A52 0%,#00438A 55%,#005BAC 100%); }
-  .hero-fallback::after{ content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px); background-size:64px 64px; }
-  #heroVideo{ position:absolute; top:50%; left:50%; width:100%; height:100%; transform:translate(-50%,-50%); border:0; opacity:0; transition:opacity 1.4s ease; }
-  .hero-media.ready #heroVideo{ opacity:1; }
-  /* 深色遮罩：確保文字在任何畫面上都清楚 */
-  .hero-overlay{ position:absolute; inset:0; background:
-      linear-gradient(100deg, rgba(3,30,60,.90) 0%, rgba(3,40,80,.78) 42%, rgba(3,40,80,.48) 75%, rgba(3,40,80,.38) 100%),
-      linear-gradient(180deg, rgba(3,30,60,.35) 0%, transparent 25%, transparent 82%, rgba(3,30,60,.55) 100%); }
-  @media(max-width:1023px){ .hero-overlay{ background:linear-gradient(180deg, rgba(3,30,60,.82) 0%, rgba(3,40,80,.78) 60%, rgba(3,30,60,.86) 100%); } }
-  .hero-video h1{ color:#fff; text-shadow:0 2px 24px rgba(0,20,45,.35); }
-  .hero-video h1 .gradient-text{ background:linear-gradient(100deg,#8CCBFF 0%,#5FD9CF 100%); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; text-shadow:none; }
-  .hero-video .caret{ background:linear-gradient(180deg,#8CCBFF,#5FD9CF); }
-  .hero-video .text-ink{ color:#fff; }
-  .hero-video .text-body{ color:rgba(255,255,255,.86); }
-  .hero-video p{ text-shadow:0 1px 12px rgba(0,20,45,.3); }
-  .hero-video .label{ color:rgba(255,255,255,.7); }
-  .hero-video .stat-value{ background:linear-gradient(120deg,#FFFFFF 0%,#BFE3FF 100%); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
-  .hero-video .border-slate-200\/80{ border-color:rgba(255,255,255,.22); }
-  .hero-video .scroll-hint{ color:rgba(255,255,255,.8); }
-  .hero-video .scroll-hint div{ border-color:rgba(255,255,255,.55); }
-  .hero-video .scroll-hint span{ background:#fff; }
-  .hero-eyebrow{ color:#fff; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.28); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
-  .btn-ghost-light{ color:#fff; background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.7); box-shadow:none; }
-  .btn-ghost-light:hover, .btn-ghost-light:focus-visible{ color:var(--blue); background:#fff; border-color:#fff; box-shadow:0 14px 34px -12px rgba(0,0,0,.45); }
-  .hero-video .float-card{ color:var(--ink); }
-  .video-toggle{ position:absolute; z-index:3; left:calc(1.25rem + env(safe-area-inset-left, 0px)); bottom:calc(1.25rem + env(safe-area-inset-bottom, 0px)); display:inline-flex; align-items:center; gap:.45rem; padding:.45rem .85rem; border-radius:9999px; font-size:.78rem; color:#fff; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:background .3s ease; }
-  .video-toggle:hover{ background:rgba(255,255,255,.22); }
-  .video-toggle .i-play{ display:none; }
-  .video-toggle[aria-pressed="true"] .i-play{ display:block; }
-  .video-toggle[aria-pressed="true"] .i-pause{ display:none; }
+  /* ===== 精選影片 ===== */
+  .video-frame{ position:relative; aspect-ratio:16/9; max-width:100%; border-radius:1.5rem; overflow:hidden; background:linear-gradient(135deg,#032A52 0%,#00438A 55%,#005BAC 100%); box-shadow:0 30px 70px -36px rgba(0,58,110,.55); }
+  .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .video-poster{ position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; cursor:pointer; background:none; display:grid; place-items:center; }
+  .video-poster img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.7,.2,1); }
+  .video-shade{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,30,60,.15),rgba(3,30,60,.55)); }
+  .video-play{ position:relative; width:5.25rem; height:5.25rem; border-radius:9999px; display:grid; place-items:center; color:var(--ink); background:var(--orange); padding-left:.3rem; box-shadow:0 0 0 12px rgba(245,166,35,.25), 0 20px 40px -12px rgba(0,0,0,.5); transition:transform .4s cubic-bezier(.3,1.6,.5,1), box-shadow .4s ease; }
+  .video-hint{ position:absolute; left:1.25rem; bottom:1.1rem; color:#fff; font-weight:700; font-size:.95rem; text-shadow:0 1px 10px rgba(0,0,0,.4); }
+  .video-poster:hover img{ transform:scale(1.04); }
+  .video-poster:hover .video-play, .video-poster:focus-visible .video-play{ transform:scale(1.1); box-shadow:0 0 0 18px rgba(245,166,35,.22), 0 24px 44px -12px rgba(0,0,0,.55); }
+  .video-poster:focus-visible{ outline:3px solid var(--tech); outline-offset:-3px; }
 
   /* ===== 減少動態 ===== */
   @media (prefers-reduced-motion: reduce){
@@ -514,26 +487,12 @@
 <main id="main">
 
 <!-- ===== 1. 首頁 Hero ===== -->
-<section id="home" class="hero-video relative min-h-[100svh] flex items-center pt-32 pb-28 lg:pt-36" aria-labelledby="heroTitle">
-  <!-- 背景影片（YouTube，靜音、滿版、循環自動播放）
-       TODO: 替換 → 更換影片時，修改 data-src 中兩處影片 ID（embed/ID 與 playlist=ID） -->
-  <div class="hero-media" aria-hidden="true">
-    <div class="hero-fallback"></div>
-    <iframe id="heroVideo" title="背景影片" tabindex="-1" frameborder="0"
-      allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"
-      data-src="https://www.youtube-nocookie.com/embed/i-gmUH_d_8w?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=i-gmUH_d_8w&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;disablekb=1&amp;iv_load_policy=3&amp;fs=0&amp;enablejsapi=1"></iframe>
-    <div class="hero-overlay"></div>
-  </div>
-  <button id="videoToggle" type="button" class="video-toggle" aria-pressed="false" aria-label="暫停背景影片">
-    <svg class="i-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-    <svg class="i-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
-    <span class="vt-label">暫停影片</span>
-  </button>
+<section id="home" class="relative min-h-[100svh] flex items-center pt-32 pb-28 lg:pt-36" aria-labelledby="heroTitle">
   <div class="container-x grid lg:grid-cols-12 gap-16 lg:gap-10 items-center">
 
     <!-- 左：文案 -->
     <div class="lg:col-span-7">
-      <div class="reveal hero-eyebrow inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full text-xs sm:text-sm font-display">
+      <div class="reveal inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full glass text-xs sm:text-sm font-display text-body">
         <span class="px-2 py-0.5 rounded-full text-white text-xs font-semibold tracking-wider" style="background:var(--grad)">AI</span>
         Application × Enterprise Systems × Data
       </div>
@@ -560,7 +519,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             <span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
         </a>
-        <a href="#cases" class="btn btn-lg btn-ghost-light" aria-label="查看代表案例">查看案例</a>
+        <a href="#cases" class="btn btn-lg" aria-label="查看代表案例">查看案例</a>
       </div>
 
       <!-- 信任數據：皆來自實際經歷；年資依當年年份自動計算（2012 年起） -->
@@ -612,7 +571,7 @@
     </div>
   </div>
 
-  <a href="#about" class="scroll-hint hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-xs font-display tracking-[.2em] text-body" aria-label="向下滾動到關於我">
+  <a href="#about" class="scroll-hint hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-xs font-display tracking-[.2em] text-body" aria-label="向下滾動到關於我">
     <div class="w-6 h-10 rounded-full border-2 border-slate-300 flex justify-center pt-2"><span></span></div>
     SCROLL
   </a>
@@ -862,6 +821,31 @@
         </article>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== 2-3b. 精選影片（點擊後才載入 YouTube 播放器，頁面載入更快）
+     TODO: 替換 → 更換影片時，修改 data-id 與下方連結中的影片 ID ===== -->
+<section id="video" class="section !pb-0" aria-labelledby="videoTitle">
+  <div class="container-x">
+    <div class="sec-head reveal">
+      <div>
+        <p class="kicker">Video</p>
+        <h2 id="videoTitle" class="h2">精選<span class="gradient-text">影片</span></h2>
+      </div>
+      <p class="lead">點擊播放，影片會直接在頁面中開啟。</p>
+    </div>
+    <div class="reveal mt-12 video-frame" id="videoFrame" data-id="i-gmUH_d_8w">
+      <button type="button" class="video-poster" aria-label="播放影片">
+        <img src="https://i.ytimg.com/vi/i-gmUH_d_8w/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" onerror="this.remove()" />
+        <span class="video-shade" aria-hidden="true"></span>
+        <span class="video-play" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+        </span>
+        <span class="video-hint">播放影片</span>
+      </button>
+    </div>
+    <p class="mt-4 text-sm text-body">無法播放？<a href="https://youtu.be/i-gmUH_d_8w" target="_blank" rel="noopener noreferrer" class="link-arrow">在 YouTube 觀看</a></p>
   </div>
 </section>
 
@@ -1807,47 +1791,18 @@
     }
   });
 
-  /* ---------- 首頁背景影片（滿版、靜音、循環） ---------- */
-  (function heroVideo() {
-    var f = $('#heroVideo'), box = $('.hero-media'), sec = $('#home'), btn = $('#videoToggle');
-    var saveData = navigator.connection && navigator.connection.saveData;
-    if (reduce || saveData) { btn.hidden = true; return; }    // 減少動態或省流量模式：只顯示靜態品牌底色
-    f.src = f.getAttribute('data-src');
-    // 依區塊尺寸計算 16:9 覆蓋尺寸，並略為放大以裁掉播放器邊緣
-    function size() {
-      var w = sec.offsetWidth, h = sec.offsetHeight, W = w, H = w * 9 / 16;
-      if (H < h) { H = h; W = h * 16 / 9; }
-      f.style.width = Math.ceil(W * 1.12) + 'px'; f.style.height = Math.ceil(H * 1.12) + 'px';
-    }
-    size();
-    window.addEventListener('resize', size);
-    if ('ResizeObserver' in window) new ResizeObserver(size).observe(sec);
-    var playing = true;
-    function post(o) { try { f.contentWindow.postMessage(JSON.stringify(o), '*'); } catch (e) {} }
-    function cmd(name, args) { post({ event: 'command', func: name, args: args || [], id: 'heroVideo', channel: 'widget' }); }
-    // 只有在播放器回報「播放中」時才淡入影片；若影片被封鎖或無法載入，維持品牌底色，不顯示錯誤畫面
-    f.addEventListener('load', function () {
-      post({ event: 'listening', id: 'heroVideo', channel: 'widget' });
-      cmd('addEventListener', ['onStateChange']);
+  /* ---------- 精選影片：點擊後才載入播放器 ---------- */
+  (function videoEmbed() {
+    var box = $('#videoFrame'); if (!box) return;
+    $('.video-poster', box).addEventListener('click', function () {
+      var id = box.getAttribute('data-id'), f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+      f.title = '精選影片';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      box.innerHTML = ''; box.appendChild(f); f.focus();
     });
-    window.addEventListener('message', function (e) {
-      if (!/youtube(-nocookie)?\.com$/.test((e.origin || '').replace(/^https?:\/\//, ''))) return;
-      var d; try { d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; } catch (err) { return; }
-      if (!d) return;
-      var state = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
-      if (state === 1) box.classList.add('ready');
-    });
-    btn.addEventListener('click', function () {
-      playing = !playing;
-      cmd(playing ? 'playVideo' : 'pauseVideo');
-      btn.setAttribute('aria-pressed', String(!playing));
-      btn.setAttribute('aria-label', playing ? '暫停背景影片' : '播放背景影片');
-      $('.vt-label', btn).textContent = playing ? '暫停影片' : '播放影片';
-    });
-    // 捲離首頁時暫停，回來再播放，節省效能
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { if (playing) cmd(es[0].isIntersecting ? 'playVideo' : 'pauseVideo'); }, { threshold: 0.05 }).observe(sec);
-    }
   })();
 
   /* ---------- 照片燈箱 ---------- */
