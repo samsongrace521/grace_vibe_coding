@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
 <script>document.documentElement.classList.add('js');</script>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
   /* Tailwind 設定：品牌色彩與字體 */
   tailwind.config = {
@@ -1453,7 +1453,7 @@
       // 以 mailto 帶入內容；改用 Formspree 時請替換此區塊（見表單上方註解）
       var subject = encodeURIComponent('網站諮詢：' + name);
       var body = encodeURIComponent('姓名：' + name + '\nEmail：' + mail + '\n\n需求說明：\n' + text);
-      msg.textContent = '正在開啟您的郵件軟體…';
+      msg.textContent = '正在開啟郵件軟體；若沒有開啟，請直接寄信至 ' + TO;
       window.location.href = 'mailto:' + TO + '?subject=' + subject + '&body=' + body;
     });
   })();
@@ -1512,7 +1512,7 @@
   /* ---------- 佔位連結提示（尚未替換的 LinkedIn / GitHub） ---------- */
   $$('[data-todo]').forEach(function (a) {
     a.addEventListener('click', function (e) {
-      if (a.getAttribute('href') === '#') { e.preventDefault(); alert('TODO: 請先在 HTML 中替換為你的' + a.getAttribute('data-todo')); }
+      if (a.getAttribute('href') === '#') e.preventDefault();   // TODO: 替換網址後此段即不作用
     });
   });
 })();
