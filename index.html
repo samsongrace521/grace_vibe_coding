@@ -254,6 +254,35 @@
 
   :focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
 
+  /* ===== 互動動畫 ===== */
+  /* 卡片游標光暈：JS 寫入 --mx / --my */
+  .spot{ --mx:50%; --my:50%; }
+  .spot::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(360px circle at var(--mx) var(--my),rgba(37,99,235,.10),rgba(124,58,237,.05) 40%,transparent 65%); opacity:0; transition:opacity .35s ease; }
+  .spot:hover::after{ opacity:1; }
+  /* 照片視差傾斜 */
+  #heroVisual{ perspective:1000px; }
+  #heroVisual .portrait-frame{ transform-style:preserve-3d; will-change:transform; }
+  .tilt-glare{ position:absolute; inset:0; border-radius:2rem; pointer-events:none; background:radial-gradient(circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.28),transparent 55%); opacity:0; transition:opacity .4s ease; }
+  #heroVisual:hover .tilt-glare{ opacity:1; }
+  /* 磁吸按鈕：使用獨立 translate 屬性，不與 hover 的 transform 衝突 */
+  .magnetic{ transition:translate .25s ease-out, box-shadow .4s ease, transform .35s ease; }
+  /* 時間軸隨捲動點亮 */
+  .tl-line{ opacity:.35; }
+  .tl-progress{ position:absolute; top:.5rem; left:11px; width:2px; height:calc(100% - 3.5rem); border-radius:2px; background:var(--grad); transform-origin:top; transform:scaleY(var(--p,0)); box-shadow:0 0 12px rgba(37,99,235,.45); }
+  @media(min-width:768px){ .tl-progress{ left:50%; margin-left:-1px; } }
+  .tl-dot{ transition:background .4s ease, box-shadow .4s ease, transform .4s ease; }
+  .tl-item .tl-dot.lit{ background:var(--blue); box-shadow:0 0 0 6px rgba(37,99,235,.16), 0 0 18px rgba(37,99,235,.55); }
+  /* 方法步驟 hover */
+  .step-num{ transition:transform .35s cubic-bezier(.3,1.6,.5,1), box-shadow .35s ease; }
+  .step:hover .step-num{ transform:scale(1.12) rotate(-6deg); box-shadow:0 0 0 9px rgba(37,99,235,.12), 0 14px 26px -8px rgba(79,70,229,.8); }
+  .icon-tile{ transition:transform .4s cubic-bezier(.3,1.6,.5,1); }
+  .lift:hover .icon-tile{ transform:translateY(-3px) rotate(-6deg) scale(1.06); }
+  /* 案例示意圖 hover 放大 */
+  .visual svg{ transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+  .lift:hover .visual svg{ transform:scale(1.06); }
+  /* 解碼文字 */
+  .scramble-char{ color:var(--violet); opacity:.7; }
+
   /* ===== 減少動態 ===== */
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto !important; }
@@ -399,8 +428,8 @@
 
     <!-- 右：大頭照視覺 -->
     <div class="lg:col-span-5 reveal" style="--d:200ms">
-      <div class="relative mx-auto w-full max-w-[300px] sm:max-w-[360px]">
-        <svg class="orbit" viewBox="0 0 400 400" aria-hidden="true">
+      <div id="heroVisual" class="relative mx-auto w-full max-w-[300px] sm:max-w-[360px]">
+        <svg class="orbit" data-depth="-10" viewBox="0 0 400 400" aria-hidden="true">
           <circle cx="200" cy="200" r="196" fill="none" stroke="url(#gBrand)" stroke-opacity=".28" stroke-dasharray="2 8"/>
           <circle cx="200" cy="200" r="160" fill="none" stroke="url(#gBrand)" stroke-opacity=".18"/>
           <circle cx="200" cy="4" r="5" fill="#2563eb"/>
@@ -410,13 +439,14 @@
 
         <div class="portrait-frame">
           <img src="assets/grace-portrait.webp" alt="邱數恩（Grace）的個人照片" width="880" height="1100" fetchpriority="high" />
+          <span class="tilt-glare" aria-hidden="true"></span>
         </div>
 
         <!-- 浮動資訊卡（僅使用已提供的事實） -->
-        <div class="float-card glass px-3.5 py-2 -left-3 sm:-left-10 top-8 flex items-center gap-2 text-sm font-medium" aria-hidden="true">
+        <div data-depth="26" class="float-card glass px-3.5 py-2 -left-3 sm:-left-10 top-8 flex items-center gap-2 text-sm font-medium" aria-hidden="true">
           <span class="status-dot"></span>可預約諮詢
         </div>
-        <div class="float-card glass p-3 pr-4 -left-3 sm:-left-14 bottom-12 flex items-center gap-3" style="animation-delay:-2.5s">
+        <div data-depth="34" class="float-card glass p-3 pr-4 -left-3 sm:-left-14 bottom-12 flex items-center gap-3" style="animation-delay:-2.5s">
           <span class="icon-tile !w-10 !h-10 !rounded-xl">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg>
           </span>
@@ -425,7 +455,7 @@
             <span class="block text-xs text-body mt-0.5">產品返品預測策略</span>
           </span>
         </div>
-        <div class="float-card glass p-3 px-4 -right-3 sm:-right-8 top-1/2 leading-tight" style="animation-delay:-4.5s">
+        <div data-depth="20" class="float-card glass p-3 px-4 -right-3 sm:-right-8 top-1/2 leading-tight" style="animation-delay:-4.5s">
           <span class="block font-display text-lg font-semibold gradient-text">2012 → Now</span>
           <span class="block text-xs text-body mt-0.5">企業 IT 實務</span>
         </div>
@@ -499,6 +529,7 @@
 
       <div class="tl mt-14">
         <div class="tl-line" aria-hidden="true"></div>
+        <div class="tl-progress" aria-hidden="true"></div>
 
         <!-- 階段 1 -->
         <article class="tl-item reveal">
@@ -1179,12 +1210,22 @@
     var probe = y + 160, current = sections[0].id;
     sections.forEach(function (s) { if (s.offsetTop <= probe) current = s.id; });
     if (window.innerHeight + y >= document.documentElement.scrollHeight - 4) current = 'contact';
+    updateTimeline();
     links.forEach(function (a) {
       var on = a.getAttribute('href') === '#' + current;
       a.classList.toggle('active', on);
       if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
     });
     ticking = false;
+  }
+  /* 時間軸：依捲動進度填滿線條、點亮節點 */
+  var tl = $('.tl'), tlProg = $('.tl-progress'), tlDots = $$('.tl .tl-dot');
+  function updateTimeline() {
+    if (!tl) return;
+    var r = tl.getBoundingClientRect(), mark = window.innerHeight * 0.62;
+    var p = Math.max(0, Math.min(1, (mark - r.top) / r.height));
+    tlProg.style.setProperty('--p', p.toFixed(3));
+    tlDots.forEach(function (d) { d.classList.toggle('lit', d.getBoundingClientRect().top < mark); });
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   window.addEventListener('resize', onScroll);
@@ -1507,6 +1548,83 @@
     var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(size, 200); });
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });   // 分頁不在前景時暫停
     size(); start();
+  })();
+
+  /* ---------- 互動動畫（僅限滑鼠裝置，且未開啟減少動態） ---------- */
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // 1) 卡片游標光暈
+  if (finePointer) {
+    $$('.card.lift').forEach(function (c) {
+      c.classList.add('spot');
+      c.addEventListener('pointermove', function (e) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  // 2) 大頭照 3D 視差傾斜＋浮動卡片景深
+  (function heroTilt() {
+    if (!finePointer || reduce) return;
+    var hero = $('#home'), box = $('#heroVisual'), frame = $('.portrait-frame', box);
+    var layers = $$('[data-depth]', box);
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    function loop() {
+      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+      frame.style.transform = 'rotateY(' + (cx * 8).toFixed(2) + 'deg) rotateX(' + (-cy * 8).toFixed(2) + 'deg)';
+      frame.style.setProperty('--gx', (50 + cx * 40) + '%'); frame.style.setProperty('--gy', (30 + cy * 40) + '%');
+      layers.forEach(function (l) { var d = +l.getAttribute('data-depth'); l.style.translate = (cx * d).toFixed(1) + 'px ' + (cy * d).toFixed(1) + 'px'; });
+      if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) raf = requestAnimationFrame(loop); else raf = null;
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(loop); }
+    hero.addEventListener('pointermove', function (e) {
+      var r = box.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width)));
+      ty = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height)));
+      kick();
+    });
+    hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; kick(); });
+  })();
+
+  // 3) 磁吸按鈕
+  if (finePointer && !reduce) {
+    $$('.btn-lg').forEach(function (b) {
+      b.classList.add('magnetic');
+      b.addEventListener('pointermove', function (e) {
+        var r = b.getBoundingClientRect();
+        b.style.translate = ((e.clientX - r.left - r.width / 2) * 0.18).toFixed(1) + 'px ' + ((e.clientY - r.top - r.height / 2) * 0.3).toFixed(1) + 'px';
+      });
+      b.addEventListener('pointerleave', function () { b.style.translate = '0px 0px'; });
+    });
+  }
+
+  // 4) 區塊標籤解碼效果（進入畫面時播放一次）
+  (function scramble() {
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#_';
+    function run(node) {
+      var final = node.nodeValue, frame = 0, total = 22;
+      (function tick() {
+        var out = '';
+        for (var i = 0; i < final.length; i++) {
+          var ch = final.charAt(i);
+          out += (ch === ' ' || i < (frame / total) * final.length) ? ch : CH.charAt((Math.random() * CH.length) | 0);
+        }
+        node.nodeValue = out;
+        if (++frame <= total) setTimeout(tick, 32); else node.nodeValue = final;
+      })();
+    }
+    var ko = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        ko.unobserve(e.target);
+        var t = Array.prototype.filter.call(e.target.childNodes, function (n) { return n.nodeType === 3 && n.nodeValue.trim(); }).pop();
+        if (t) run(t);
+      });
+    }, { threshold: 0.6 });
+    $$('.kicker').forEach(function (k) { ko.observe(k); });
   })();
 
   /* ---------- 佔位連結提示（尚未替換的 LinkedIn / GitHub） ---------- */
