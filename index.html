@@ -306,6 +306,17 @@
   #floatCta .status-dot{ background:#a7f3d0; }
   @media(max-width:639px){ #floatCta{ left:calc(16px + env(safe-area-inset-left, 0px)); right:calc(16px + env(safe-area-inset-right, 0px)); } }
 
+  /* ===== 社群圖示 ===== */
+  .social-row{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; max-width:26rem; }
+  .social{ display:flex; flex-direction:column; align-items:center; gap:.5rem; text-decoration:none; }
+  .social-icon{ width:3.6rem; height:3.6rem; border-radius:1.1rem; display:grid; place-items:center; color:var(--brand); background:#fff; border:1px solid var(--line); box-shadow:var(--shadow-1);
+    transition:transform .35s cubic-bezier(.3,1.6,.5,1), background .3s ease, color .3s ease, box-shadow .35s ease, border-color .3s ease; }
+  .social-name{ font-size:.78rem; font-weight:500; color:var(--body); transition:color .3s ease; }
+  .social:hover .social-icon, .social:focus-visible .social-icon{ transform:translateY(-5px) scale(1.05); background:var(--brand); color:#fff; border-color:transparent; box-shadow:0 16px 30px -12px var(--brand); }
+  .social:hover .social-name, .social:focus-visible .social-name{ color:var(--ink); }
+  .social:focus-visible{ outline:none; }
+  .social:focus-visible .social-icon{ outline:2px solid var(--brand); outline-offset:3px; }
+
   /* ===== 減少動態 ===== */
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto !important; }
@@ -1173,12 +1184,26 @@
       <div class="absolute -bottom-32 -left-24 w-96 h-96 rounded-full blur-3xl opacity-40" style="background:#93c5fd" aria-hidden="true"></div>
 
       <div class="relative grid lg:grid-cols-2 gap-10 lg:gap-14 p-7 sm:p-10 lg:p-14">
-        <!-- 左：邀請與聯絡方式 -->
+        <!-- 左：邀請、社群、預約 -->
         <div>
           <p class="kicker"><span class="num">06</span><span class="bar"></span>Contact</p>
           <h2 id="contactTitle" class="h2 md:!text-[2.1rem]">有一個想用 AI 解決的問題嗎？<br /><span class="gradient-text">我們聊聊。</span></h2>
           <p class="mt-5 text-body leading-relaxed">不需要先準備完整規格，從目前遇到的狀況開始說就可以。</p>
-          <div class="mt-8">
+
+          <!-- 社群連結：修改 href 即可替換；新增平台時複製一個 <li>，並設定 --brand 品牌色 -->
+          <p class="label mt-9">Follow &amp; Connect</p>
+          <ul class="social-row mt-4" aria-label="社群連結">
+            <li><a href="https://aistudy.pse.is/linemdsgroup" target="_blank" rel="noopener noreferrer" class="social" style="--brand:#06C755" aria-label="加入 LINE 社群（另開新分頁）">
+              <span class="social-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314zM8.4 13.53H6.01a.63.63 0 0 1-.63-.63V8.13a.63.63 0 1 1 1.26 0v4.14H8.4a.63.63 0 1 1 0 1.26zm2.47-.63a.63.63 0 1 1-1.26 0V8.13a.63.63 0 1 1 1.26 0v4.77zm5.74 0a.63.63 0 0 1-1.14.37l-2.45-3.33v2.96a.63.63 0 1 1-1.26 0V8.13a.63.63 0 0 1 1.13-.38l2.46 3.33V8.13a.63.63 0 1 1 1.26 0v4.77zm3.86-3.02a.63.63 0 1 1 0 1.26h-1.76v1.13h1.76a.63.63 0 1 1 0 1.26h-2.39a.63.63 0 0 1-.63-.63V8.13c0-.35.28-.63.63-.63h2.39a.63.63 0 1 1 0 1.26h-1.76v1.12h1.76z"/></svg></span><span class="social-name">LINE</span></a></li>
+            <li><a href="https://www.facebook.com/MarketingDataScienceTMR/" target="_blank" rel="noopener noreferrer" class="social" style="--brand:#1877F2" aria-label="追蹤 Facebook（另開新分頁）">
+              <span class="social-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></span><span class="social-name">Facebook</span></a></li>
+            <li><a href="https://www.linkedin.com/in/howardzhong/" target="_blank" rel="noopener noreferrer" class="social" style="--brand:#0A66C2" aria-label="LinkedIn 專業檔案（另開新分頁）">
+              <span class="social-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span><span class="social-name">LinkedIn</span></a></li>
+            <li><a href="https://github.com/HowardNTUST" target="_blank" rel="noopener noreferrer" class="social" style="--brand:#181717" aria-label="GitHub 作品（另開新分頁）">
+              <span class="social-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></svg></span><span class="social-name">GitHub</span></a></li>
+          </ul>
+
+          <div class="mt-9">
             <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-lg" aria-label="預約 30 分鐘諮詢（另開新分頁）">
               <span class="btn-stack"><span class="lbl lbl-a">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>預約 30 分鐘諮詢</span>
@@ -1186,82 +1211,33 @@
             </a>
           </div>
 
-          <!-- TODO: 替換 → LinkedIn / GitHub 連結 -->
-          <ul class="mt-10 space-y-3">
-            <li>
-              <a href="mailto:grace.chiou@innolux.com" class="card lift flex items-center gap-4 p-4 !rounded-2xl" aria-label="寄送 Email 給 grace.chiou@innolux.com">
-                <span class="icon-tile !w-11 !h-11 !rounded-xl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-                <span class="min-w-0"><span class="label block">Email</span><span class="block font-medium truncate">grace.chiou@innolux.com</span></span>
-              </a>
-            </li>
-            <li>
-              <a href="#" target="_blank" rel="noopener noreferrer" class="card lift flex items-center gap-4 p-4 !rounded-2xl" aria-label="LinkedIn（TODO: 替換為 LinkedIn 網址）" data-todo="LinkedIn 網址">
-                <span class="icon-tile !w-11 !h-11 !rounded-xl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></span>
-                <span><span class="label block">LinkedIn</span><span class="block font-medium">【LinkedIn 網址】</span></span>
-              </a>
-            </li>
-            <li>
-              <a href="#" target="_blank" rel="noopener noreferrer" class="card lift flex items-center gap-4 p-4 !rounded-2xl" aria-label="GitHub（TODO: 替換為 GitHub 網址，可選）" data-todo="GitHub 網址">
-                <span class="icon-tile !w-11 !h-11 !rounded-xl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></span>
-                <span><span class="label block">GitHub</span><span class="block font-medium">【GitHub 網址】</span></span>
-              </a>
-            </li>
-          </ul>
+          <a href="mailto:grace.chiou@innolux.com" class="mt-6 inline-flex items-center gap-2 text-sm text-body hover:text-brand-blue" aria-label="寄送 Email 給 grace.chiou@innolux.com">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span class="select-all">grace.chiou@innolux.com</span>
+          </a>
         </div>
 
-        <!-- 右：表單 -->
-        <!--
-          TODO: 串接表單服務（例如 Formspree）：
-          1. 到 formspree.io 建立表單，取得網址 https://formspree.io/f/xxxxxx
-          2. 將 <form> 加上 action="https://formspree.io/f/xxxxxx" method="POST"
-          3. 在下方 script 的 submit 事件中，把 mailto 區塊換成
-             fetch(f.action, { method:'POST', body:new FormData(f), headers:{ Accept:'application/json' } })
-             成功後在 #formMsg 顯示成功訊息即可。
-        -->
-        <form id="contactForm" class="bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-30px_rgba(15,23,42,.35)] p-6 sm:p-8 space-y-4 self-start" novalidate aria-label="聯絡表單">
-          <div>
-            <p class="text-lg font-bold">留下訊息</p>
-            <p class="mt-1 text-sm text-body">送出後會開啟您的郵件軟體，並自動帶入內容。</p>
+        <!-- 右：填寫需求表單（連結至 Google Form；更換表單時只需修改 href） -->
+        <div class="relative self-start overflow-hidden bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-30px_rgba(15,23,42,.35)] p-7 sm:p-9">
+          <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-60" style="background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%)" aria-hidden="true"></div>
+          <div class="relative">
+            <span class="icon-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>
+            <p class="label mt-6">Project Brief</p>
+            <h3 class="mt-2 text-2xl font-bold">填寫需求表單</h3>
+            <p class="mt-3 text-body leading-relaxed">還不方便直接預約？先花幾分鐘留下需求，我會在了解內容後與你聯繫。</p>
+            <div class="hairline my-6"></div>
+            <p class="label">建議在表單中說明</p>
+            <ul class="mt-3 space-y-2.5 text-[.95rem] text-body">
+              <li class="flex gap-2.5"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>聯絡方式與公司／單位</span></li>
+              <li class="flex gap-2.5"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>目前遇到的問題與現況</span></li>
+              <li class="flex gap-2.5"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>希望達成的目標</span></li>
+            </ul>
+            <a href="https://forms.gle/mCDu2BFK6DuZKxvF6" target="_blank" rel="noopener noreferrer" class="btn btn-lg w-full mt-8" aria-label="填寫需求表單（Google 表單，另開新分頁）">
+              <span class="btn-stack"><span class="lbl lbl-a">填寫需求表單 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Open Google Form</span></span>
+            </a>
+            <p class="mt-3 text-xs text-slate-500 text-center">將以新分頁開啟 Google 表單</p>
           </div>
-          <div>
-            <label for="fName" class="block text-sm font-medium mb-2">姓名</label>
-            <input id="fName" name="name" type="text" class="field" autocomplete="name" required aria-describedby="eName" />
-            <p id="eName" class="mt-1 text-sm text-rose-600 min-h-[1.25rem]"></p>
-          </div>
-          <div>
-            <label for="fEmail" class="block text-sm font-medium mb-2">Email</label>
-            <input id="fEmail" name="email" type="email" class="field" autocomplete="email" required aria-describedby="eEmail" />
-            <p id="eEmail" class="mt-1 text-sm text-rose-600 min-h-[1.25rem]"></p>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label for="fCompany" class="block text-sm font-medium mb-2">公司／單位 <span class="text-slate-400 font-normal">（選填）</span></label>
-              <input id="fCompany" name="company" type="text" class="field" autocomplete="organization" />
-            </div>
-            <div>
-              <label for="fType" class="block text-sm font-medium mb-2">需求類型</label>
-              <select id="fType" name="type" class="field">
-                <option>AI 導入評估與規劃</option>
-                <option>資料分析與預測模型</option>
-                <option>影像辨識應用</option>
-                <option>文件與資訊處理自動化</option>
-                <option>既有系統整合與 AI 落地</option>
-                <option>其他／還不確定</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label for="fMsg" class="block text-sm font-medium mb-2">需求說明</label>
-            <textarea id="fMsg" name="message" rows="4" placeholder="目前遇到的狀況、想解決的問題，或希望達成的目標" class="field" required aria-describedby="eMsg"></textarea>
-            <p id="eMsg" class="mt-1 text-sm text-rose-600 min-h-[1.25rem]"></p>
-          </div>
-          <div class="flex flex-wrap items-center gap-4">
-            <button type="submit" class="btn" aria-label="送出聯絡表單">送出訊息
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>
-            </button>
-            <p id="formMsg" role="status" class="text-sm text-body"></p>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -1654,29 +1630,6 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
-
-  /* ---------- 聯絡表單（前端驗證＋mailto） ---------- */
-  (function form() {
-    var f = $('#contactForm'), msg = $('#formMsg');
-    var TO = 'grace.chiou@innolux.com';
-    function setErr(id, text, input) { $('#' + id).textContent = text; if (text) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
-    f.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var n = $('#fName'), m = $('#fEmail'), t = $('#fMsg'), ok = true;
-      var name = n.value.trim(), mail = m.value.trim(), text = t.value.trim();
-      setErr('eName', name ? '' : '請輸入姓名', n); if (!name) ok = false;
-      var mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
-      setErr('eEmail', mailOk ? '' : '請輸入有效的 Email', m); if (!mailOk) ok = false;
-      setErr('eMsg', text.length >= 5 ? '' : '請簡單描述您的需求（至少 5 個字）', t); if (text.length < 5) ok = false;
-      if (!ok) { msg.textContent = ''; return; }
-      // 以 mailto 帶入內容；改用 Formspree 時請替換此區塊（見表單上方註解）
-      var subject = encodeURIComponent('網站諮詢：' + name);
-      var company = $('#fCompany').value.trim(), type = $('#fType').value;
-      var body = encodeURIComponent('姓名：' + name + '\nEmail：' + mail + '\n公司／單位：' + (company || '未填') + '\n需求類型：' + type + '\n\n需求說明：\n' + text);
-      msg.textContent = '正在開啟郵件軟體；若沒有開啟，請直接寄信至 ' + TO;
-      window.location.href = 'mailto:' + TO + '?subject=' + subject + '&body=' + body;
-    });
-  })();
 
   /* ---------- 背景：Canvas 粒子網路 ---------- */
   (function particles() {
