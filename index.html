@@ -348,6 +348,38 @@
   .social:focus-visible{ outline:none; }
   .social:focus-visible .social-icon{ outline:2px solid var(--brand); outline-offset:3px; }
 
+  /* ===== 現場紀錄照片牆 ===== */
+  .shots{ display:grid; gap:1rem; grid-template-columns:1fr; }
+  .shot{ margin:0; position:relative; border-radius:1.4rem; overflow:hidden; background:var(--border); box-shadow:var(--shadow-1); aspect-ratio:16/10; }
+  .shot-btn{ display:block; width:100%; height:100%; position:relative; cursor:zoom-in; padding:0; border:0; background:none; text-align:left; }
+  .shot img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .9s cubic-bezier(.2,.7,.2,1), filter .6s ease; }
+  .shot figcaption{ position:absolute; inset:auto 0 0 0; padding:3rem 1.1rem 1rem; display:flex; flex-direction:column; gap:.35rem; color:#fff; background:linear-gradient(180deg,transparent,rgba(16,30,52,.78)); }
+  .shot-tag{ align-self:flex-start; padding:.18rem .65rem; border-radius:9999px; font-size:.72rem; font-weight:700; color:var(--ink); background:var(--gold); }
+  .shot-cap{ font-size:.95rem; font-weight:500; text-shadow:0 1px 8px rgba(0,0,0,.35); }
+  .shot-zoom{ position:absolute; top:.85rem; right:.85rem; width:2.4rem; height:2.4rem; border-radius:9999px; display:grid; place-items:center; color:var(--blue); background:rgba(255,255,255,.9); opacity:0; transform:scale(.8); transition:opacity .35s ease, transform .35s ease; }
+  .shot:hover img, .shot-btn:focus-visible img{ transform:scale(1.06); }
+  .shot:hover .shot-zoom, .shot-btn:focus-visible .shot-zoom{ opacity:1; transform:none; }
+  .shot-btn:focus-visible{ outline:3px solid var(--tech); outline-offset:-3px; border-radius:1.4rem; }
+  .shot-note{ display:flex; flex-direction:column; justify-content:center; padding:1.75rem; border-radius:1.4rem; background:linear-gradient(135deg,rgba(234,242,251,.95),rgba(232,247,245,.95)); border:1px solid var(--border); }
+  @media(min-width:768px){
+    .shots{ grid-template-columns:repeat(12,1fr); grid-auto-rows:13.5rem; }
+    .shot{ aspect-ratio:auto; }
+    .shot-a{ grid-column:span 7; grid-row:span 2; }
+    .shot-b{ grid-column:span 5; }
+    .shot-c{ grid-column:span 5; }
+    .shot-d{ grid-column:span 7; }
+    .shot-note{ grid-column:span 5; }
+  }
+  /* 燈箱 */
+  #lightbox{ position:fixed; inset:0; z-index:85; display:flex; align-items:center; justify-content:center; padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px)); background:rgba(16,30,52,.82); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s; }
+  #lightbox.open{ opacity:1; visibility:visible; }
+  .lb-inner{ margin:0; max-width:min(1000px,100%); transform:scale(.96); transition:transform .35s ease; }
+  #lightbox.open .lb-inner{ transform:none; }
+  .lb-inner img{ display:block; max-width:100%; max-height:78vh; margin:0 auto; border-radius:1rem; box-shadow:0 30px 80px -20px rgba(0,0,0,.6); }
+  .lb-inner figcaption{ margin-top:.9rem; text-align:center; color:#fff; font-size:.95rem; }
+  .lb-close{ position:absolute; top:calc(1rem + env(safe-area-inset-top,0px)); right:calc(1rem + env(safe-area-inset-right,0px)); width:2.75rem; height:2.75rem; border-radius:9999px; display:grid; place-items:center; color:#fff; background:rgba(255,255,255,.14); }
+  .lb-close:hover{ background:rgba(255,255,255,.26); }
+
   /* ===== 減少動態 ===== */
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto !important; }
@@ -776,6 +808,59 @@
             <div class="rounded-xl bg-slate-50 border border-slate-100 p-4 text-sm text-body leading-relaxed"><p class="label mb-1.5">經歷佐證</p>在資拓宏宇涵蓋 Server 架設、前端與後端；之後擔任系統 PM 與規劃者，負責排程、資源協調與驗收。</div>
           </div>
         </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2-4. 現場紀錄（內訓與專案場景）
+     TODO: 替換 → 照片放在 photos01/；更換照片時修改 img 的 src、alt 與 data-full，說明文字修改 figcaption 與 data-cap ===== -->
+<section id="field" class="section" aria-labelledby="fieldTitle">
+  <div class="container-x">
+    <div class="sec-head reveal">
+      <div>
+        <p class="kicker">In the Field</p>
+        <h2 id="fieldTitle" class="h2">走進企業現場，<br /><span class="gradient-text">從內訓到專案落地</span></h2>
+      </div>
+      <p class="lead">把 AI 與數位工具帶進企業內訓與專案現場，陪團隊從理解需求、動手練習，一路走到實際應用。</p>
+    </div>
+
+    <div class="shots mt-12" data-stagger>
+      <figure class="reveal shot shot-a">
+        <button type="button" class="shot-btn" data-full="photos01/photo-03-corporate-training.webp" data-cap="企業內訓｜從需求、練習到應用的內訓設計" aria-label="放大檢視：從需求、練習到應用的內訓設計">
+          <img src="photos01/photo-03-corporate-training.webp" alt="企業內訓現場，講師在白板說明「需求 → 練習 → 應用」" width="722" height="336" loading="lazy" />
+          <figcaption><span class="shot-tag">企業內訓</span><span class="shot-cap">從需求、練習到應用的內訓設計</span></figcaption>
+          <span class="shot-zoom" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+        </button>
+      </figure>
+      <figure class="reveal shot shot-b">
+        <button type="button" class="shot-btn" data-full="photos01/photo-01-project-meeting.webp" data-cap="專案討論｜與團隊一起拆解需求與數據" aria-label="放大檢視：與團隊一起拆解需求與數據">
+          <img src="photos01/photo-01-project-meeting.webp" alt="專案團隊圍桌討論資料圖表" width="691" height="439" loading="lazy" />
+          <figcaption><span class="shot-tag">專案討論</span><span class="shot-cap">與團隊一起拆解需求與數據</span></figcaption>
+          <span class="shot-zoom" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+        </button>
+      </figure>
+      <figure class="reveal shot shot-c">
+        <button type="button" class="shot-btn" data-full="photos01/photo-02-workshop.webp" data-cap="分享交流｜把技術經驗轉化為現場可以討論的內容" aria-label="放大檢視：把技術經驗轉化為現場可以討論的內容">
+          <img src="photos01/photo-02-workshop.webp" alt="分享講座中，聽眾舉手提問" width="684" height="445" loading="lazy" />
+          <figcaption><span class="shot-tag">分享交流</span><span class="shot-cap">把技術經驗轉化為現場可以討論的內容</span></figcaption>
+          <span class="shot-zoom" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+        </button>
+      </figure>
+      <figure class="reveal shot shot-d">
+        <button type="button" class="shot-btn" data-full="photos01/photo-04-team-collab.webp" data-cap="團隊協作｜陪團隊從想法走到實際應用" aria-label="放大檢視：陪團隊從想法走到實際應用">
+          <img src="photos01/photo-04-team-collab.webp" alt="團隊成員圍坐協作，使用筆電與筆記" width="711" height="436" loading="lazy" />
+          <figcaption><span class="shot-tag">團隊協作</span><span class="shot-cap">陪團隊從想法走到實際應用</span></figcaption>
+          <span class="shot-zoom" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+        </button>
+      </figure>
+      <div class="reveal shot-note">
+        <p class="label">Training &amp; Projects</p>
+        <p class="mt-3 text-xl font-bold leading-snug">需求 <span class="text-brand-tech">→</span> 練習 <span class="text-brand-tech">→</span> 應用</p>
+        <p class="mt-3 text-sm text-body leading-relaxed">內訓與專案都從團隊的實際需求出發，讓學到的方法能直接用在工作上。</p>
+        <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-sm mt-6 self-start" aria-label="洽詢企業內訓與專案合作（另開新分頁）">
+          <span class="btn-stack"><span class="lbl lbl-a">洽詢內訓與專案 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
+        </a>
       </div>
     </div>
   </div>
@@ -1309,6 +1394,17 @@
   <span class="btn-stack"><span class="lbl lbl-a"><i class="status-dot"></i>預約 30 分鐘諮詢 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
 </a>
 
+<!-- ===== 照片燈箱 ===== -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="照片檢視" aria-hidden="true">
+  <figure class="lb-inner">
+    <img id="lbImg" src="" alt="" />
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+  <button id="lbClose" class="lb-close" aria-label="關閉照片">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
 <!-- ===== 案例 Modal ===== -->
 <div id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-hidden="true">
   <div class="sheet w-full max-w-2xl max-h-[88vh] overflow-y-auto bg-white rounded-[1.75rem] shadow-2xl">
@@ -1661,6 +1757,26 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
+
+  /* ---------- 照片燈箱 ---------- */
+  (function lightbox() {
+    var lb = $('#lightbox'), img = $('#lbImg'), cap = $('#lbCap'), last = null;
+    function open(btn) {
+      last = btn;
+      img.src = btn.getAttribute('data-full'); img.alt = btn.querySelector('img').alt;
+      cap.textContent = btn.getAttribute('data-cap');
+      lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.classList.add('lock');
+      setTimeout(function () { $('#lbClose').focus(); }, 50);
+    }
+    function close() {
+      lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lock');
+      if (last) last.focus();
+    }
+    $$('.shot-btn').forEach(function (b) { b.addEventListener('click', function () { open(b); }); });
+    $('#lbClose').addEventListener('click', close);
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target === img) close(); });
+    document.addEventListener('keydown', function (e) { if (lb.classList.contains('open') && (e.key === 'Escape' || e.key === 'Tab')) { if (e.key === 'Escape') close(); else { e.preventDefault(); $('#lbClose').focus(); } } });
+  })();
 
   /* ---------- 背景：Canvas 粒子網路 ---------- */
   (function particles() {
