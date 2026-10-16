@@ -1195,61 +1195,58 @@
 
 <!-- ===== 6. 技術文章 ===== -->
 <!--
-  TODO: 替換 → 如何替換文章卡片：
-  1. 修改每張 <article> 內的「分類標籤」「標題」「摘要」「日期」（<time> 的 datetime 請填 YYYY-MM-DD）。
-  2. 將「閱讀更多」的 href="#" 改為文章網址（例如 Medium、Notion、個人部落格）。
-  3. 縮圖區可換 thumb-a / thumb-b / thumb-c 三種漸層樣式。
-  4. 要新增文章：複製整張 <article>…</article> 貼在同一個 grid 內即可；要刪除則直接移除。
+  文章全文放在 articles/ 資料夾（每篇一個 HTML，共用 assets/article.css，不需重新編譯 CSS）。
+  新增文章：複製 articles/ 內任一篇改內容，再複製下方一張 <article> 卡片，修改連結、標籤、標題、摘要與日期。
 -->
 <section id="articles" class="section band" aria-labelledby="articlesTitle">
   <div class="container-x">
     <div class="sec-head reveal">
       <div>
         <p class="kicker"><span class="num">05</span><span class="bar"></span>Insights</p>
-        <h2 id="articlesTitle" class="h2">技術文章<span class="gradient-text">與實務筆記</span></h2>
+        <h2 id="articlesTitle" class="h2">技術文章<span class="gradient-text">與實戰紀錄</span></h2>
       </div>
-      <p class="lead">記錄 AI 導入、資料應用與系統架構的實務觀察。</p>
+      <p class="lead">來自 2026 AI 協作實戰營的實作紀錄：用數據檢驗 AI 協作的效益，並整理實用的工具筆記。</p>
     </div>
     <div class="mt-14 grid md:grid-cols-3 gap-6" data-stagger>
       <article class="reveal card lift p-4 flex flex-col">
-        <div class="visual thumb-a h-40 grid place-items-center">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-        </div>
+        <a href="articles/ai-dialogue-quantified.html" class="visual thumb-a h-40 grid place-items-center" tabindex="-1" aria-hidden="true">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </a>
         <div class="p-3 pt-5 flex flex-col flex-1">
-          <span class="tag self-start">AI 導入</span>
-          <h3 class="mt-4 text-lg font-bold leading-snug">企業導入 AI 前，先問這五個問題</h3>
-          <p class="mt-3 text-sm text-body leading-relaxed">在投入資源之前，先確認問題、資料、流程與維護能力是否已經準備好。（範本摘要，待替換）</p>
+          <span class="tag self-start">AI 協作量化</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug"><a href="articles/ai-dialogue-quantified.html" class="hover:text-brand-blue">AI 對話可量化：以 chat.json 驗證系統維運優化成果</a></h3>
+          <p class="mt-3 text-sm text-body leading-relaxed">把 Copilot 對話紀錄當成資料，量化 41 次提問如何在 2 天內完成 HBase/Phoenix 整合，並找出 Token 浪費的來源。</p>
           <div class="mt-auto pt-6 flex items-center justify-between text-sm">
-            <time class="font-display text-slate-500" datetime="">YYYY.MM.DD</time>
-            <a href="#" class="link-arrow" aria-label="閱讀更多：企業導入 AI 前，先問這五個問題">閱讀更多 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <time class="font-display text-muted" datetime="2026-03-19">2026.03.19</time>
+            <a href="articles/ai-dialogue-quantified.html" class="link-arrow" aria-label="閱讀全文：AI 對話可量化：以 chat.json 驗證系統維運優化成果">閱讀全文 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </div>
       </article>
       <article class="reveal card lift p-4 flex flex-col">
-        <div class="visual thumb-b h-40 grid place-items-center">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-        </div>
+        <a href="articles/ai-fullstack-playbook.html" class="visual thumb-b h-40 grid place-items-center" tabindex="-1" aria-hidden="true">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+        </a>
         <div class="p-3 pt-5 flex flex-col flex-1">
-          <span class="tag self-start">資料分析</span>
-          <h3 class="mt-4 text-lg font-bold leading-snug">從返品預測看資料驅動決策</h3>
-          <p class="mt-3 text-sm text-body leading-relaxed">資料要如何一步步轉化為可執行的預測策略，並真正影響決策。（範本摘要，待替換）</p>
+          <span class="tag self-start">AI 全端開發</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug"><a href="articles/ai-fullstack-playbook.html" class="hover:text-brand-blue">從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗</a></h3>
+          <p class="mt-3 text-sm text-body leading-relaxed">由 AI 先產出規格書、再依規格端到端開發 4 項全端功能，有效工時由 10 天縮短到 5.7 天。</p>
           <div class="mt-auto pt-6 flex items-center justify-between text-sm">
-            <time class="font-display text-slate-500" datetime="">YYYY.MM.DD</time>
-            <a href="#" class="link-arrow" aria-label="閱讀更多：從返品預測看資料驅動決策">閱讀更多 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <time class="font-display text-muted" datetime="2026-04-02">2026.04.02</time>
+            <a href="articles/ai-fullstack-playbook.html" class="link-arrow" aria-label="閱讀全文：從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗">閱讀全文 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </div>
       </article>
       <article class="reveal card lift p-4 flex flex-col">
-        <div class="visual thumb-c h-40 grid place-items-center">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9z"/></svg>
-        </div>
+        <a href="articles/antigravity-gemini-cli-quickstart.html" class="visual thumb-c h-40 grid place-items-center" tabindex="-1" aria-hidden="true">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="url(#gBrand)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+        </a>
         <div class="p-3 pt-5 flex flex-col flex-1">
-          <span class="tag self-start">雲端架構</span>
-          <h3 class="mt-4 text-lg font-bold leading-snug">混合雲架構導入的實戰心得</h3>
-          <p class="mt-3 text-sm text-body leading-relaxed">從技術評估到實際導入，整理過程中的取捨與經驗。（範本摘要，待替換）</p>
+          <span class="tag self-start">AI 工具入門</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug"><a href="articles/antigravity-gemini-cli-quickstart.html" class="hover:text-brand-blue">Antigravity & Gemini CLI 快速入門</a></h3>
+          <p class="mt-3 text-sm text-body leading-relaxed">安裝與網路設定、可用模型、同步 VS Code 設定，以及 Rule 與 Skill 檔案在不同 AI 工具中的位置。</p>
           <div class="mt-auto pt-6 flex items-center justify-between text-sm">
-            <time class="font-display text-slate-500" datetime="">YYYY.MM.DD</time>
-            <a href="#" class="link-arrow" aria-label="閱讀更多：混合雲架構導入的實戰心得">閱讀更多 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <time class="font-display text-muted" datetime="2026-04-23">2026.04.23</time>
+            <a href="articles/antigravity-gemini-cli-quickstart.html" class="link-arrow" aria-label="閱讀全文：Antigravity & Gemini CLI 快速入門">閱讀全文 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </div>
       </article>

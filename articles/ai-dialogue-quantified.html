@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>AI 對話可量化：以 chat.json 驗證系統維運優化成果｜邱數恩 Grace</title>
+<meta name="description" content="把 GitHub Copilot 的對話紀錄 chat.json 當成資料來源，量化 41 次提問如何在 2 天內完成 HBase/Phoenix 整合，並找出 Token 浪費的來源與改善方法。" />
+<meta name="author" content="邱數恩 Grace" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#005BAC" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="邱數恩 Grace" />
+<meta property="og:title" content="AI 對話可量化：以 chat.json 驗證系統維運優化成果" />
+<meta property="og:description" content="把 GitHub Copilot 的對話紀錄 chat.json 當成資料來源，量化 41 次提問如何在 2 天內完成 HBase/Phoenix 整合，並找出 Token 浪費的來源與改善方法。" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="article:published_time" content="2026-03-19" />
+<meta name="twitter:card" content="summary" />
+<!-- TODO: 替換 → 上線後填入正式網址並取消註解
+<link rel="canonical" href="https://samsongrace521.github.io/grace_vibe_coding/articles/ai-dialogue-quantified.html" />
+-->
+<link rel="icon" href="../assets/grace-avatar.webp" type="image/webp" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AI 對話可量化：以 chat.json 驗證系統維運優化成果", "description": "把 GitHub Copilot 的對話紀錄 chat.json 當成資料來源，量化 41 次提問如何在 2 天內完成 HBase/Phoenix 整合，並找出 Token 浪費的來源與改善方法。", "datePublished": "2026-03-19", "inLanguage": "zh-Hant", "author": {"@type": "Person", "name": "邱數恩", "alternateName": "Grace"}, "keywords": "AI 協作量化"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/article.css" />
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap wrap-wide">
+    <a class="brand" href="../index.html" aria-label="回到邱數恩 Grace 首頁">
+      <img src="../assets/grace-avatar.webp" alt="" width="38" height="38" />
+      <span><b>邱數恩</b><small>GRACE · AI PRACTITIONER</small></span>
+    </a>
+    <nav aria-label="文章導覽">
+      <a class="back" href="../index.html#articles">← <span>所有文章</span></a>
+      <a class="cta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" aria-label="預約諮詢（另開新分頁）">預約諮詢</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <article>
+    <header class="hero">
+      <div class="wrap">
+        <span class="tag">AI 協作量化</span>
+        <h1>AI 對話可量化：以 chat.json 驗證系統維運優化成果</h1>
+        <p class="lead">AI 協作的效益常被說成「感覺快很多」。這次我把 GitHub Copilot 的對話匯出檔 chat.json 當成資料來源，實際量化一次 HBase/Phoenix 整合任務花了多少提問、多少 Token，又省下多少時間。</p>
+        <div class="meta">
+          <span><img src="../assets/grace-avatar.webp" alt="" width="28" height="28" />邱數恩 Grace</span>
+          <time datetime="2026-03-19">2026 年 3 月 19 日</time>
+          <span>閱讀時間約 8 分鐘</span>
+        </div>
+        <div class="stats"><div class="stat"><b>41 次</b><span>與 Copilot 的提問次數</span></div><div class="stat"><b>約 2 天</b><span>完成 HBase/Phoenix 整合</span></div><div class="stat"><b>−60～80%</b><span>開發時間（14–28 小時 → 4–6 小時）</span></div><div class="stat"><b>1,019 行</b><span>最終保留的新增程式碼</span></div></div>
+      </div>
+    </header>
+    <div class="wrap prose">
+
+<h2>背景：一次看似簡單的資料源整合</h2>
+<p>系統需要從 HBase/Phoenix 讀取量測資料，提供分析與報表使用。直接引入 <code>phoenix-core</code>、沿用既有的資料庫連線方式後，很快遇到啟動錯誤、套件版本衝突，以及上線後可能不穩定的風險。</p>
+<p>這類問題通常要花 3–5 個工作天反覆排查。這次我全程和 GitHub Copilot 協作，並把對話紀錄保存下來，事後用它來量化 AI 協作的成本與效益。</p>
+
+<h2>根因：為 OLTP 設計的連線池，不適合 OLAP 查詢</h2>
+<p>既有系統使用 HikariCP 管理 Oracle 連線。它的設計前提是「短連線、快查詢、立刻歸還」，適合大量短交易的 OLTP 場景。Phoenix/HBase 屬於 OLAP 場景：查詢頻率不高，但單次查詢可能要跑數十秒，而且會跨多台 RegionServer 掃描資料。</p>
+<div class="callout">
+  <p><b>一個簡單的比喻</b></p>
+  <p>HikariCP 像高速公路收費站：窗口固定，每輛車很快通過。Phoenix 像長途客運站：每班車要開很久，座位又固定，後面的人只能一直等。</p>
+</div>
+<p>如果直接套用 Oracle 的連線池設定，可能出現以下狀況：</p>
+<ul>
+  <li>連線被長查詢佔滿，新的查詢等待 30 秒後逾時，使用者感覺系統「間歇性卡住」。</li>
+  <li>長時間閒置的連線被防火牆切斷，但連線池不知道連線已失效，接著出現錯誤。</li>
+  <li>加大連線數也沒有用，因為問題是連線被長時間佔用，最後只能靠重啟恢復。</li>
+</ul>
+
+<h2>解法：輕量連線池與借用／歸還模式</h2>
+<ol class="steps">
+  <li><b>輕量連線池</b>：預設最多保留 10 條連線，遇到尖峰時可按需建立，不必強制排隊等待。</li>
+  <li><b>背景健康檢查</b>：發現失效連線就立即丟棄並重建，避免拿到「已死」的連線。</li>
+  <li><b>借用／歸還模式</b>：讓開發者明確掌握連線的生命週期，長查詢也能安全歸還。</li>
+  <li><b>開發環境自動初始化</b>：在 Windows 開發機啟動時，自動處理 Hadoop 需要的 winutils，減少新成員的環境設定步驟。</li>
+</ol>
+<pre><code>PooledConnection conn = connManager.borrowConnection();
+try {
+    // 執行耗時查詢（5–50 秒都可以）
+    queryFromPhoenix(conn.getConnection());
+} finally {
+    connManager.returnConnection(conn);   // 確保歸還
+}</code></pre>
+
+<h2>用 chat.json 量化 AI 協作</h2>
+<p>chat.json 中每一次提問都帶有 metadata：<code>promptTokens</code>（輸入 Token）、<code>outputTokens</code>（輸出 Token），以及 <code>editedFileEvents</code>（新增、修改、刪除了哪些檔案）。把這些欄位整理出來，就能看見 AI 協作的真實成本。</p>
+
+<h3>為什麼 294 個字的提問，會變成 25,922 個輸入 Token？</h3>
+<p>常見的誤解是「輸入 Token 就是我打的字」。實際上，AI 回答前會把所有上下文一起讀進去：</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>AI 實際讀入的內容</th><th>估計 Token</th></tr></thead>
+  <tbody>
+    <tr><td>使用者輸入的 294 個字</td><td class="num">約 300–500</td></tr>
+    <tr><td>系統提示詞（內建指令）</td><td class="num">約 5,000–8,000</td></tr>
+    <tr><td>以 <code>#file:</code> 引用的程式碼檔案</td><td class="num">約 10,000–15,000</td></tr>
+    <tr><td>先前的對話歷史</td><td class="num">約 3,000–5,000</td></tr>
+    <tr><td>其他模型設定資訊</td><td class="num">約 2,000–3,000</td></tr>
+    <tr><th>實測合計</th><th class="num">25,922</th></tr>
+  </tbody>
+</table></div>
+
+<h3>Token 花在哪裡</h3>
+<ul>
+  <li><b>一次到位的提問</b>：輸入約 15,000、輸出約 1,500 Token，效率最高。</li>
+  <li><b>需要多輪修正的提問</b>：一個例外處理問題來回修正 3 輪，前兩輪的輸出（761 + 2,157 Token）沒有產出可用程式碼，浪費比例達 75.1%。</li>
+  <li><b>概念釐清型的提問</b>：輪數多、輸出量大，但屬於學習成本，不是效率問題。</li>
+</ul>
+<div class="callout">
+  <p><b>結論</b>：總 Token 中約 15–20% 花在多輪修正。如果每個提問都使用「引用檔案 + 明確產出 + 約束條件」的高效模板，預估可再減少 15–20% 的總消耗。</p>
+</div>
+
+<h3>提問品質的演進</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th>階段</th><th>提問方式</th><th>效率</th></tr></thead>
+  <tbody>
+    <tr><td>第 1 天上午</td><td>直接貼錯誤訊息、短問追問</td><td>★★☆☆☆</td></tr>
+    <tr><td>第 1 天下午</td><td>概念型問題多、缺乏上下文</td><td>★☆☆☆☆</td></tr>
+    <tr><td>第 2 天</td><td>引用檔案、指定產出格式、使用 /fix 指令</td><td>★★★★☆</td></tr>
+    <tr><td>第 3 天</td><td>先提方案再詢問、主動質疑設計、追問效能情境</td><td>★★★★★</td></tr>
+  </tbody>
+</table></div>
+
+<h2>成果</h2>
+<p>以 41 次提問、約 2 天完成整合，同時解決 6 個以上相互關聯的技術問題，包括 SLF4J 衝突、Phoenix 版本不匹配、連線池不適用、HADOOP_HOME 警告、靜態資源路由與 Entity 欄位對應。</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>指標</th><th>基線 → 結果</th><th>變化</th></tr></thead>
+  <tbody>
+    <tr><td>開發時間</td><td class="num">14–28 小時 → 4–6 小時</td><td class="num good">−60～80%</td></tr>
+    <tr><td>與 AI 的提問次數</td><td class="num">41 次</td><td class="num">達標（目標 ≤ 50 次）</td></tr>
+    <tr><td>程式碼產出</td><td class="num">1,019 行（Java 819 行 + 設定 200 行）</td><td class="num">—</td></tr>
+    <tr><td>檔案異動</td><td class="num">19 個（10 個保留、5 個迭代後移除、4 個修改）</td><td class="num">—</td></tr>
+  </tbody>
+</table></div>
+<p class="note">本案為單次實驗，部署頻率、變更失敗率等需長期累積的 DORA 指標不列入比較。</p>
+
+<h2>風險與緩解</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>風險</th><th>緩解措施</th></tr></thead>
+  <tbody>
+    <tr><td>AI 產出錯誤的程式碼</td><td>保留人工 code review</td></tr>
+    <tr><td>敏感資訊被貼進提示詞</td><td>提示詞過濾與個資遮蔽</td></tr>
+    <tr><td>套件版本不匹配</td><td>鎖定 Phoenix/HBase 版本，使用公司提供的套件</td></tr>
+    <tr><td>測試覆蓋不足</td><td>設定最小覆蓋率門檻（&gt; 80%）</td></tr>
+  </tbody>
+</table></div>
+
+<h2>給下一次 AI 協作的建議</h2>
+<ul>
+  <li>先引用相關檔案，再描述問題，讓 AI 一開始就有完整上下文。</li>
+  <li>明確指定想要的產出格式與限制條件，減少來回修正。</li>
+  <li>保存對話紀錄。它不只是備忘，也是之後量化效益、改善提問方式的資料。</li>
+</ul>
+
+      <p class="note" style="margin-top:2.5rem">本文整理自 2026 AI 協作實戰營的實作紀錄；涉及企業內部的系統名稱、資料表與設定細節皆已概括或省略。</p>
+    </div>
+  </article>
+</main>
+
+<section class="end" aria-label="延伸閱讀與聯絡">
+  <div class="wrap">
+    <div class="end-card">
+      <div>
+        <h2>想在你的團隊試試 AI 協作？</h2>
+        <p>從一個具體的流程開始，我們一起評估怎麼做最務實。</p>
+      </div>
+      <a class="cta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" aria-label="預約 30 分鐘諮詢（另開新分頁）">預約 30 分鐘諮詢 →</a>
+    </div>
+    <div class="more">
+      <h3>延伸閱讀</h3>
+      <div class="more-list"><a href="ai-fullstack-playbook.html"><small>AI 全端開發</small><b>從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗</b></a><a href="antigravity-gemini-cli-quickstart.html"><small>AI 工具入門</small><b>Antigravity & Gemini CLI 快速入門</b></a></div>
+    </div>
+  </div>
+</section>
+<footer>© <span id="year">2026</span> 邱數恩 Grace｜讓 AI 與數據，成為每個人的超能力。</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  (function () {
+    var bar = document.getElementById('progress'), t = false;
+    function upd() { var m = document.documentElement.scrollHeight - innerHeight; bar.style.transform = 'scaleX(' + (m > 0 ? Math.min(1, scrollY / m) : 0) + ')'; t = false; }
+    addEventListener('scroll', function () { if (!t) { t = true; requestAnimationFrame(upd); } }, { passive: true });
+  })();
+</script>
+</body>
+</html>

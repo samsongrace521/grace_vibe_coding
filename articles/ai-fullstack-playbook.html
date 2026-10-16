@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗｜邱數恩 Grace</title>
+<meta name="description" content="在企業管理系統 Phase II 中，由 GitHub Copilot 先產出規格書、再依規格端到端開發 4 項全端功能，以自動化整合測試驗收，有效工時由 10 天縮短至 5.7 天。" />
+<meta name="author" content="邱數恩 Grace" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#005BAC" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="邱數恩 Grace" />
+<meta property="og:title" content="從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗" />
+<meta property="og:description" content="在企業管理系統 Phase II 中，由 GitHub Copilot 先產出規格書、再依規格端到端開發 4 項全端功能，以自動化整合測試驗收，有效工時由 10 天縮短至 5.7 天。" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="article:published_time" content="2026-04-02" />
+<meta name="twitter:card" content="summary" />
+<!-- TODO: 替換 → 上線後填入正式網址並取消註解
+<link rel="canonical" href="https://samsongrace521.github.io/grace_vibe_coding/articles/ai-fullstack-playbook.html" />
+-->
+<link rel="icon" href="../assets/grace-avatar.webp" type="image/webp" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗", "description": "在企業管理系統 Phase II 中，由 GitHub Copilot 先產出規格書、再依規格端到端開發 4 項全端功能，以自動化整合測試驗收，有效工時由 10 天縮短至 5.7 天。", "datePublished": "2026-04-02", "inLanguage": "zh-Hant", "author": {"@type": "Person", "name": "邱數恩", "alternateName": "Grace"}, "keywords": "AI 全端開發"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/article.css" />
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap wrap-wide">
+    <a class="brand" href="../index.html" aria-label="回到邱數恩 Grace 首頁">
+      <img src="../assets/grace-avatar.webp" alt="" width="38" height="38" />
+      <span><b>邱數恩</b><small>GRACE · AI PRACTITIONER</small></span>
+    </a>
+    <nav aria-label="文章導覽">
+      <a class="back" href="../index.html#articles">← <span>所有文章</span></a>
+      <a class="cta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" aria-label="預約諮詢（另開新分頁）">預約諮詢</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <article>
+    <header class="hero">
+      <div class="wrap">
+        <span class="tag">AI 全端開發</span>
+        <h1>從規格到程式：AI 端到端協作開發 4 項全端功能的 Playbook 實驗</h1>
+        <p class="lead">這次實驗想回答一個問題：如果讓 AI 先寫規格書，再依照自己寫的規格完成前後端與資料庫開發，效率與品質能到什麼程度？</p>
+        <div class="meta">
+          <span><img src="../assets/grace-avatar.webp" alt="" width="28" height="28" />邱數恩 Grace</span>
+          <time datetime="2026-04-02">2026 年 4 月 2 日</time>
+          <span>閱讀時間約 7 分鐘</span>
+        </div>
+        <div class="stats"><div class="stat"><b>10 → 5.7 天</b><span>有效開發工時（約 −43%）</span></div><div class="stat"><b>4 / 4</b><span>全端功能如期交付</span></div><div class="stat"><b>35+</b><span>整合測試案例全數通過</span></div><div class="stat"><b>≥ 90%</b><span>AI 程式碼佔比目標</span></div></div>
+      </div>
+    </header>
+    <div class="wrap prose">
+
+<h2>實驗設計</h2>
+<p>Phase II 需要在短時間內交付 4 項功能，涵蓋前端、後端、資料庫結構與排程通知：</p>
+<ul>
+  <li><b>進度甘特圖</b>：計畫與實際雙列顯示、工作天演算法、假日色塊、逾期判定與自動排程。</li>
+  <li><b>假日月曆管理</b>：新增、修改、刪除，Excel 批量匯入匯出，並與甘特圖的工作天計算整合。</li>
+  <li><b>逾期自動提醒</b>：每日排程檢查，逾期第 3 天與第 7 天發送通知，並依層級通知主管。</li>
+  <li><b>通知紀錄查詢</b>：瀏覽發送紀錄、統計卡片，以及成功／失敗篩選。</li>
+</ul>
+<p>依據 Phase I 相同複雜度的經驗，傳統（不使用 AI）開發估計需要 <b>10 個工作天</b>。</p>
+<div class="callout">
+  <p><b>實驗假設</b></p>
+  <p>讓 GitHub Copilot 先產出規格書，再依照自己產出的規格完成開發（AI 程式碼佔比 ≥ 90%），並以自動化整合測試取代傳統人工 code review，可以進一步縮短有效開發工時。</p>
+</div>
+
+<h2>執行流程</h2>
+<ol class="steps">
+  <li>確認業務需求，並準備專案慣例文件 <code>copilot-instructions.md</code>（多語系、元件規範、資料庫命名規範）。</li>
+  <li>由 Copilot 依需求與慣例產出規格書 <code>spec.md</code> 草稿。</li>
+  <li>人工審核規格一次，確認欄位對照、狀態流程與 API 規格；有偏差就回饋給 Copilot 修正。</li>
+  <li>每個功能模組各發一個提示，由 Copilot 端到端產出後端、前端與資料庫結構。</li>
+  <li>以 35 個以上的 API 整合測試自動驗收；測試失敗時，把失敗現象回饋給 Copilot 修正。</li>
+  <li>IT 測試通過後交付 UAT，並彙整效益數據。</li>
+</ol>
+
+<h2>開發效率：各功能工時對照</h2>
+<p>同一時期只有 80% 時間投入這個系統，因此「有效工時」以實際紀錄工時 × 80% 計算。</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>工作項</th><th>無 AI 基線</th><th>Copilot 實際紀錄</th><th>有效工時</th><th>改善</th></tr></thead>
+  <tbody>
+    <tr><td>規格書產出與審核</td><td class="num">1.5 天</td><td class="num">1.2 天</td><td class="num">1.0 天</td><td class="num good">33%</td></tr>
+    <tr><td>進度甘特圖</td><td class="num">4.0 天</td><td class="num">2.5 天</td><td class="num">2.0 天</td><td class="num good">50%</td></tr>
+    <tr><td>假日月曆管理</td><td class="num">2.0 天</td><td class="num">1.2 天</td><td class="num">1.0 天</td><td class="num good">50%</td></tr>
+    <tr><td>逾期自動提醒</td><td class="num">1.5 天</td><td class="num">1.0 天</td><td class="num">0.8 天</td><td class="num good">47%</td></tr>
+    <tr><td>通知紀錄查詢</td><td class="num">1.0 天</td><td class="num">0.7 天</td><td class="num">0.6 天</td><td class="num good">40%</td></tr>
+    <tr><td>其他配合修改</td><td class="num">1.0 天</td><td class="num">0.4 天</td><td class="num">0.3 天</td><td class="num good">70%</td></tr>
+    <tr><th>Phase II 總計</th><th class="num">10.0 天</th><th class="num">7.0 天</th><th class="num">5.7 天</th><th class="num">43%</th></tr>
+  </tbody>
+</table></div>
+<p class="note">原始紀錄的結論段另以「規劃 6 天 × 80% = 4.8 天」估算改善 52%；本文以工時表的實際紀錄（5.7 天，約 43%）為準。</p>
+<p>即使是含工作天演算法與色塊邏輯、最複雜的甘特圖，有效工時仍縮短一半。關鍵在於規格書裡有詳細的欄位對照表與演算法數字範例。</p>
+
+<h2>品質：用自動化測試把關</h2>
+<ul>
+  <li>35 個以上的 API 整合測試全數通過，IT 測試完成。</li>
+  <li>甘特圖的邊界條件（跨週末、跨假日、逾期首日、緩衝判定）另以人工驗證。</li>
+  <li>逾期通知採冪等設計：同一任務、同一天數只發送一次，不會重複通知。</li>
+</ul>
+<p class="note">撰文時 UAT 仍在進行中；提示詞輪數、AI 程式碼實際佔比與規格缺陷率等數據，將於 UAT 完成後補上。</p>
+
+<h2>學到的事</h2>
+<h3>有效的做法</h3>
+<ul>
+  <li>規格書中的欄位對照表與演算法數字範例，是 AI 產出品質的關鍵。</li>
+  <li>把系統慣例寫成文件（copilot-instructions），能明顯減少不符規範的程式碼。</li>
+</ul>
+<h3>需要改進的地方</h3>
+<ul>
+  <li>甘特圖「逾期首日」的色塊邏輯，AI 第一版有邊界錯誤，需要人工修正。複雜的視覺邏輯需要更詳細的規格描述。</li>
+  <li>下次會為複雜演算法提供更多邊界案例，並嘗試 100% 時間投入，取得更純粹的加速數據。</li>
+</ul>
+
+<h2>什麼情況適合這樣做</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>適合</th><th>不適合</th></tr></thead>
+  <tbody>
+    <tr><td>有詳細規格書可作為 AI 的上下文（欄位對照 + 演算法範例效果最好）</td><td>規格只有文字描述，缺乏欄位對照與邊界範例</td></tr>
+    <tr><td>系統慣例已經文件化</td><td>需要大量領域知識判斷的演算法（例如光學量測、RF 演算法）</td></tr>
+    <tr><td>多模組串聯的整合情境（甘特圖、假日、排程互相依賴）</td><td>—</td></tr>
+  </tbody>
+</table></div>
+
+<h2>風險與緩解</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>風險</th><th>緩解方式</th></tr></thead>
+  <tbody>
+    <tr><td>AI 產出的規格本身有邏輯偏差</td><td>至少一次完整人工審核；缺陷率超過 10% 就回到 AI 二輪修正</td></tr>
+    <tr><td>規格與實際業務需求不一致</td><td>審核時邀請業務方參與，並以測試案例驅動規格驗證</td></tr>
+    <tr><td>AI 程式碼缺少防禦性檢查</td><td>整合測試必須涵蓋邊界條件，未通過不得交付</td></tr>
+    <tr><td>為了追求 90% AI 比例而犧牲效率</td><td>90% 是目標不是紅線，工時改善優先於 AI 佔比</td></tr>
+    <tr><td>自動化測試無法涵蓋的業務邏輯</td><td>保留 UAT 作為最後一道防線</td></tr>
+  </tbody>
+</table></div>
+
+      <p class="note" style="margin-top:2.5rem">本文整理自 2026 AI 協作實戰營的實作紀錄；涉及企業內部的系統名稱、資料表與設定細節皆已概括或省略。</p>
+    </div>
+  </article>
+</main>
+
+<section class="end" aria-label="延伸閱讀與聯絡">
+  <div class="wrap">
+    <div class="end-card">
+      <div>
+        <h2>想在你的團隊試試 AI 協作？</h2>
+        <p>從一個具體的流程開始，我們一起評估怎麼做最務實。</p>
+      </div>
+      <a class="cta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" aria-label="預約 30 分鐘諮詢（另開新分頁）">預約 30 分鐘諮詢 →</a>
+    </div>
+    <div class="more">
+      <h3>延伸閱讀</h3>
+      <div class="more-list"><a href="ai-dialogue-quantified.html"><small>AI 協作量化</small><b>AI 對話可量化：以 chat.json 驗證系統維運優化成果</b></a><a href="antigravity-gemini-cli-quickstart.html"><small>AI 工具入門</small><b>Antigravity & Gemini CLI 快速入門</b></a></div>
+    </div>
+  </div>
+</section>
+<footer>© <span id="year">2026</span> 邱數恩 Grace｜讓 AI 與數據，成為每個人的超能力。</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  (function () {
+    var bar = document.getElementById('progress'), t = false;
+    function upd() { var m = document.documentElement.scrollHeight - innerHeight; bar.style.transform = 'scaleX(' + (m > 0 ? Math.min(1, scrollY / m) : 0) + ')'; t = false; }
+    addEventListener('scroll', function () { if (!t) { t = true; requestAnimationFrame(upd); } }, { passive: true });
+  })();
+</script>
+</body>
+</html>
