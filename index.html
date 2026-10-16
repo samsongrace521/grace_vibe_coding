@@ -146,9 +146,9 @@
   /* ===== Hero ===== */
   .caret{ display:inline-block; width:3px; height:.92em; margin-left:5px; vertical-align:-.08em; border-radius:2px; background:var(--grad); animation:blink 1s steps(1) infinite; }
   @keyframes blink{ 50%{ opacity:0; } }
-  .portrait-frame{ position:relative; border-radius:2rem; padding:6px; background:linear-gradient(140deg,rgba(37,99,235,.9),rgba(124,58,237,.9) 55%,rgba(255,255,255,.9)); box-shadow:0 40px 80px -30px rgba(37,99,235,.45), 0 20px 40px -24px rgba(124,58,237,.4); }
-  .portrait-frame img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; border-radius:1.65rem; background:#e2e8f0; }
-  .portrait-frame::after{ content:""; position:absolute; inset:6px; border-radius:1.65rem; background:linear-gradient(180deg,transparent 60%,rgba(15,23,42,.18)); pointer-events:none; }
+  .portrait-frame{ position:relative; }
+  .portrait-frame img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; border-radius:2rem; filter:drop-shadow(0 22px 34px rgba(15,23,42,.16));
+    -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); }
   .orbit{ position:absolute; inset:-12%; pointer-events:none; animation:spin 60s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   .float-card{ position:absolute; z-index:2; border-radius:1.1rem; animation:bob 7s ease-in-out infinite; }
