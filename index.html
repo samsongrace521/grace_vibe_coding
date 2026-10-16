@@ -30,10 +30,22 @@
     theme: {
       extend: {
         colors: {
-          brand: { blue: '#2563eb', violet: '#7c3aed', mint: '#10b981' },
-          ink: '#0f172a',
-          body: '#475569',
-          mist: '#f8fafc'
+          /* 品牌色票：主色／輔助色／強調色／中性色 */
+          brand: {
+            blue: '#005BAC',    // 科技深藍 Brand Blue：主視覺、導覽列、標題重點
+            tech: '#2F8CFF',    // 智慧亮藍 Tech Blue：互動、連結、圖表主線
+            teal: '#00A99D',    // 創新青綠 Innovation Teal：科技輔助、icon、功能標籤
+            green: '#74C69D',   // 永續綠 Sustainability Green：成功狀態、正向資訊
+            orange: '#F5A623',  // 行動橙 Action Orange：CTA 按鈕、重點提醒
+            gold: '#FFC857',    // 亮點金黃 Highlight Gold：局部高亮、獎項標記
+            violet: '#00A99D',  // 舊類別名稱相容（改指向 Innovation Teal）
+            mint: '#74C69D'
+          },
+          ink: '#2F3A4A',       // 文字深灰 Text Slate
+          body: '#5E6A7E',      // 內文灰：Secondary Gray 加深一階，確保內文對比 ≥ 4.5:1
+          muted: '#6B778C',     // 次文字灰 Secondary Gray：輔助說明、註解
+          line: '#D9E1EA',      // 邊框灰 Border Gray
+          mist: '#F7F9FC'       // 雲霧白 Cloud White
         },
         fontFamily: {
           sans: ['"Noto Sans TC"', 'Inter', 'system-ui', 'sans-serif'],
@@ -46,17 +58,23 @@
 
 <style>
   :root{
-    --blue:#2563eb; --violet:#7c3aed; --mint:#10b981; --ink:#0f172a; --body:#475569; --line:rgba(15,23,42,.08);
-    --grad:linear-gradient(120deg,#2563eb 0%,#7c3aed 100%);
+    /* 品牌色票（工研院風格：科技、公信、創新、永續）
+       配色比例：60% 中性底色（Cloud White / Border Gray）・30% 主體色系（Brand Blue / Tech Blue / Innovation Teal）・10% 強調色（Action Orange / Highlight Gold） */
+    --blue:#005BAC;  --tech:#2F8CFF; --violet:#00A99D; --teal:#00A99D; --green:#74C69D;
+    --orange:#F5A623; --gold:#FFC857;
+    --cloud:#F7F9FC; --border:#D9E1EA; --ink:#2F3A4A; --body:#5E6A7E; --muted:#6B778C; --line:#D9E1EA;
+    --mint:#74C69D;
+    --grad:linear-gradient(120deg,#005BAC 0%,#2F8CFF 55%,#00A99D 100%);
+    --grad-cta:linear-gradient(120deg,#F5A623 0%,#FFC857 100%);
     --radius:1.5rem;                                                                         /* 全站統一圓角 */
-    --shadow-1:0 1px 2px rgba(15,23,42,.04), 0 12px 32px -14px rgba(15,23,42,.14);          /* 一般卡片 */
-    --shadow-2:0 1px 2px rgba(15,23,42,.04), 0 24px 48px -18px rgba(37,99,235,.32);         /* hover */
+    --shadow-1:0 1px 2px rgba(47,58,74,.04), 0 12px 32px -14px rgba(47,58,74,.14);          /* 一般卡片 */
+    --shadow-2:0 1px 2px rgba(47,58,74,.04), 0 24px 48px -18px rgba(0,91,172,.32);         /* hover */
     --nav-h:64px;
   }
   html{ scroll-padding-top:100px; }
   html, body{ overflow-x:clip; }
-  body{ font-family:'Noto Sans TC',Inter,system-ui,sans-serif; color:var(--ink); background:#fbfcff; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
-  ::selection{ background:rgba(124,58,237,.16); }
+  body{ font-family:'Noto Sans TC',Inter,system-ui,sans-serif; color:var(--ink); background:#F7F9FC; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  ::selection{ background:rgba(0,169,157,.16); }
   .font-display{ font-family:'Space Grotesk',Inter,'Noto Sans TC',sans-serif; }
   .container-x{ width:100%; max-width:74rem; margin-left:auto; margin-right:auto; padding-left:1.25rem; padding-right:1.25rem; }
   @media(min-width:768px){ .container-x{ padding-left:2rem; padding-right:2rem; } }
@@ -65,7 +83,7 @@
   /* ===== 區塊節奏：一般區塊 / 帶狀區塊 ===== */
   .section{ position:relative; padding:6rem 0; }
   @media(min-width:768px){ .section{ padding:8.5rem 0; } }
-  .band{ background:linear-gradient(180deg,rgba(248,250,252,.82),rgba(243,246,255,.82)); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .band{ background:linear-gradient(180deg,rgba(247,249,252,.82),rgba(238,243,250,.82)); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 
   /* ===== 區塊標題 ===== */
   .sec-head{ display:flex; flex-direction:column; gap:1.25rem; }
@@ -83,10 +101,11 @@
   .lift{ transition:transform .35s ease, box-shadow .35s ease; }
   .lift:hover, .lift:focus-visible{ transform:translateY(-5px); box-shadow:var(--shadow-2); }
   .lift:hover::before, .lift:focus-visible::before{ opacity:1; }
-  .glass{ background:rgba(255,255,255,.72); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.95); box-shadow:0 10px 30px -12px rgba(15,23,42,.22); }
-  .icon-tile{ width:3rem; height:3rem; border-radius:1rem; display:grid; place-items:center; color:#fff; background:var(--grad); box-shadow:0 10px 22px -10px rgba(79,70,229,.7); flex:none; }
-  .tag{ display:inline-block; padding:.22rem .75rem; border-radius:9999px; font-size:.78rem; font-weight:500; color:#1d4ed8; background:rgba(37,99,235,.07); border:1px solid rgba(37,99,235,.14); }
-  .label{ font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#64748b; }
+  .glass{ background:rgba(255,255,255,.72); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.95); box-shadow:0 10px 30px -12px rgba(47,58,74,.22); }
+  .icon-tile{ width:3rem; height:3rem; border-radius:1rem; display:grid; place-items:center; color:#fff; background:var(--grad); box-shadow:0 10px 22px -10px rgba(0,91,172,.7); flex:none; }
+  .tag{ display:inline-block; padding:.22rem .75rem; border-radius:9999px; font-size:.78rem; font-weight:500; color:#005BAC; background:rgba(47,140,255,.08); border:1px solid rgba(47,140,255,.2); }
+  .tag-teal{ color:#00756D; background:rgba(0,169,157,.08); border-color:rgba(0,169,157,.22); }
+  .label{ font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
   .hairline{ height:1px; background:var(--line); }
   .bullet li{ position:relative; padding-left:1.15rem; }
   .bullet li::before{ content:""; position:absolute; left:0; top:.72em; width:6px; height:6px; border-radius:9999px; background:var(--grad); }
@@ -97,14 +116,19 @@
   .js .reveal.done{ transition:transform .35s ease, box-shadow .35s ease, opacity .3s ease; }
 
   /* ===== 按鈕 ===== */
-  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.9rem 1.7rem; border-radius:9999px; border:1.5px solid transparent; font-weight:600; font-size:1rem; color:#1e3a8a; cursor:pointer; text-decoration:none;
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.9rem 1.7rem; border-radius:9999px; border:1.5px solid transparent; font-weight:600; font-size:1rem; color:#005BAC; cursor:pointer; text-decoration:none;
     background:linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,.9)) padding-box, var(--grad) border-box;
-    box-shadow:0 8px 24px -12px rgba(37,99,235,.45);
+    box-shadow:0 8px 24px -12px rgba(0,91,172,.45);
     backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:box-shadow .4s ease, transform .35s ease; }
   .btn:hover, .btn:focus-visible{ transform:translateY(-2px);
-    background:linear-gradient(rgba(255,255,255,.97),rgba(255,255,255,.97)) padding-box, linear-gradient(120deg,#34d399,var(--mint)) border-box;
-    box-shadow:0 0 0 5px rgba(16,185,129,.13), 0 14px 34px -10px rgba(16,185,129,.55); }
-  .btn:focus-visible{ outline:2px solid var(--mint); outline-offset:3px; }
+    background:linear-gradient(#EAF3FF,#EAF3FF) padding-box, linear-gradient(120deg,var(--tech),var(--teal)) border-box;
+    box-shadow:0 0 0 5px rgba(47,140,255,.12), 0 14px 34px -10px rgba(47,140,255,.5); }
+  .btn:focus-visible{ outline:2px solid var(--tech); outline-offset:3px; }
+  /* 行動橙 CTA：預約諮詢、填寫表單（深灰文字，對比 5.7:1） */
+  .btn-cta{ color:var(--ink); background:var(--orange); border-color:transparent; box-shadow:0 10px 26px -12px rgba(245,166,35,.85); }
+  .btn-cta:hover, .btn-cta:focus-visible{ background:linear-gradient(120deg,#F5A623,#FFC857); box-shadow:0 0 0 5px rgba(255,200,87,.25), 0 16px 34px -10px rgba(245,166,35,.8); }
+  .btn-cta:focus-visible{ outline-color:var(--orange); }
+  .btn-cta .status-dot{ background:#fff; }
   .btn-sm{ padding:.5rem 1.15rem; font-size:.9rem; }
   .btn-lg{ padding:1.05rem 2.2rem; font-size:1.05rem; }
   /* 兩個文字層疊在同一格 → 寬度取較寬者，hover 時不跳動 */
@@ -116,38 +140,46 @@
   .link-arrow{ display:inline-flex; align-items:center; gap:.4rem; font-weight:500; color:var(--blue); }
   .link-arrow svg{ transition:transform .3s ease; }
   .lift:hover .link-arrow svg, .link-arrow:hover svg{ transform:translateX(4px); }
-  .status-dot{ width:.55rem; height:.55rem; border-radius:9999px; background:var(--mint); animation:ping 1.6s infinite; flex:none; }
-  @keyframes ping{ 0%{box-shadow:0 0 0 0 rgba(16,185,129,.55);} 70%{box-shadow:0 0 0 8px rgba(16,185,129,0);} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0);} }
+  .status-dot{ width:.55rem; height:.55rem; border-radius:9999px; background:var(--green); animation:ping 1.6s infinite; flex:none; }
+  @keyframes ping{ 0%{box-shadow:0 0 0 0 rgba(116,198,157,.55);} 70%{box-shadow:0 0 0 8px rgba(116,198,157,0);} 100%{box-shadow:0 0 0 0 rgba(116,198,157,0);} }
 
   /* ===== 導覽列（浮動膠囊） ===== */
   .navbar{ height:var(--nav-h); border-radius:9999px; border:1px solid transparent; transition:background .35s ease, box-shadow .35s ease, border-color .35s ease; }
-  #nav.scrolled .navbar{ background:rgba(255,255,255,.78); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-color:rgba(226,232,240,.9); box-shadow:0 12px 32px -18px rgba(15,23,42,.28); }
+  .navbar{ background:rgba(0,91,172,.96); box-shadow:0 12px 30px -18px rgba(0,91,172,.7); }
+  .navbar .nav-link{ color:rgba(255,255,255,.82); }
+  .navbar .nav-link:hover{ color:#fff; background:rgba(255,255,255,.1); }
+  .navbar .nav-link.active{ color:#fff; background:rgba(255,255,255,.16); }
+  .navbar .brand-name{ color:#fff; }
+  .navbar .brand-sub{ color:rgba(255,255,255,.72); }
+  #burger{ color:#fff; }
+  #burger:hover{ background:rgba(255,255,255,.12) !important; }
+  #nav.scrolled .navbar{ background:rgba(0,91,172,.98); box-shadow:0 16px 36px -18px rgba(0,58,110,.75); }
   .nav-link{ position:relative; padding:.45rem .8rem; border-radius:9999px; font-size:.92rem; color:var(--body); transition:color .25s, background .25s; }
-  .nav-link:hover{ color:var(--ink); background:rgba(15,23,42,.04); }
-  .nav-link.active{ color:var(--blue); background:rgba(37,99,235,.08); font-weight:500; }
+  .nav-link:hover{ color:var(--ink); background:rgba(47,58,74,.04); }
+  .nav-link.active{ color:var(--blue); background:rgba(0,91,172,.08); font-weight:500; }
   #mobileMenu{ max-height:0; opacity:0; overflow:hidden; transition:max-height .45s ease, opacity .35s ease, margin .35s ease; }
   #mobileMenu.open{ max-height:560px; opacity:1; margin-top:.5rem; }
   #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; background:var(--grad); transform:scaleX(0); transform-origin:left; }
 
   /* ===== 背景層 ===== */
-  #bgfx .grid-lines{ position:absolute; inset:0; background-image:linear-gradient(rgba(37,99,235,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px); background-size:60px 60px; -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); }
+  #bgfx .grid-lines{ position:absolute; inset:0; background-image:linear-gradient(rgba(0,91,172,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,91,172,.05) 1px,transparent 1px); background-size:60px 60px; -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); }
   #bgfx .glow{ position:absolute; border-radius:9999px; filter:blur(100px); opacity:.33; will-change:transform; }
-  .glow-1{ width:44vw; height:44vw; left:-10vw; top:-8vw; background:#93c5fd; animation:drift1 26s ease-in-out infinite alternate; }
-  .glow-2{ width:40vw; height:40vw; right:-10vw; top:24vh; background:#c4b5fd; animation:drift2 32s ease-in-out infinite alternate; }
-  .glow-3{ width:34vw; height:34vw; left:30vw; bottom:-12vw; background:#bfdbfe; animation:drift3 28s ease-in-out infinite alternate; }
+  .glow-1{ width:44vw; height:44vw; left:-10vw; top:-8vw; background:#A9CCF5; animation:drift1 26s ease-in-out infinite alternate; }
+  .glow-2{ width:40vw; height:40vw; right:-10vw; top:24vh; background:#9EE0D8; animation:drift2 32s ease-in-out infinite alternate; }
+  .glow-3{ width:34vw; height:34vw; left:30vw; bottom:-12vw; background:#CFE3F7; animation:drift3 28s ease-in-out infinite alternate; }
   @keyframes drift1{ to{ transform:translate(10vw,8vh) scale(1.1);} }
   @keyframes drift2{ to{ transform:translate(-8vw,-10vh) scale(1.12);} }
   @keyframes drift3{ to{ transform:translate(-12vw,-6vh) scale(.95);} }
   .flow-path{ stroke-dasharray:6 16; animation:dash 14s linear infinite; }
   @keyframes dash{ to{ stroke-dashoffset:-220; } }
-  .float-node{ position:absolute; width:7px; height:7px; border-radius:9999px; background:rgba(37,99,235,.32); box-shadow:0 0 14px rgba(37,99,235,.35); animation:floaty 9s ease-in-out infinite; }
+  .float-node{ position:absolute; width:7px; height:7px; border-radius:9999px; background:rgba(0,91,172,.32); box-shadow:0 0 14px rgba(0,91,172,.35); animation:floaty 9s ease-in-out infinite; }
   @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-22px);} }
 
   /* ===== Hero ===== */
   .caret{ display:inline-block; width:3px; height:.92em; margin-left:5px; vertical-align:-.08em; border-radius:2px; background:var(--grad); animation:blink 1s steps(1) infinite; }
   @keyframes blink{ 50%{ opacity:0; } }
   .portrait-frame{ position:relative; }
-  .portrait-frame img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; border-radius:2rem; filter:drop-shadow(0 22px 34px rgba(15,23,42,.16));
+  .portrait-frame img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; border-radius:2rem; filter:drop-shadow(0 22px 34px rgba(47,58,74,.16));
     -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); }
   .orbit{ position:absolute; inset:-12%; pointer-events:none; animation:spin 60s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
@@ -155,7 +187,7 @@
   @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
   .journey{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; }
   .journey li{ display:flex; flex-direction:column; }
-  .journey .yr{ font-family:'Space Grotesk',sans-serif; font-size:.75rem; color:#64748b; letter-spacing:.06em; }
+  .journey .yr{ font-family:'Space Grotesk',sans-serif; font-size:.75rem; color:#6B778C; letter-spacing:.06em; }
   .journey .co{ font-weight:600; color:var(--ink); }
   .journey .arrow{ color:#94a3b8; align-self:flex-end; padding-bottom:.15rem; }
   .scroll-hint span{ display:block; width:4px; height:8px; border-radius:4px; background:var(--blue); animation:scrollDot 1.8s ease-in-out infinite; }
@@ -163,10 +195,10 @@
 
   /* ===== 時間軸（桌機置中交錯、手機靠左） ===== */
   .tl{ position:relative; }
-  .tl-line{ position:absolute; top:.5rem; bottom:3rem; left:11px; width:2px; border-radius:2px; background:linear-gradient(180deg,rgba(37,99,235,.55),rgba(124,58,237,.55) 85%,rgba(124,58,237,0)); }
+  .tl-line{ position:absolute; top:.5rem; bottom:3rem; left:11px; width:2px; border-radius:2px; background:linear-gradient(180deg,rgba(0,91,172,.55),rgba(0,169,157,.55) 85%,rgba(0,169,157,0)); }
   .tl-item{ position:relative; padding-left:2.75rem; margin-bottom:3.25rem; }
-  .tl-dot{ position:absolute; left:2px; top:.45rem; width:20px; height:20px; border-radius:9999px; background:#fff; border:4px solid var(--blue); box-shadow:0 0 0 6px rgba(37,99,235,.1); z-index:1; }
-  .tl-year{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(37,99,235,.38); letter-spacing:-.02em; }
+  .tl-dot{ position:absolute; left:2px; top:.45rem; width:20px; height:20px; border-radius:9999px; background:#fff; border:4px solid var(--blue); box-shadow:0 0 0 6px rgba(0,91,172,.1); z-index:1; }
+  .tl-year{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,91,172,.38); letter-spacing:-.02em; }
   .tl-meta{ margin-bottom:1rem; }
   @media(min-width:768px){
     .tl-line{ left:50%; transform:translateX(-50%); }
@@ -179,30 +211,30 @@
     .tl-year{ font-size:4.25rem; }
   }
   .tl-end{ position:relative; padding-left:2.75rem; }
-  .tl-end .tl-dot{ background:var(--grad); border-color:#fff; width:24px; height:24px; left:0; top:1.6rem; box-shadow:0 0 0 7px rgba(124,58,237,.16), 0 0 30px rgba(124,58,237,.6); animation:pulse 2.8s ease-in-out infinite; }
+  .tl-end .tl-dot{ background:var(--grad); border-color:#fff; width:24px; height:24px; left:0; top:1.6rem; box-shadow:0 0 0 7px rgba(0,169,157,.16), 0 0 30px rgba(0,169,157,.6); animation:pulse 2.8s ease-in-out infinite; }
   @media(min-width:768px){ .tl-end{ padding-left:0; padding-top:3.5rem; text-align:center; } .tl-end .tl-dot{ left:50%; top:0; transform:translateX(-50%); } }
-  @keyframes pulse{ 50%{ box-shadow:0 0 0 13px rgba(124,58,237,.07), 0 0 44px rgba(37,99,235,.6);} }
+  @keyframes pulse{ 50%{ box-shadow:0 0 0 13px rgba(0,169,157,.07), 0 0 44px rgba(0,91,172,.6);} }
   .more{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s ease; }
   .more.open{ grid-template-rows:1fr; }
   .more > div{ overflow:hidden; }
   .chev{ transition:transform .3s ease; }
   [aria-expanded="true"] .chev{ transform:rotate(180deg); }
-  .big-num{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3.25rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(124,58,237,.4); }
+  .big-num{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3.25rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,169,157,.4); }
 
   /* ===== 能力網路圖 ===== */
-  .net-panel{ background-image:radial-gradient(rgba(37,99,235,.13) 1px,transparent 1px); background-size:22px 22px; }
-  #net .edge{ stroke:rgba(37,99,235,.2); stroke-width:1.4; fill:none; transition:opacity .3s, stroke .3s; }
+  .net-panel{ background-image:radial-gradient(rgba(0,91,172,.13) 1px,transparent 1px); background-size:22px 22px; }
+  #net .edge{ stroke:rgba(0,91,172,.2); stroke-width:1.4; fill:none; transition:opacity .3s, stroke .3s; }
   #net .edge.on{ stroke:url(#gEdge); stroke-width:2.6; stroke-dasharray:7 8; animation:dash 5s linear infinite; }
   #net .edge.dim{ opacity:.1; }
   #net .node{ cursor:pointer; outline:none; transition:opacity .3s; }
-  #net .node rect{ fill:#fff; stroke:rgba(37,99,235,.28); stroke-width:1.3; filter:drop-shadow(0 6px 10px rgba(15,23,42,.08)); transition:fill .3s, stroke .3s, filter .3s; }
+  #net .node rect{ fill:#fff; stroke:rgba(0,91,172,.28); stroke-width:1.3; filter:drop-shadow(0 6px 10px rgba(47,58,74,.08)); transition:fill .3s, stroke .3s, filter .3s; }
   #net .node circle{ fill:url(#gEdge); }
-  #net .node text{ font-family:'Noto Sans TC',sans-serif; font-size:15px; fill:#0f172a; font-weight:500; pointer-events:none; }
-  #net .node.on rect, #net .node:focus-visible rect{ fill:#eff6ff; stroke:#2563eb; stroke-width:2; filter:drop-shadow(0 10px 18px rgba(37,99,235,.35)); }
+  #net .node text{ font-family:'Noto Sans TC',sans-serif; font-size:15px; fill:#2F3A4A; font-weight:500; pointer-events:none; }
+  #net .node.on rect, #net .node:focus-visible rect{ fill:#EAF3FF; stroke:#005BAC; stroke-width:2; filter:drop-shadow(0 10px 18px rgba(0,91,172,.35)); }
   #net .node.dim{ opacity:.25; }
-  #net .center circle.core{ fill:url(#gCore); filter:drop-shadow(0 14px 28px rgba(124,58,237,.42)); }
+  #net .center circle.core{ fill:url(#gCore); filter:drop-shadow(0 14px 28px rgba(0,169,157,.42)); }
   #net .center text{ fill:#fff; font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-weight:600; font-size:17px; pointer-events:none; }
-  #net .halo{ fill:none; stroke:rgba(124,58,237,.28); stroke-width:1.5; animation:haloPulse 3.4s ease-in-out infinite; transform-origin:400px 280px; }
+  #net .halo{ fill:none; stroke:rgba(0,169,157,.28); stroke-width:1.5; animation:haloPulse 3.4s ease-in-out infinite; transform-origin:400px 280px; }
   @keyframes haloPulse{ 0%{ transform:scale(1); opacity:.9;} 100%{ transform:scale(1.5); opacity:0;} }
   .acc-panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s ease; }
   .acc-panel.open{ grid-template-rows:1fr; }
@@ -211,8 +243,8 @@
   /* ===== 方法論流程 ===== */
   .steps{ display:grid; gap:1.75rem; }
   .step{ position:relative; display:grid; grid-template-columns:auto 1fr; column-gap:1.1rem; }
-  .step-num{ width:3rem; height:3rem; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-weight:600; color:#fff; background:var(--grad); box-shadow:0 0 0 6px rgba(37,99,235,.1), 0 10px 20px -8px rgba(79,70,229,.7); position:relative; z-index:1; }
-  .step-link{ position:absolute; background:linear-gradient(180deg,rgba(37,99,235,.35),rgba(124,58,237,.35)); border-radius:2px; }
+  .step-num{ width:3rem; height:3rem; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-weight:600; color:#fff; background:var(--grad); box-shadow:0 0 0 6px rgba(0,91,172,.1), 0 10px 20px -8px rgba(0,91,172,.7); position:relative; z-index:1; }
+  .step-link{ position:absolute; background:linear-gradient(180deg,rgba(0,91,172,.35),rgba(0,169,157,.35)); border-radius:2px; }
   .step-link i{ position:absolute; width:8px; height:8px; border-radius:9999px; background:var(--blue); box-shadow:0 0 12px var(--blue); }
   @media(max-width:1023px){
     .step-link{ left:calc(1.5rem - 1px); top:3.4rem; bottom:-1.5rem; width:2px; }
@@ -222,34 +254,34 @@
     .steps{ grid-template-columns:repeat(5,1fr); gap:1.5rem; }
     .step{ grid-template-columns:1fr; row-gap:1.25rem; text-align:center; }
     .step-num{ margin:0 auto; }
-    .step-link{ top:calc(1.5rem - 1px); left:calc(50% + 2rem); width:calc(100% - 4rem + 1.5rem); height:2px; background:linear-gradient(90deg,rgba(37,99,235,.35),rgba(124,58,237,.35)); }
+    .step-link{ top:calc(1.5rem - 1px); left:calc(50% + 2rem); width:calc(100% - 4rem + 1.5rem); height:2px; background:linear-gradient(90deg,rgba(0,91,172,.35),rgba(0,169,157,.35)); }
     .step-link i{ top:-3px; left:0; animation:flowX 1.9s ease-in-out infinite; }
   }
   @keyframes flowX{ 0%{ left:0; opacity:0;} 20%{opacity:1;} 80%{opacity:1;} 100%{ left:calc(100% - 8px); opacity:0;} }
   @keyframes flowY{ 0%{ top:0; opacity:0;} 20%{opacity:1;} 80%{opacity:1;} 100%{ top:calc(100% - 8px); opacity:0;} }
 
   /* ===== 案例 / 文章縮圖區 ===== */
-  .visual{ position:relative; overflow:hidden; border-radius:1.1rem; background:linear-gradient(135deg,#eef4ff 0%,#f5f0ff 100%); border:1px solid rgba(37,99,235,.08); }
-  .visual::before{ content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(37,99,235,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.07) 1px,transparent 1px); background-size:24px 24px; -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%); mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%); }
+  .visual{ position:relative; overflow:hidden; border-radius:1.1rem; background:linear-gradient(135deg,#EAF2FB 0%,#E8F7F5 100%); border:1px solid rgba(0,91,172,.08); }
+  .visual::before{ content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(0,91,172,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,91,172,.07) 1px,transparent 1px); background-size:24px 24px; -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%); mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%); }
   .visual > *{ position:relative; }
-  .thumb-a{ background:radial-gradient(circle at 20% 20%,rgba(37,99,235,.22),transparent 55%),radial-gradient(circle at 85% 80%,rgba(124,58,237,.22),transparent 55%),#f5f8ff; }
-  .thumb-b{ background:radial-gradient(circle at 80% 15%,rgba(124,58,237,.24),transparent 55%),radial-gradient(circle at 15% 85%,rgba(37,99,235,.18),transparent 55%),#f7f5ff; }
-  .thumb-c{ background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.25),transparent 60%),radial-gradient(circle at 90% 90%,rgba(124,58,237,.16),transparent 55%),#f4f8ff; }
+  .thumb-a{ background:radial-gradient(circle at 20% 20%,rgba(0,91,172,.22),transparent 55%),radial-gradient(circle at 85% 80%,rgba(0,169,157,.22),transparent 55%),#F2F7FD; }
+  .thumb-b{ background:radial-gradient(circle at 80% 15%,rgba(0,169,157,.24),transparent 55%),radial-gradient(circle at 15% 85%,rgba(0,91,172,.18),transparent 55%),#EFF8F7; }
+  .thumb-c{ background:radial-gradient(circle at 50% 0%,rgba(47,140,255,.25),transparent 60%),radial-gradient(circle at 90% 90%,rgba(0,169,157,.16),transparent 55%),#F2F7FD; }
 
   /* ===== Modal ===== */
-  #modal{ position:fixed; inset:0; z-index:80; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(15,23,42,.32); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s; }
+  #modal{ position:fixed; inset:0; z-index:80; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(47,58,74,.32); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s; }
   #modal.open{ opacity:1; visibility:visible; }
   #modal .sheet{ transform:translateY(18px) scale(.98); transition:transform .35s ease; }
   #modal.open .sheet{ transform:none; }
   body.lock{ overflow:hidden; }
-  .pending{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .85rem; border-radius:9999px; background:#f8fafc; color:#64748b; font-size:.85rem; border:1px dashed #cbd5e1; }
+  .pending{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .85rem; border-radius:9999px; background:#F7F9FC; color:#6B778C; font-size:.85rem; border:1px dashed #D9E1EA; }
   .m-step{ display:grid; grid-template-columns:auto 1fr; column-gap:1rem; position:relative; padding-bottom:1.6rem; }
-  .m-step:not(:last-child)::before{ content:""; position:absolute; left:15px; top:34px; bottom:4px; width:2px; background:linear-gradient(180deg,rgba(37,99,235,.3),rgba(124,58,237,.15)); }
-  .m-num{ width:32px; height:32px; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-size:.8rem; font-weight:600; color:var(--blue); background:#eff6ff; border:1px solid rgba(37,99,235,.25); }
+  .m-step:not(:last-child)::before{ content:""; position:absolute; left:15px; top:34px; bottom:4px; width:2px; background:linear-gradient(180deg,rgba(0,91,172,.3),rgba(0,169,157,.15)); }
+  .m-num{ width:32px; height:32px; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-size:.8rem; font-weight:600; color:var(--blue); background:#EAF3FF; border:1px solid rgba(0,91,172,.25); }
 
   /* ===== 表單 ===== */
-  .field{ width:100%; padding:.85rem 1rem; border-radius:.9rem; border:1px solid #e2e8f0; background:#fff; font-size:1rem; color:var(--ink); transition:border-color .25s, box-shadow .25s; }
-  .field:focus{ outline:none; border-color:var(--blue); box-shadow:0 0 0 4px rgba(37,99,235,.12); }
+  .field{ width:100%; padding:.85rem 1rem; border-radius:.9rem; border:1px solid #D9E1EA; background:#fff; font-size:1rem; color:var(--ink); transition:border-color .25s, box-shadow .25s; }
+  .field:focus{ outline:none; border-color:var(--blue); box-shadow:0 0 0 4px rgba(0,91,172,.12); }
   .field[aria-invalid="true"]{ border-color:#e11d48; }
 
   :focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
@@ -257,7 +289,7 @@
   /* ===== 互動動畫 ===== */
   /* 卡片游標光暈：JS 寫入 --mx / --my */
   .spot{ --mx:50%; --my:50%; }
-  .spot::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(360px circle at var(--mx) var(--my),rgba(37,99,235,.10),rgba(124,58,237,.05) 40%,transparent 65%); opacity:0; transition:opacity .35s ease; }
+  .spot::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(360px circle at var(--mx) var(--my),rgba(0,91,172,.10),rgba(0,169,157,.05) 40%,transparent 65%); opacity:0; transition:opacity .35s ease; }
   .spot:hover::after{ opacity:1; }
   /* 照片視差傾斜 */
   #heroVisual{ perspective:1000px; }
@@ -268,13 +300,13 @@
   .magnetic{ transition:translate .25s ease-out, box-shadow .4s ease, transform .35s ease; }
   /* 時間軸隨捲動點亮 */
   .tl-line{ opacity:.35; }
-  .tl-progress{ position:absolute; top:.5rem; left:11px; width:2px; height:calc(100% - 3.5rem); border-radius:2px; background:var(--grad); transform-origin:top; transform:scaleY(var(--p,0)); box-shadow:0 0 12px rgba(37,99,235,.45); }
+  .tl-progress{ position:absolute; top:.5rem; left:11px; width:2px; height:calc(100% - 3.5rem); border-radius:2px; background:var(--grad); transform-origin:top; transform:scaleY(var(--p,0)); box-shadow:0 0 12px rgba(0,91,172,.45); }
   @media(min-width:768px){ .tl-progress{ left:50%; margin-left:-1px; } }
   .tl-dot{ transition:background .4s ease, box-shadow .4s ease, transform .4s ease; }
-  .tl-item .tl-dot.lit{ background:var(--blue); box-shadow:0 0 0 6px rgba(37,99,235,.16), 0 0 18px rgba(37,99,235,.55); }
+  .tl-item .tl-dot.lit{ background:var(--blue); box-shadow:0 0 0 6px rgba(0,91,172,.16), 0 0 18px rgba(0,91,172,.55); }
   /* 方法步驟 hover */
   .step-num{ transition:transform .35s cubic-bezier(.3,1.6,.5,1), box-shadow .35s ease; }
-  .step:hover .step-num{ transform:scale(1.12) rotate(-6deg); box-shadow:0 0 0 9px rgba(37,99,235,.12), 0 14px 26px -8px rgba(79,70,229,.8); }
+  .step:hover .step-num{ transform:scale(1.12) rotate(-6deg); box-shadow:0 0 0 9px rgba(0,91,172,.12), 0 14px 26px -8px rgba(0,91,172,.8); }
   .icon-tile{ transition:transform .4s cubic-bezier(.3,1.6,.5,1); }
   .lift:hover .icon-tile{ transform:translateY(-3px) rotate(-6deg) scale(1.06); }
   /* 案例示意圖 hover 放大 */
@@ -289,21 +321,20 @@
   .pain-q{ color:var(--ink); font-weight:700; }
   .pain-a{ display:flex; gap:.5rem; color:var(--body); font-size:.95rem; line-height:1.75; }
   .plan{ display:flex; flex-direction:column; }
-  .plan.featured{ border-color:transparent; box-shadow:0 30px 60px -28px rgba(79,70,229,.55); }
+  .plan.featured{ border-color:transparent; box-shadow:0 30px 60px -28px rgba(0,91,172,.55); }
   .plan.featured::before{ opacity:1; }
-  .plan-badge{ position:absolute; top:-.8rem; left:1.75rem; padding:.25rem .8rem; border-radius:9999px; font-size:.75rem; font-weight:600; color:#fff; background:var(--grad); box-shadow:0 8px 18px -8px rgba(79,70,229,.8); }
+  .plan-badge{ position:absolute; top:-.8rem; left:1.75rem; padding:.25rem .8rem; border-radius:9999px; font-size:.75rem; font-weight:700; color:var(--ink); background:var(--orange); box-shadow:0 8px 18px -8px rgba(245,166,35,.9); }
+  .award{ color:var(--ink) !important; background:var(--gold) !important; }
   .faq details{ border-bottom:1px solid var(--line); }
   .faq summary{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.35rem .25rem; font-weight:600; font-size:1.05rem; }
   .faq summary::-webkit-details-marker{ display:none; }
-  .faq .plus{ width:1.9rem; height:1.9rem; flex:none; border-radius:9999px; display:grid; place-items:center; color:var(--blue); background:rgba(37,99,235,.08); transition:transform .3s ease, background .3s ease; }
-  .faq details[open] .plus{ transform:rotate(45deg); background:rgba(37,99,235,.16); }
+  .faq .plus{ width:1.9rem; height:1.9rem; flex:none; border-radius:9999px; display:grid; place-items:center; color:var(--blue); background:rgba(0,91,172,.08); transition:transform .3s ease, background .3s ease; }
+  .faq details[open] .plus{ transform:rotate(45deg); background:rgba(0,91,172,.16); }
   .faq .ans{ padding:0 .25rem 1.4rem; color:var(--body); line-height:1.9; max-width:46rem; }
   /* 浮動預約按鈕：捲過首頁後出現，抵達聯絡區時隱藏 */
-  #floatCta{ position:fixed; z-index:55; right:calc(20px + env(safe-area-inset-right, 0px)); bottom:calc(20px + env(safe-area-inset-bottom, 0px)); box-shadow:0 18px 40px -14px rgba(37,99,235,.55); opacity:0; translate:0 140%; pointer-events:none; transition:opacity .4s ease, translate .45s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, transform .35s ease; }
+  #floatCta{ position:fixed; z-index:55; right:calc(20px + env(safe-area-inset-right, 0px)); bottom:calc(20px + env(safe-area-inset-bottom, 0px)); box-shadow:0 18px 40px -14px rgba(0,91,172,.55); opacity:0; translate:0 140%; pointer-events:none; transition:opacity .4s ease, translate .45s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, transform .35s ease; }
   #floatCta.show{ opacity:1; translate:0 0; pointer-events:auto; }
-  #floatCta{ color:#fff; border-color:transparent; background:var(--grad); }
-  #floatCta:hover, #floatCta:focus-visible{ background:linear-gradient(120deg,#10b981,#059669); }
-  #floatCta .status-dot{ background:#a7f3d0; }
+  #floatCta{ box-shadow:0 18px 40px -14px rgba(245,166,35,.9); }
   @media(max-width:639px){ #floatCta{ left:calc(16px + env(safe-area-inset-left, 0px)); right:calc(16px + env(safe-area-inset-right, 0px)); } }
 
   /* ===== 社群圖示 ===== */
@@ -341,9 +372,9 @@
   <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
     <defs>
       <linearGradient id="gFlow" x1="0" x2="1" y1="0" y2="0">
-        <stop offset="0" stop-color="#2563eb" stop-opacity="0"/>
-        <stop offset=".5" stop-color="#2563eb" stop-opacity=".45"/>
-        <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+        <stop offset="0" stop-color="#005BAC" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#005BAC" stop-opacity=".45"/>
+        <stop offset="1" stop-color="#00A99D" stop-opacity="0"/>
       </linearGradient>
     </defs>
     <path class="flow-path" d="M-50 220 C 300 120, 520 380, 900 260 S 1400 180, 1500 300" fill="none" stroke="url(#gFlow)" stroke-width="1.5"/>
@@ -362,7 +393,7 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="gBrand" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/>
+      <stop offset="0" stop-color="#005BAC"/><stop offset="1" stop-color="#00A99D"/>
     </linearGradient>
   </defs>
 </svg>
@@ -373,8 +404,8 @@
     <a href="#home" class="flex items-center gap-3" aria-label="邱數恩 Grace，回到首頁">
       <img src="assets/grace-avatar.webp" alt="" width="40" height="40" class="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-md" />
       <span class="leading-tight">
-        <span class="block font-bold tracking-tight">邱數恩</span>
-        <span class="block font-display text-[.72rem] text-body tracking-wider">GRACE<span class="hidden sm:inline"> · AI PRACTITIONER</span></span>
+        <span class="block font-bold tracking-tight brand-name">邱數恩</span>
+        <span class="block font-display text-[.72rem] tracking-wider brand-sub">GRACE<span class="hidden sm:inline"> · AI PRACTITIONER</span></span>
       </span>
     </a>
 
@@ -389,7 +420,7 @@
     </nav>
 
     <div class="flex items-center gap-1.5">
-      <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-sm" aria-label="預約諮詢（另開新分頁）">
+      <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-sm" aria-label="預約諮詢（另開新分頁）">
         <span class="btn-stack"><span class="lbl lbl-a">預約諮詢</span><span class="lbl lbl-b"><i class="status-dot"></i>預約諮詢</span></span>
       </a>
       <button id="burger" class="lg:hidden w-11 h-11 grid place-items-center rounded-full hover:bg-slate-100" aria-label="開啟選單" aria-expanded="false" aria-controls="mobileMenu">
@@ -440,7 +471,7 @@
       <p class="reveal mt-4 text-sm text-body" style="--d:300ms"><span class="font-medium text-ink">適合：</span>企業決策者・IT／數位轉型主管・想讓 AI 真正落地的團隊</p>
 
       <div class="reveal mt-9 flex flex-col sm:flex-row gap-3.5" style="--d:350ms">
-        <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-lg" aria-label="預約諮詢（另開新分頁）">
+        <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-lg" aria-label="預約諮詢（另開新分頁）">
           <span class="btn-stack"><span class="lbl lbl-a">預約諮詢
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             <span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
@@ -466,10 +497,10 @@
         <svg class="orbit" data-depth="-10" viewBox="0 0 400 400" aria-hidden="true">
           <circle cx="200" cy="200" r="196" fill="none" stroke="url(#gBrand)" stroke-opacity=".28" stroke-dasharray="2 8"/>
           <circle cx="200" cy="200" r="160" fill="none" stroke="url(#gBrand)" stroke-opacity=".18"/>
-          <circle cx="200" cy="4" r="5" fill="#2563eb"/>
-          <circle cx="40" cy="200" r="4" fill="#7c3aed"/>
+          <circle cx="200" cy="4" r="5" fill="#005BAC"/>
+          <circle cx="40" cy="200" r="4" fill="#00A99D"/>
         </svg>
-        <div class="absolute -inset-6 rounded-full blur-3xl opacity-60" style="background:radial-gradient(circle,rgba(147,197,253,.7),rgba(196,181,253,.5) 50%,transparent 70%)" aria-hidden="true"></div>
+        <div class="absolute -inset-6 rounded-full blur-3xl opacity-60" style="background:radial-gradient(circle,rgba(169,204,245,.7),rgba(158,224,216,.5) 50%,transparent 70%)" aria-hidden="true"></div>
 
         <div class="portrait-frame">
           <img src="assets/grace-portrait.webp" alt="邱數恩（Grace）的個人照片" width="880" height="1100" fetchpriority="high" />
@@ -481,7 +512,7 @@
           <span class="status-dot"></span>可預約諮詢
         </div>
         <div data-depth="34" class="float-card glass p-3 pr-4 -left-3 sm:-left-14 bottom-12 flex items-center gap-3" style="animation-delay:-2.5s">
-          <span class="icon-tile !w-10 !h-10 !rounded-xl">
+          <span class="icon-tile !w-10 !h-10 !rounded-xl" style="background:var(--gold); color:var(--ink); box-shadow:0 10px 22px -10px rgba(245,166,35,.9)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg>
           </span>
           <span class="leading-tight">
@@ -515,28 +546,28 @@
     </div>
     <div class="mt-12 grid md:grid-cols-2 gap-5" data-stagger>
       <article class="reveal card lift p-6 sm:p-7 pain">
-        <span class="w-10 h-10 rounded-full grid place-items-center bg-rose-50 text-rose-500 font-display font-bold" aria-hidden="true">?</span>
+        <span class="w-10 h-10 rounded-full grid place-items-center bg-orange-50 text-[#C77F0A] font-display font-bold" aria-hidden="true">?</span>
         <div>
           <h3 class="pain-q text-lg">想導入 AI，卻不知道從哪個流程開始</h3>
           <p class="pain-a mt-3"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>先盤點流程與資料，找出值得投入、也做得到的切入點。</span></p>
         </div>
       </article>
       <article class="reveal card lift p-6 sm:p-7 pain">
-        <span class="w-10 h-10 rounded-full grid place-items-center bg-rose-50 text-rose-500 font-display font-bold" aria-hidden="true">?</span>
+        <span class="w-10 h-10 rounded-full grid place-items-center bg-orange-50 text-[#C77F0A] font-display font-bold" aria-hidden="true">?</span>
         <div>
           <h3 class="pain-q text-lg">資料累積很多，卻沒有轉化為決策依據</h3>
           <p class="pain-a mt-3"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>把資料整理成可執行的分析與預測策略，讓決策有依據。</span></p>
         </div>
       </article>
       <article class="reveal card lift p-6 sm:p-7 pain">
-        <span class="w-10 h-10 rounded-full grid place-items-center bg-rose-50 text-rose-500 font-display font-bold" aria-hidden="true">?</span>
+        <span class="w-10 h-10 rounded-full grid place-items-center bg-orange-50 text-[#C77F0A] font-display font-bold" aria-hidden="true">?</span>
         <div>
           <h3 class="pain-q text-lg">系統分散，資訊仍靠人工搬運與整理</h3>
           <p class="pain-a mt-3"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>整合既有系統，把分散的資訊串成完整流程，減少重複工作。</span></p>
         </div>
       </article>
       <article class="reveal card lift p-6 sm:p-7 pain">
-        <span class="w-10 h-10 rounded-full grid place-items-center bg-rose-50 text-rose-500 font-display font-bold" aria-hidden="true">?</span>
+        <span class="w-10 h-10 rounded-full grid place-items-center bg-orange-50 text-[#C77F0A] font-display font-bold" aria-hidden="true">?</span>
         <div>
           <h3 class="pain-q text-lg">擔心導入後沒人用、也難以維護</h3>
           <p class="pain-a mt-3"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>從使用者需求與維運角度設計，讓系統上線後能持續使用。</span></p>
@@ -544,7 +575,7 @@
       </article>
     </div>
     <div class="reveal mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
-      <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-lg" aria-label="預約 30 分鐘諮詢（另開新分頁）">
+      <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-lg" aria-label="預約 30 分鐘諮詢（另開新分頁）">
         <span class="btn-stack"><span class="lbl lbl-a">預約 30 分鐘諮詢 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
       </a>
       <p class="text-sm text-body">先聊現況，不需要準備完整規格。</p>
@@ -578,9 +609,9 @@
         </div>
         <div class="hairline my-6"></div>
         <ul class="space-y-4 text-sm">
-          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-blue-50 text-brand-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span><span class="block font-medium">企業 IT 實務</span><span class="text-body">2012 年至今，橫跨三家企業</span></span></li>
-          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-violet-50 text-brand-violet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg></span><span><span class="block font-medium">公司 AI 競賽優選</span><span class="text-body">產品返品預測策略</span></span></li>
-          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-blue-50 text-brand-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span><span><span class="block font-medium">從開發到規劃</span><span class="text-body">全端開發、雲端架構、系統 PM</span></span></li>
+          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-[#EAF3FF] text-brand-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span><span class="block font-medium">企業 IT 實務</span><span class="text-body">2012 年至今，橫跨三家企業</span></span></li>
+          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-[#E6F6F5] text-brand-teal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg></span><span><span class="block font-medium">公司 AI 競賽優選</span><span class="text-body">產品返品預測策略</span></span></li>
+          <li class="flex gap-3"><span class="w-8 h-8 shrink-0 grid place-items-center rounded-lg bg-[#EAF3FF] text-brand-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span><span><span class="block font-medium">從開發到規劃</span><span class="text-body">全端開發、雲端架構、系統 PM</span></span></li>
         </ul>
         <div class="hairline my-6"></div>
         <div class="flex flex-wrap gap-2">
@@ -596,7 +627,7 @@
           <p>此後，我的視野延伸到<strong class="text-ink font-medium">雲端架構、AI 應用、資料驅動決策</strong>，以及需求分析與專案規劃。</p>
           <p>角色改變之後，我關注的不再只是技術本身，而是<strong class="text-ink font-medium">技術如何融入企業流程、回應使用者需求，並解決實際的營運問題</strong>。</p>
         </div>
-        <figure class="mt-9 rounded-2xl p-6 sm:p-7 border border-blue-100" style="background:linear-gradient(135deg,rgba(239,246,255,.9),rgba(245,243,255,.9))">
+        <figure class="mt-9 rounded-2xl p-6 sm:p-7 border border-blue-100" style="background:linear-gradient(135deg,rgba(234,242,251,.9),rgba(232,247,245,.9))">
           <p class="label">Brand Belief</p>
           <blockquote class="mt-2 text-lg sm:text-xl font-bold">讓 AI 與數據，成為每個人的超能力。</blockquote>
         </figure>
@@ -767,10 +798,10 @@
         <svg id="net" viewBox="0 0 800 560" class="w-full h-auto" role="group" aria-label="專業能力節點網路圖：中心為 AI × 企業價值，周圍為七項能力">
           <defs>
             <linearGradient id="gEdge" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="800" y2="560">
-              <stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/>
+              <stop offset="0" stop-color="#005BAC"/><stop offset="1" stop-color="#00A99D"/>
             </linearGradient>
             <radialGradient id="gCore" cx=".35" cy=".3" r=".9">
-              <stop offset="0" stop-color="#60a5fa"/><stop offset=".55" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/>
+              <stop offset="0" stop-color="#2F8CFF"/><stop offset=".55" stop-color="#005BAC"/><stop offset="1" stop-color="#00A99D"/>
             </radialGradient>
           </defs>
           <g id="netEdges"></g>
@@ -865,14 +896,14 @@
       </article>
 
       <!-- 第 6 格：引導卡 -->
-      <article class="reveal relative overflow-hidden rounded-[var(--radius)] p-7 flex flex-col justify-between text-white" style="background:linear-gradient(140deg,#2563eb 0%,#4f46e5 50%,#7c3aed 100%); box-shadow:0 24px 48px -20px rgba(79,70,229,.6)">
+      <article class="reveal relative overflow-hidden rounded-[var(--radius)] p-7 flex flex-col justify-between text-white" style="background:linear-gradient(140deg,#005BAC 0%,#0B6FBF 60%,#00857C 100%); box-shadow:0 24px 48px -20px rgba(0,91,172,.6)">
         <svg class="absolute -right-10 -bottom-10 opacity-20" width="220" height="220" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" fill="none" stroke="#fff" stroke-dasharray="3 7"/><circle cx="100" cy="100" r="60" fill="none" stroke="#fff"/><circle cx="100" cy="100" r="30" fill="none" stroke="#fff" stroke-dasharray="2 5"/></svg>
         <div class="relative">
           <p class="font-display text-sm tracking-widest text-white/80">NOT SURE YET?</p>
           <h3 class="mt-3 text-xl font-bold leading-snug">不確定該從哪裡開始？</h3>
           <p class="mt-3 text-sm text-white/90 leading-relaxed">先聊聊現況，再一起判斷 AI 是不是對的解法。</p>
         </div>
-        <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-sm relative mt-6 self-start" aria-label="預約諮詢（另開新分頁）">
+        <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-sm relative mt-6 self-start" aria-label="預約諮詢（另開新分頁）">
           <span class="btn-stack"><span class="lbl lbl-a">預約諮詢</span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
         </a>
       </article>
@@ -961,9 +992,9 @@
     </div>
 
     <!-- 核心主張 -->
-    <div class="reveal mt-8 relative overflow-hidden rounded-[2rem] border border-blue-100 p-8 sm:p-12 lg:p-16 text-center" style="background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(245,243,255,.95))">
-      <div class="absolute -top-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-50" style="background:#93c5fd" aria-hidden="true"></div>
-      <div class="absolute -bottom-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-40" style="background:#c4b5fd" aria-hidden="true"></div>
+    <div class="reveal mt-8 relative overflow-hidden rounded-[2rem] border border-blue-100 p-8 sm:p-12 lg:p-16 text-center" style="background:linear-gradient(135deg,rgba(234,242,251,.95),rgba(232,247,245,.95))">
+      <div class="absolute -top-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-50" style="background:#A9CCF5" aria-hidden="true"></div>
+      <div class="absolute -bottom-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-40" style="background:#9EE0D8" aria-hidden="true"></div>
       <div class="relative">
         <svg class="mx-auto" width="44" height="44" viewBox="0 0 24 24" fill="url(#gBrand)" aria-hidden="true"><path d="M7 7h4v4c0 3-1.5 5-4 6l-1-1.5c1.3-.7 2-1.8 2-3.5H7zm8 0h4v4c0 3-1.5 5-4 6l-1-1.5c1.3-.7 2-1.8 2-3.5h-1z"/></svg>
         <blockquote class="mt-6 text-2xl md:text-[2.3rem] font-black leading-snug">
@@ -971,7 +1002,7 @@
         </blockquote>
         <p class="mt-6 max-w-2xl mx-auto text-body leading-relaxed">透過減少重複性工作、縮短處理時間、提升資訊利用效率，讓 AI 投資能對應實際的時間成本、營運效率與 ROI。</p>
         <div class="mt-9">
-          <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-lg" aria-label="預約諮詢（另開新分頁）">
+          <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-lg" aria-label="預約諮詢（另開新分頁）">
             <span class="btn-stack"><span class="lbl lbl-a">預約諮詢</span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
           </a>
         </div>
@@ -999,7 +1030,7 @@
           <span class="absolute top-4 left-4 font-display text-xs tracking-widest text-brand-blue">CASE 01</span>
           <svg viewBox="0 0 240 110" class="w-[78%] h-auto" aria-hidden="true">
             <g stroke="url(#gBrand)" stroke-width="1.6" fill="none" opacity=".6"><path d="M44 55h37M109 55h42M179 55h20"/></g>
-            <g class="flow-path" stroke="#2563eb" stroke-width="2" fill="none"><path d="M44 55h37M109 55h42"/></g>
+            <g class="flow-path" stroke="#005BAC" stroke-width="2" fill="none"><path d="M44 55h37M109 55h42"/></g>
             <g fill="#fff" stroke="url(#gBrand)" stroke-width="2"><circle cx="30" cy="55" r="14"/><circle cx="95" cy="55" r="14"/><circle cx="165" cy="55" r="14"/></g>
             <g fill="url(#gBrand)"><circle cx="30" cy="55" r="4"/><circle cx="95" cy="55" r="4"/><circle cx="165" cy="55" r="4"/></g>
             <g fill="url(#gBrand)" opacity=".85"><rect x="205" y="64" width="8" height="16" rx="2"/><rect x="217" y="48" width="8" height="32" rx="2"/><rect x="229" y="34" width="8" height="46" rx="2"/></g>
@@ -1007,7 +1038,7 @@
         </div>
         <div class="p-3 pt-6 flex flex-col flex-1 w-full">
           <div class="flex flex-wrap items-center gap-2"><span class="tag">AI</span><span class="tag">資料分析</span>
-            <span class="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white" style="background:var(--grad)">
+            <span class="award ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg>AI 競賽優選</span>
           </div>
           <h3 class="mt-4 text-xl font-bold">產品返品預測策略</h3>
@@ -1022,7 +1053,7 @@
           <span class="absolute top-4 left-4 font-display text-xs tracking-widest text-brand-blue">CASE 02</span>
           <svg viewBox="0 0 240 110" class="w-[78%] h-auto" aria-hidden="true">
             <g stroke="url(#gBrand)" stroke-width="1.6" opacity=".55"><path d="M120 55 50 22M120 55 50 88M120 55 190 22M120 55 190 88"/></g>
-            <g class="flow-path" stroke="#2563eb" stroke-width="2" fill="none"><path d="M50 22 120 55M50 88 120 55M190 22 120 55M190 88 120 55"/></g>
+            <g class="flow-path" stroke="#005BAC" stroke-width="2" fill="none"><path d="M50 22 120 55M50 88 120 55M190 22 120 55M190 88 120 55"/></g>
             <g fill="#fff" stroke="url(#gBrand)" stroke-width="2"><circle cx="50" cy="22" r="10"/><circle cx="50" cy="88" r="10"/><circle cx="190" cy="22" r="10"/><circle cx="190" cy="88" r="10"/></g>
             <circle cx="120" cy="55" r="20" fill="url(#gBrand)"/>
             <circle cx="120" cy="55" r="28" fill="none" stroke="url(#gBrand)" stroke-opacity=".35"/>
@@ -1043,7 +1074,7 @@
           <svg viewBox="0 0 240 110" class="w-[78%] h-auto" aria-hidden="true">
             <g fill="#fff" stroke="url(#gBrand)" stroke-width="2"><rect x="18" y="34" width="62" height="50" rx="10"/><rect x="160" y="34" width="62" height="50" rx="10"/></g>
             <g stroke="url(#gBrand)" stroke-width="2" fill="none" opacity=".75"><path d="M32 52h34M32 64h22"/><path d="M174 52h34M174 64h22"/></g>
-            <g class="flow-path" stroke="#2563eb" stroke-width="2" fill="none"><path d="M84 52h72M156 68H84"/></g>
+            <g class="flow-path" stroke="#005BAC" stroke-width="2" fill="none"><path d="M84 52h72M156 68H84"/></g>
             <path d="M110 30c0-10 20-10 20 0 9 0 9 12 0 12h-20c-9 0-9-12 0-12z" fill="url(#gBrand)"/>
           </svg>
         </div>
@@ -1062,7 +1093,7 @@
           <svg viewBox="0 0 240 110" class="w-[78%] h-auto" aria-hidden="true">
             <g fill="#fff" stroke="url(#gBrand)" stroke-width="2"><rect x="30" y="14" width="110" height="24" rx="8"/><rect x="30" y="46" width="110" height="24" rx="8"/><rect x="30" y="78" width="110" height="24" rx="8"/></g>
             <g fill="url(#gBrand)" opacity=".8"><circle cx="44" cy="26" r="4"/><circle cx="44" cy="58" r="4"/><circle cx="44" cy="90" r="4"/></g>
-            <g class="flow-path" stroke="#2563eb" stroke-width="2" fill="none"><path d="M146 26h48v28M146 58h30M146 90h48V66"/></g>
+            <g class="flow-path" stroke="#005BAC" stroke-width="2" fill="none"><path d="M146 26h48v28M146 58h30M146 90h48V66"/></g>
             <circle cx="204" cy="60" r="15" fill="url(#gBrand)"/>
             <path d="m197 60 5 5 9-9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -1179,9 +1210,9 @@
 <!-- ===== 7. 聯絡我 ===== -->
 <section id="contact" class="section" aria-labelledby="contactTitle">
   <div class="container-x">
-    <div class="reveal relative overflow-hidden rounded-[2rem] border border-slate-200/80 shadow-[0_30px_80px_-40px_rgba(37,99,235,.45)]" style="background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(241,245,255,.92))">
-      <div class="absolute -top-32 -right-24 w-96 h-96 rounded-full blur-3xl opacity-40" style="background:#c4b5fd" aria-hidden="true"></div>
-      <div class="absolute -bottom-32 -left-24 w-96 h-96 rounded-full blur-3xl opacity-40" style="background:#93c5fd" aria-hidden="true"></div>
+    <div class="reveal relative overflow-hidden rounded-[2rem] border border-slate-200/80 shadow-[0_30px_80px_-40px_rgba(0,91,172,.45)]" style="background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(238,244,251,.92))">
+      <div class="absolute -top-32 -right-24 w-96 h-96 rounded-full blur-3xl opacity-40" style="background:#9EE0D8" aria-hidden="true"></div>
+      <div class="absolute -bottom-32 -left-24 w-96 h-96 rounded-full blur-3xl opacity-40" style="background:#A9CCF5" aria-hidden="true"></div>
 
       <div class="relative grid lg:grid-cols-2 gap-10 lg:gap-14 p-7 sm:p-10 lg:p-14">
         <!-- 左：邀請、社群、預約 -->
@@ -1204,7 +1235,7 @@
           </ul>
 
           <div class="mt-9">
-            <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-lg" aria-label="預約 30 分鐘諮詢（另開新分頁）">
+            <a href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-lg" aria-label="預約 30 分鐘諮詢（另開新分頁）">
               <span class="btn-stack"><span class="lbl lbl-a">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>預約 30 分鐘諮詢</span>
                 <span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
@@ -1218,8 +1249,8 @@
         </div>
 
         <!-- 右：填寫需求表單（連結至 Google Form；更換表單時只需修改 href） -->
-        <div class="relative self-start overflow-hidden bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-30px_rgba(15,23,42,.35)] p-7 sm:p-9">
-          <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-60" style="background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%)" aria-hidden="true"></div>
+        <div class="relative self-start overflow-hidden bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-30px_rgba(47,58,74,.35)] p-7 sm:p-9">
+          <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-60" style="background:radial-gradient(circle,rgba(0,169,157,.18),transparent 70%)" aria-hidden="true"></div>
           <div class="relative">
             <span class="icon-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>
             <p class="label mt-6">Project Brief</p>
@@ -1232,7 +1263,7 @@
               <li class="flex gap-2.5"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>目前遇到的問題與現況</span></li>
               <li class="flex gap-2.5"><svg class="shrink-0 mt-0.5 text-brand-blue" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>希望達成的目標</span></li>
             </ul>
-            <a href="https://forms.gle/mCDu2BFK6DuZKxvF6" target="_blank" rel="noopener noreferrer" class="btn btn-lg w-full mt-8" aria-label="填寫需求表單（Google 表單，另開新分頁）">
+            <a href="https://forms.gle/mCDu2BFK6DuZKxvF6" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-lg w-full mt-8" aria-label="填寫需求表單（Google 表單，另開新分頁）">
               <span class="btn-stack"><span class="lbl lbl-a">填寫需求表單 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Open Google Form</span></span>
             </a>
             <p class="mt-3 text-xs text-slate-500 text-center">將以新分頁開啟 Google 表單</p>
@@ -1274,7 +1305,7 @@
 </footer>
 
 <!-- ===== 浮動預約按鈕 ===== -->
-<a id="floatCta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn" aria-label="預約 30 分鐘諮詢（另開新分頁）" tabindex="-1">
+<a id="floatCta" href="https://calendar.app.google/QZTvS9433tJHJcwT6" target="_blank" rel="noopener noreferrer" class="btn btn-cta" aria-label="預約 30 分鐘諮詢（另開新分頁）" tabindex="-1">
   <span class="btn-stack"><span class="lbl lbl-a"><i class="status-dot"></i>預約 30 分鐘諮詢 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="lbl lbl-b"><i class="status-dot"></i>Status: Ready to Connect</span></span>
 </a>
 
@@ -1469,7 +1500,7 @@
   function skillHTML(s) {
     return '<p class="text-body leading-relaxed">' + esc(s.desc) + '</p>' +
       '<p class="label mt-5">關鍵能力</p>' +
-      '<div class="mt-2 flex flex-wrap gap-2">' + s.items.map(function (i) { return '<span class="tag">' + esc(i) + '</span>'; }).join('') + '</div>' +
+      '<div class="mt-2 flex flex-wrap gap-2">' + s.items.map(function (i) { return '<span class="tag tag-teal">' + esc(i) + '</span>'; }).join('') + '</div>' +
       '<p class="label mt-5">實際應用於</p>' +
       '<ul class="bullet mt-2 space-y-1.5 text-sm text-body">' + s.cases.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
   }
@@ -1599,7 +1630,7 @@
       var v = c[s[0]], body;
       if (v) {
         body = '<p class="text-body leading-relaxed">' + esc(v) + '</p>';
-        if (s[0] === 'result' && c.badge) body += '<div class="mt-3 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold text-white" style="background:var(--grad)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg>' + esc(c.badge) + '</div>';
+        if (s[0] === 'result' && c.badge) body += '<div class="award mt-3 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg>' + esc(c.badge) + '</div>';
       } else {
         body = '<span class="pending">細節持續補充中</span>';
       }
@@ -1657,17 +1688,17 @@
         if (a.x < 0 || a.x > W) a.vx *= -1;
         if (a.y < 0 || a.y > H) a.vy *= -1;
         ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832);
-        ctx.fillStyle = 'rgba(37,99,235,.36)'; ctx.fill();
+        ctx.fillStyle = 'rgba(47,140,255,.4)'; ctx.fill();
         for (j = i + 1; j < pts.length; j++) {
           b = pts[j]; dx = a.x - b.x; dy = a.y - b.y; d = dx * dx + dy * dy;
           if (d < 16900) {
-            ctx.strokeStyle = 'rgba(37,99,235,' + (0.15 * (1 - d / 16900)).toFixed(3) + ')';
+            ctx.strokeStyle = 'rgba(0,91,172,' + (0.15 * (1 - d / 16900)).toFixed(3) + ')';
             ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
         dx = a.x - mouse.x; dy = a.y - mouse.y; d = dx * dx + dy * dy;
         if (d < 22500) {
-          ctx.strokeStyle = 'rgba(124,58,237,' + (0.22 * (1 - d / 22500)).toFixed(3) + ')';
+          ctx.strokeStyle = 'rgba(0,169,157,' + (0.22 * (1 - d / 22500)).toFixed(3) + ')';
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
         }
       }
