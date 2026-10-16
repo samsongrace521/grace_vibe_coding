@@ -4,57 +4,69 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>邱數恩 Grace｜AI 應用實踐者・系統專案規劃者</title>
-<meta name="description" content="從企業需求出發，讓 AI 真正產生效益。邱數恩（Grace）是連結技術、商業需求與使用者體驗的 AI 科技實踐者，提供 AI 導入評估、資料分析、影像辨識與系統整合服務。" />
+<meta name="description" content="邱數恩（Grace）｜AI 應用實踐者與系統專案規劃者，2012 年起累積企業 IT 實務。提供 AI 導入評估、資料分析與預測模型、影像辨識、流程自動化與既有系統整合，協助企業讓 AI 真正產生效益。" />
 <meta name="author" content="邱數恩 Grace" />
-<meta name="theme-color" content="#ffffff" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="邱數恩 Grace｜AI 應用實踐者・系統專案規劃者" />
-<meta property="og:description" content="讓 AI 與數據，成為每個人的超能力。從企業需求出發，讓 AI 真正產生效益。" />
-<meta property="og:locale" content="zh_TW" />
-<!-- TODO: 替換 → 上線後填入網址；og:image 需為完整網址，例如 https://<帳號>.github.io/<repo>/assets/grace-portrait.webp
-<meta property="og:url" content="https://your-domain.com/" />
-<meta property="og:image" content="https://your-domain.com/assets/grace-portrait.webp" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#005BAC" />
+<meta name="format-detection" content="telephone=no" />
+<!-- TODO: 替換 → 上線後把下方網址改成正式網址（GitHub Pages 例：https://samsongrace521.github.io/grace_vibe_coding/），再取消註解
+<link rel="canonical" href="https://samsongrace521.github.io/grace_vibe_coding/" />
+<meta property="og:url" content="https://samsongrace521.github.io/grace_vibe_coding/" />
+<meta property="og:image" content="https://samsongrace521.github.io/grace_vibe_coding/assets/grace-portrait.webp" />
 -->
-<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content="邱數恩 Grace" />
+<meta property="og:title" content="邱數恩 Grace｜AI 應用實踐者・系統專案規劃者" />
+<meta property="og:description" content="從企業需求出發，讓 AI 真正產生效益。AI 導入評估、資料分析、影像辨識與系統整合。" />
+<meta property="og:locale" content="zh_TW" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="邱數恩 Grace｜AI 應用實踐者・系統專案規劃者" />
+<meta name="twitter:description" content="從企業需求出發，讓 AI 真正產生效益。" />
 <link rel="icon" href="assets/grace-avatar.webp" type="image/webp" />
+<link rel="apple-touch-icon" href="assets/grace-avatar.webp" />
+<link rel="preload" as="image" href="assets/grace-portrait.webp" type="image/webp" fetchpriority="high" />
 
+<!-- 結構化資料：讓搜尋引擎辨識個人與服務 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "#grace",
+      "name": "邱數恩",
+      "alternateName": "Grace",
+      "jobTitle": "AI 應用實踐者・系統專案規劃者",
+      "email": "mailto:grace.chiou@innolux.com",
+      "knowsAbout": ["AI 導入評估", "資料分析", "預測模型", "影像辨識", "企業系統開發", "混合雲架構", "專案管理", "流程數位化"],
+      "award": "公司 AI 競賽優選作品（產品返品預測策略）",
+      "sameAs": [
+        "https://www.linkedin.com/in/howardzhong/",
+        "https://github.com/HowardNTUST",
+        "https://www.facebook.com/MarketingDataScienceTMR/"
+      ]
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "邱數恩 Grace｜AI 導入與企業系統整合",
+      "provider": { "@id": "#grace" },
+      "areaServed": "TW",
+      "serviceType": ["AI 導入評估與規劃", "資料分析與預測模型", "影像辨識應用", "文件與資訊處理自動化", "既有系統整合與 AI 落地", "企業內訓"]
+    }
+  ]
+}
+</script>
+
+<!-- 字型：全站統一使用 Noto Sans TC（中英數同一字族），只載入實際用到的字重 -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<!-- 樣式：Tailwind 已預先編譯成靜態檔（不再於瀏覽器即時編譯，載入更快、不閃爍）。
+     修改 HTML 中的 Tailwind class 後，請執行 npm run build:css 重新產生 assets/site.css -->
+<link rel="stylesheet" href="assets/site.css" />
 
 <script>document.documentElement.classList.add('js');</script>
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script>
-  /* Tailwind 設定：品牌色彩與字體 */
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          /* 品牌色票：主色／輔助色／強調色／中性色 */
-          brand: {
-            blue: '#005BAC',    // 科技深藍 Brand Blue：主視覺、導覽列、標題重點
-            tech: '#2F8CFF',    // 智慧亮藍 Tech Blue：互動、連結、圖表主線
-            teal: '#00A99D',    // 創新青綠 Innovation Teal：科技輔助、icon、功能標籤
-            green: '#74C69D',   // 永續綠 Sustainability Green：成功狀態、正向資訊
-            orange: '#F5A623',  // 行動橙 Action Orange：CTA 按鈕、重點提醒
-            gold: '#FFC857',    // 亮點金黃 Highlight Gold：局部高亮、獎項標記
-            violet: '#00A99D',  // 舊類別名稱相容（改指向 Innovation Teal）
-            mint: '#74C69D'
-          },
-          ink: '#2F3A4A',       // 文字深灰 Text Slate
-          body: '#5E6A7E',      // 內文灰：Secondary Gray 加深一階，確保內文對比 ≥ 4.5:1
-          muted: '#6B778C',     // 次文字灰 Secondary Gray：輔助說明、註解
-          line: '#D9E1EA',      // 邊框灰 Border Gray
-          mist: '#F7F9FC'       // 雲霧白 Cloud White
-        },
-        fontFamily: {
-          sans: ['"Noto Sans TC"', 'Inter', 'system-ui', 'sans-serif'],
-          display: ['"Space Grotesk"', 'Inter', '"Noto Sans TC"', 'sans-serif']
-        }
-      }
-    }
-  };
-</script>
 
 <style>
   :root{
@@ -62,38 +74,42 @@
        配色比例：60% 中性底色（Cloud White / Border Gray）・30% 主體色系（Brand Blue / Tech Blue / Innovation Teal）・10% 強調色（Action Orange / Highlight Gold） */
     --blue:#005BAC;  --tech:#2F8CFF; --violet:#00A99D; --teal:#00A99D; --green:#74C69D;
     --orange:#F5A623; --gold:#FFC857;
-    --cloud:#F7F9FC; --border:#D9E1EA; --ink:#2F3A4A; --body:#5E6A7E; --muted:#6B778C; --line:#D9E1EA;
+    --cloud:#F7F9FC; --border:#D9E1EA; --ink:#2F3A4A; --body:#5E6A7E; --muted:#6B778C; --line:#E4EAF1;
     --mint:#74C69D;
     --grad:linear-gradient(120deg,#005BAC 0%,#2F8CFF 55%,#00A99D 100%);
     --grad-cta:linear-gradient(120deg,#F5A623 0%,#FFC857 100%);
     --radius:1.5rem;                                                                         /* 全站統一圓角 */
-    --shadow-1:0 1px 2px rgba(47,58,74,.04), 0 12px 32px -14px rgba(47,58,74,.14);          /* 一般卡片 */
+    --shadow-1:0 1px 2px rgba(47,58,74,.03), 0 10px 30px -18px rgba(47,58,74,.16);          /* 一般卡片 */
     --shadow-2:0 1px 2px rgba(47,58,74,.04), 0 24px 48px -18px rgba(0,91,172,.32);         /* hover */
     --nav-h:64px;
+    --font:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;   /* 全站唯一字族 */
   }
   html{ scroll-padding-top:100px; }
   html, body{ overflow-x:clip; }
-  body{ font-family:'Noto Sans TC',Inter,system-ui,sans-serif; color:var(--ink); background:#F7F9FC; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  body{ font-family:var(--font); line-height:1.8; font-weight:400; color:var(--ink); background:#F7F9FC; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
   ::selection{ background:rgba(0,169,157,.16); }
-  .font-display{ font-family:'Space Grotesk',Inter,'Noto Sans TC',sans-serif; }
+  .font-display{ font-family:var(--font); font-variant-numeric:tabular-nums; letter-spacing:.01em; }
   .container-x{ width:100%; max-width:74rem; margin-left:auto; margin-right:auto; padding-left:1.25rem; padding-right:1.25rem; }
   @media(min-width:768px){ .container-x{ padding-left:2rem; padding-right:2rem; } }
+  .h2 .gradient-text, h3 .gradient-text, blockquote .gradient-text, .tl-end .gradient-text{ background:none; color:var(--blue); -webkit-text-fill-color:currentColor; }
   .gradient-text{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
 
   /* ===== 區塊節奏：一般區塊 / 帶狀區塊 ===== */
-  .section{ position:relative; padding:6rem 0; }
-  @media(min-width:768px){ .section{ padding:8.5rem 0; } }
+  .section{ position:relative; padding:5.5rem 0; }
+  @media(min-width:768px){ .section{ padding:7.5rem 0; } }
   .band{ background:linear-gradient(180deg,rgba(247,249,252,.82),rgba(238,243,250,.82)); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 
   /* ===== 區塊標題 ===== */
   .sec-head{ display:flex; flex-direction:column; gap:1.25rem; }
   @media(min-width:1024px){ .sec-head{ flex-direction:row; align-items:flex-end; justify-content:space-between; gap:4rem; } .sec-head > div{ flex:1 1 auto; min-width:0; } .sec-head > .lead{ flex:0 1 28rem; } }
-  .kicker{ display:inline-flex; align-items:center; gap:.75rem; font-family:'Space Grotesk',sans-serif; font-size:.8rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--blue); }
+  .kicker{ display:inline-flex; align-items:center; gap:.75rem; font-family:var(--font); font-size:.8rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--blue); }
   .kicker .num{ color:var(--violet); }
   .kicker .bar{ width:2.25rem; height:1px; background:var(--grad); }
-  .h2{ margin-top:1rem; font-size:2rem; line-height:1.28; font-weight:700; letter-spacing:-.015em; }
-  @media(min-width:768px){ .h2{ font-size:2.75rem; } }
-  .lead{ max-width:34rem; color:var(--body); line-height:1.9; }
+  .h2{ margin-top:1rem; font-size:1.85rem; line-height:1.35; font-weight:700; letter-spacing:.01em; text-wrap:balance; }
+  @media(min-width:768px){ .h2{ font-size:2.4rem; } }
+  h1, h3, h4{ text-wrap:balance; letter-spacing:.01em; }
+  p{ text-wrap:pretty; }
+  .lead{ max-width:32rem; color:var(--body); line-height:1.9; font-size:1rem; }
 
   /* ===== 卡片 ===== */
   .card{ position:relative; background:rgba(255,255,255,.78); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid var(--line); box-shadow:var(--shadow-1); border-radius:var(--radius); }
@@ -105,7 +121,7 @@
   .icon-tile{ width:3rem; height:3rem; border-radius:1rem; display:grid; place-items:center; color:#fff; background:var(--grad); box-shadow:0 10px 22px -10px rgba(0,91,172,.7); flex:none; }
   .tag{ display:inline-block; padding:.22rem .75rem; border-radius:9999px; font-size:.78rem; font-weight:500; color:#005BAC; background:rgba(47,140,255,.08); border:1px solid rgba(47,140,255,.2); }
   .tag-teal{ color:#00756D; background:rgba(0,169,157,.08); border-color:rgba(0,169,157,.22); }
-  .label{ font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .label{ font-family:var(--font); font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
   .hairline{ height:1px; background:var(--line); }
   .bullet li{ position:relative; padding-left:1.15rem; }
   .bullet li::before{ content:""; position:absolute; left:0; top:.72em; width:6px; height:6px; border-radius:9999px; background:var(--grad); }
@@ -162,8 +178,8 @@
   #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; background:var(--grad); transform:scaleX(0); transform-origin:left; }
 
   /* ===== 背景層 ===== */
-  #bgfx .grid-lines{ position:absolute; inset:0; background-image:linear-gradient(rgba(0,91,172,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,91,172,.05) 1px,transparent 1px); background-size:60px 60px; -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); }
-  #bgfx .glow{ position:absolute; border-radius:9999px; filter:blur(100px); opacity:.33; will-change:transform; }
+  #bgfx .grid-lines{ position:absolute; inset:0; background-image:linear-gradient(rgba(0,91,172,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,91,172,.035) 1px,transparent 1px); background-size:64px 64px; -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); mask-image:radial-gradient(ellipse at 50% 20%,#000 5%,transparent 70%); }
+  #bgfx .glow{ position:absolute; border-radius:9999px; filter:blur(110px); opacity:.2; will-change:transform; }
   .glow-1{ width:44vw; height:44vw; left:-10vw; top:-8vw; background:#A9CCF5; animation:drift1 26s ease-in-out infinite alternate; }
   .glow-2{ width:40vw; height:40vw; right:-10vw; top:24vh; background:#9EE0D8; animation:drift2 32s ease-in-out infinite alternate; }
   .glow-3{ width:34vw; height:34vw; left:30vw; bottom:-12vw; background:#CFE3F7; animation:drift3 28s ease-in-out infinite alternate; }
@@ -181,13 +197,13 @@
   .portrait-frame{ position:relative; }
   .portrait-frame img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:50% 20%; border-radius:2rem; filter:drop-shadow(0 22px 34px rgba(47,58,74,.16));
     -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.0) 100%); }
-  .orbit{ position:absolute; inset:-12%; pointer-events:none; animation:spin 60s linear infinite; }
+  .orbit{ position:absolute; inset:-12%; pointer-events:none; opacity:.7; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   .float-card{ position:absolute; z-index:2; border-radius:1.1rem; animation:bob 7s ease-in-out infinite; }
   @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
   .journey{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; }
   .journey li{ display:flex; flex-direction:column; }
-  .journey .yr{ font-family:'Space Grotesk',sans-serif; font-size:.75rem; color:#6B778C; letter-spacing:.06em; }
+  .journey .yr{ font-family:var(--font); font-size:.75rem; color:#6B778C; letter-spacing:.06em; }
   .journey .co{ font-weight:600; color:var(--ink); }
   .journey .arrow{ color:#94a3b8; align-self:flex-end; padding-bottom:.15rem; }
   .scroll-hint span{ display:block; width:4px; height:8px; border-radius:4px; background:var(--blue); animation:scrollDot 1.8s ease-in-out infinite; }
@@ -198,7 +214,7 @@
   .tl-line{ position:absolute; top:.5rem; bottom:3rem; left:11px; width:2px; border-radius:2px; background:linear-gradient(180deg,rgba(0,91,172,.55),rgba(0,169,157,.55) 85%,rgba(0,169,157,0)); }
   .tl-item{ position:relative; padding-left:2.75rem; margin-bottom:3.25rem; }
   .tl-dot{ position:absolute; left:2px; top:.45rem; width:20px; height:20px; border-radius:9999px; background:#fff; border:4px solid var(--blue); box-shadow:0 0 0 6px rgba(0,91,172,.1); z-index:1; }
-  .tl-year{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,91,172,.38); letter-spacing:-.02em; }
+  .tl-year{ font-family:var(--font); font-weight:600; font-size:3rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,91,172,.38); letter-spacing:-.02em; }
   .tl-meta{ margin-bottom:1rem; }
   @media(min-width:768px){
     .tl-line{ left:50%; transform:translateX(-50%); }
@@ -219,7 +235,7 @@
   .more > div{ overflow:hidden; }
   .chev{ transition:transform .3s ease; }
   [aria-expanded="true"] .chev{ transform:rotate(180deg); }
-  .big-num{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:3.25rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,169,157,.4); }
+  .big-num{ font-family:var(--font); font-weight:600; font-size:3.25rem; line-height:1; color:transparent; -webkit-text-stroke:1.2px rgba(0,169,157,.4); }
 
   /* ===== 能力網路圖 ===== */
   .net-panel{ background-image:radial-gradient(rgba(0,91,172,.13) 1px,transparent 1px); background-size:22px 22px; }
@@ -229,11 +245,11 @@
   #net .node{ cursor:pointer; outline:none; transition:opacity .3s; }
   #net .node rect{ fill:#fff; stroke:rgba(0,91,172,.28); stroke-width:1.3; filter:drop-shadow(0 6px 10px rgba(47,58,74,.08)); transition:fill .3s, stroke .3s, filter .3s; }
   #net .node circle{ fill:url(#gEdge); }
-  #net .node text{ font-family:'Noto Sans TC',sans-serif; font-size:15px; fill:#2F3A4A; font-weight:500; pointer-events:none; }
+  #net .node text{ font-family:var(--font); font-size:15px; fill:#2F3A4A; font-weight:500; pointer-events:none; }
   #net .node.on rect, #net .node:focus-visible rect{ fill:#EAF3FF; stroke:#005BAC; stroke-width:2; filter:drop-shadow(0 10px 18px rgba(0,91,172,.35)); }
   #net .node.dim{ opacity:.25; }
   #net .center circle.core{ fill:url(#gCore); filter:drop-shadow(0 14px 28px rgba(0,169,157,.42)); }
-  #net .center text{ fill:#fff; font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-weight:600; font-size:17px; pointer-events:none; }
+  #net .center text{ fill:#fff; font-family:var(--font); font-weight:600; font-size:17px; pointer-events:none; }
   #net .halo{ fill:none; stroke:rgba(0,169,157,.28); stroke-width:1.5; animation:haloPulse 3.4s ease-in-out infinite; transform-origin:400px 280px; }
   @keyframes haloPulse{ 0%{ transform:scale(1); opacity:.9;} 100%{ transform:scale(1.5); opacity:0;} }
   .acc-panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s ease; }
@@ -243,7 +259,7 @@
   /* ===== 方法論流程 ===== */
   .steps{ display:grid; gap:1.75rem; }
   .step{ position:relative; display:grid; grid-template-columns:auto 1fr; column-gap:1.1rem; }
-  .step-num{ width:3rem; height:3rem; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-weight:600; color:#fff; background:var(--grad); box-shadow:0 0 0 6px rgba(0,91,172,.1), 0 10px 20px -8px rgba(0,91,172,.7); position:relative; z-index:1; }
+  .step-num{ width:3rem; height:3rem; border-radius:9999px; display:grid; place-items:center; font-family:var(--font); font-weight:600; color:#fff; background:var(--grad); box-shadow:0 0 0 6px rgba(0,91,172,.1), 0 10px 20px -8px rgba(0,91,172,.7); position:relative; z-index:1; }
   .step-link{ position:absolute; background:linear-gradient(180deg,rgba(0,91,172,.35),rgba(0,169,157,.35)); border-radius:2px; }
   .step-link i{ position:absolute; width:8px; height:8px; border-radius:9999px; background:var(--blue); box-shadow:0 0 12px var(--blue); }
   @media(max-width:1023px){
@@ -277,7 +293,7 @@
   .pending{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .85rem; border-radius:9999px; background:#F7F9FC; color:#6B778C; font-size:.85rem; border:1px dashed #D9E1EA; }
   .m-step{ display:grid; grid-template-columns:auto 1fr; column-gap:1rem; position:relative; padding-bottom:1.6rem; }
   .m-step:not(:last-child)::before{ content:""; position:absolute; left:15px; top:34px; bottom:4px; width:2px; background:linear-gradient(180deg,rgba(0,91,172,.3),rgba(0,169,157,.15)); }
-  .m-num{ width:32px; height:32px; border-radius:9999px; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-size:.8rem; font-weight:600; color:var(--blue); background:#EAF3FF; border:1px solid rgba(0,91,172,.25); }
+  .m-num{ width:32px; height:32px; border-radius:9999px; display:grid; place-items:center; font-family:var(--font); font-size:.8rem; font-weight:600; color:var(--blue); background:#EAF3FF; border:1px solid rgba(0,91,172,.25); }
 
   /* ===== 表單 ===== */
   .field{ width:100%; padding:.85rem 1rem; border-radius:.9rem; border:1px solid #D9E1EA; background:#fff; font-size:1rem; color:var(--ink); transition:border-color .25s, box-shadow .25s; }
@@ -316,7 +332,7 @@
   .scramble-char{ color:var(--violet); opacity:.7; }
 
   /* ===== 商業轉換元件 ===== */
-  .stat-value{ font-family:'Space Grotesk','Noto Sans TC',sans-serif; font-weight:700; font-size:1.55rem; line-height:1.1; letter-spacing:-.01em; }
+  .stat-value{ font-family:var(--font); font-weight:700; font-size:1.55rem; line-height:1.1; letter-spacing:-.01em; }
   .pain{ display:grid; grid-template-columns:auto 1fr; gap:1rem; }
   .pain-q{ color:var(--ink); font-weight:700; }
   .pain-a{ display:flex; gap:.5rem; color:var(--body); font-size:.95rem; line-height:1.75; }
@@ -401,23 +417,6 @@
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
   <div class="glow glow-3"></div>
-  <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="gFlow" x1="0" x2="1" y1="0" y2="0">
-        <stop offset="0" stop-color="#005BAC" stop-opacity="0"/>
-        <stop offset=".5" stop-color="#005BAC" stop-opacity=".45"/>
-        <stop offset="1" stop-color="#00A99D" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <path class="flow-path" d="M-50 220 C 300 120, 520 380, 900 260 S 1400 180, 1500 300" fill="none" stroke="url(#gFlow)" stroke-width="1.5"/>
-    <path class="flow-path" style="animation-duration:19s" d="M-50 640 C 260 760, 600 520, 980 660 S 1380 760, 1500 600" fill="none" stroke="url(#gFlow)" stroke-width="1.5"/>
-    <path class="flow-path" style="animation-duration:23s" d="M200 -40 C 320 220, 120 420, 360 940" fill="none" stroke="url(#gFlow)" stroke-width="1.2"/>
-  </svg>
-  <span class="float-node" style="left:12%; top:24%"></span>
-  <span class="float-node" style="left:82%; top:14%; animation-delay:-3s"></span>
-  <span class="float-node" style="left:68%; top:66%; animation-delay:-5s"></span>
-  <span class="float-node" style="left:24%; top:80%; animation-delay:-2s"></span>
-  <span class="float-node" style="left:92%; top:86%; animation-delay:-6s"></span>
   <canvas id="bgCanvas" class="absolute inset-0"></canvas>
 </div>
 
@@ -437,7 +436,7 @@
       <img src="assets/grace-avatar.webp" alt="" width="40" height="40" class="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-md" />
       <span class="leading-tight">
         <span class="block font-bold tracking-tight brand-name">邱數恩</span>
-        <span class="block font-display text-[.72rem] tracking-wider brand-sub">GRACE<span class="hidden sm:inline"> · AI PRACTITIONER</span></span>
+        <span class="block font-display text-xs tracking-wider brand-sub">GRACE<span class="hidden sm:inline"> · AI PRACTITIONER</span></span>
       </span>
     </a>
 
@@ -482,12 +481,12 @@
     <!-- 左：文案 -->
     <div class="lg:col-span-7">
       <div class="reveal inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full glass text-xs sm:text-sm font-display text-body">
-        <span class="px-2 py-0.5 rounded-full text-white text-[.7rem] font-semibold tracking-wider" style="background:var(--grad)">AI</span>
+        <span class="px-2 py-0.5 rounded-full text-white text-xs font-semibold tracking-wider" style="background:var(--grad)">AI</span>
         Application × Enterprise Systems × Data
       </div>
 
       <!-- 打字機標題：ghost 預留完整高度，live 為逐字顯示層 -->
-      <h1 id="heroTitle" class="mt-7 font-black tracking-tight leading-[1.2] text-[2.2rem] sm:text-5xl xl:text-[3.9rem]" aria-label="從企業需求出發，讓 AI 真正產生效益">
+      <h1 id="heroTitle" class="mt-7 font-bold tracking-tight leading-[1.2] text-[2.15rem] sm:text-5xl xl:text-[3.6rem]" aria-label="從企業需求出發，讓 AI 真正產生效益">
         <span class="grid">
           <span aria-hidden="true" style="grid-area:1/1; visibility:hidden">從企業需求出發，<br />讓 <span>AI 真正產生效益</span></span>
           <span id="typeLive" aria-hidden="true" style="grid-area:1/1"></span>
@@ -560,7 +559,7 @@
     </div>
   </div>
 
-  <a href="#about" class="scroll-hint hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-[.7rem] font-display tracking-[.2em] text-body" aria-label="向下滾動到關於我">
+  <a href="#about" class="scroll-hint hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-xs font-display tracking-[.2em] text-body" aria-label="向下滾動到關於我">
     <div class="w-6 h-10 rounded-full border-2 border-slate-300 flex justify-center pt-2"><span></span></div>
     SCROLL
   </a>
@@ -655,7 +654,7 @@
         <p class="text-xl sm:text-2xl leading-[1.7] font-medium">
           我的職涯從<span class="gradient-text font-bold">軟體工程與企業系統開發</span>出發。在大型企業專案裡，我學到一件事：系統好不好用，取決於有沒有真正聽懂需求。
         </p>
-        <div class="mt-7 space-y-5 text-body leading-[1.95] text-[1.03rem]">
+        <div class="mt-7 space-y-5 text-body leading-[1.95] text-base">
           <p>此後，我的視野延伸到<strong class="text-ink font-medium">雲端架構、AI 應用、資料驅動決策</strong>，以及需求分析與專案規劃。</p>
           <p>角色改變之後，我關注的不再只是技術本身，而是<strong class="text-ink font-medium">技術如何融入企業流程、回應使用者需求，並解決實際的營運問題</strong>。</p>
         </div>
@@ -670,7 +669,7 @@
     <div class="mt-28">
       <div class="reveal text-left md:text-center">
         <p class="kicker">Journey</p>
-        <h3 class="text-2xl md:text-[2rem] font-bold mt-3">一路走來的成長軌跡</h3>
+        <h3 class="text-2xl md:text-[1.75rem] font-bold mt-3">一路走來的成長軌跡</h3>
       </div>
 
       <div class="tl mt-14">
@@ -687,7 +686,7 @@
           </div>
           <div class="tl-card card p-6 sm:p-7">
             <h4 class="text-xl font-bold">長榮集團 <span class="text-body font-normal text-base">· 工程師</span></h4>
-            <p class="mt-3 text-[.97rem] font-medium text-brand-blue">在大型企業專案中，建立系統開發與需求轉換的紮實基礎。</p>
+            <p class="mt-3 text-[.95rem] font-medium text-brand-blue">在大型企業專案中，建立系統開發與需求轉換的紮實基礎。</p>
             <ul class="bullet mt-4 space-y-2 text-[.95rem] text-body">
               <li>參與集團人事系統由單機版改版為 Web 平台</li>
               <li>透過使用者訪談釐清需求，將需求轉化為系統功能設計</li>
@@ -717,7 +716,7 @@
           </div>
           <div class="tl-card card p-6 sm:p-7">
             <h4 class="text-xl font-bold">資拓宏宇 <span class="text-body font-normal text-base">· 工程師</span></h4>
-            <p class="mt-3 text-[.97rem] font-medium text-brand-blue">掌握系統開發完整流程，從不同技術層面理解問題。</p>
+            <p class="mt-3 text-[.95rem] font-medium text-brand-blue">掌握系統開發完整流程，從不同技術層面理解問題。</p>
             <ul class="bullet mt-4 space-y-2 text-[.95rem] text-body">
               <li>負責交通控制系統的維護與功能開發</li>
               <li>涵蓋 Server 架設、前端 UI 與後端開發的完整流程</li>
@@ -745,7 +744,7 @@
           </div>
           <div class="tl-card card p-6 sm:p-7">
             <h4 class="text-xl font-bold">群創光電 <span class="text-body font-normal text-base">· 主任工程師</span></h4>
-            <p class="mt-3 text-[.97rem] font-medium text-brand-blue">從企業系統開發出發，拓展至雲端、AI、資料應用與專案管理，具備從技術實作到系統規劃的完整視野。</p>
+            <p class="mt-3 text-[.95rem] font-medium text-brand-blue">從企業系統開發出發，拓展至雲端、AI、資料應用與專案管理，具備從技術實作到系統規劃的完整視野。</p>
             <ul class="bullet mt-4 space-y-2 text-[.95rem] text-body">
               <li>近年擔任系統 PM 與規劃者：需求蒐集、排程規劃、資源協調、跨部門溝通與成果驗收</li>
               <li>「產品返品預測策略」獲公司 AI 競賽優選作品</li>
@@ -781,7 +780,7 @@
     <div class="mt-28">
       <div class="reveal">
         <p class="kicker">Why Work With Me</p>
-        <h3 class="text-2xl md:text-[2rem] font-bold mt-3">為什麼值得認識我</h3>
+        <h3 class="text-2xl md:text-[1.75rem] font-bold mt-3">為什麼值得認識我</h3>
       </div>
       <div class="mt-10 grid md:grid-cols-3 gap-6" data-stagger>
         <article class="reveal card lift p-8 flex flex-col">
@@ -1000,7 +999,7 @@
       <div class="reveal flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3">
         <div>
           <p class="kicker">Engagement</p>
-          <h3 class="text-2xl md:text-[2rem] font-bold mt-3">三種合作方式，從小步開始</h3>
+          <h3 class="text-2xl md:text-[1.75rem] font-bold mt-3">三種合作方式，從小步開始</h3>
         </div>
         <p class="text-body text-sm max-w-sm">不必一次投入大型專案。先確認方向，再決定要走多遠。</p>
       </div>
@@ -1044,7 +1043,7 @@
       <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3">
         <div>
           <p class="kicker">Method</p>
-          <h3 class="text-2xl md:text-[2rem] font-bold mt-3">從問題出發的五個步驟</h3>
+          <h3 class="text-2xl md:text-[1.75rem] font-bold mt-3">從問題出發的五個步驟</h3>
         </div>
         <p class="text-body text-sm max-w-sm">每一步都以「是否真正解決問題」為檢查點。</p>
       </div>
@@ -1082,7 +1081,7 @@
       <div class="absolute -bottom-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-40" style="background:#9EE0D8" aria-hidden="true"></div>
       <div class="relative">
         <svg class="mx-auto" width="44" height="44" viewBox="0 0 24 24" fill="url(#gBrand)" aria-hidden="true"><path d="M7 7h4v4c0 3-1.5 5-4 6l-1-1.5c1.3-.7 2-1.8 2-3.5H7zm8 0h4v4c0 3-1.5 5-4 6l-1-1.5c1.3-.7 2-1.8 2-3.5h-1z"/></svg>
-        <blockquote class="mt-6 text-2xl md:text-[2.3rem] font-black leading-snug">
+        <blockquote class="mt-6 text-2xl md:text-[2.1rem] font-bold leading-snug">
           我重視的不是追逐最新 AI 技術，<br class="hidden md:block" />而是<span class="gradient-text">用對的技術解決對的問題</span>。
         </blockquote>
         <p class="mt-6 max-w-2xl mx-auto text-body leading-relaxed">透過減少重複性工作、縮短處理時間、提升資訊利用效率，讓 AI 投資能對應實際的時間成本、營運效率與 ROI。</p>
@@ -1789,7 +1788,7 @@
       cv.width = W * dpr; cv.height = H * dpr;
       cv.style.width = W + 'px'; cv.style.height = H + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = W < 768 ? 22 : Math.min(64, Math.round(W * H / 24000));   // 手機減少粒子
+      var n = W < 768 ? 16 : Math.min(42, Math.round(W * H / 34000));   // 手機減少粒子
       pts = [];
       for (var i = 0; i < n; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, r: 1 + Math.random() * 1.3 });
     }
@@ -1804,11 +1803,11 @@
         if (a.x < 0 || a.x > W) a.vx *= -1;
         if (a.y < 0 || a.y > H) a.vy *= -1;
         ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832);
-        ctx.fillStyle = 'rgba(47,140,255,.4)'; ctx.fill();
+        ctx.fillStyle = 'rgba(47,140,255,.28)'; ctx.fill();
         for (j = i + 1; j < pts.length; j++) {
           b = pts[j]; dx = a.x - b.x; dy = a.y - b.y; d = dx * dx + dy * dy;
           if (d < 16900) {
-            ctx.strokeStyle = 'rgba(0,91,172,' + (0.15 * (1 - d / 16900)).toFixed(3) + ')';
+            ctx.strokeStyle = 'rgba(0,91,172,' + (0.09 * (1 - d / 16900)).toFixed(3) + ')';
             ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
@@ -1878,33 +1877,6 @@
       b.addEventListener('pointerleave', function () { b.style.translate = '0px 0px'; });
     });
   }
-
-  // 4) 區塊標籤解碼效果（進入畫面時播放一次）
-  (function scramble() {
-    if (reduce || !('IntersectionObserver' in window)) return;
-    var CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#_';
-    function run(node) {
-      var final = node.nodeValue, frame = 0, total = 22;
-      (function tick() {
-        var out = '';
-        for (var i = 0; i < final.length; i++) {
-          var ch = final.charAt(i);
-          out += (ch === ' ' || i < (frame / total) * final.length) ? ch : CH.charAt((Math.random() * CH.length) | 0);
-        }
-        node.nodeValue = out;
-        if (++frame <= total) setTimeout(tick, 32); else node.nodeValue = final;
-      })();
-    }
-    var ko = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        ko.unobserve(e.target);
-        var t = Array.prototype.filter.call(e.target.childNodes, function (n) { return n.nodeType === 3 && n.nodeValue.trim(); }).pop();
-        if (t) run(t);
-      });
-    }, { threshold: 0.6 });
-    $$('.kicker').forEach(function (k) { ko.observe(k); });
-  })();
 
   /* ---------- 佔位連結提示（尚未替換的 LinkedIn / GitHub） ---------- */
   $$('[data-todo]').forEach(function (a) {
