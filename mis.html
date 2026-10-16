@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="群創 MIS 部門｜AP 應用開發與 AI 解決方案，協助生管與供應鏈團隊保持資料完整性。">
+  <title>群創 MIS｜AP 應用開發與 AI 解決方案</title>
+
+  <!-- Tailwind CSS CDN（Play CDN，適合展示與原型；正式上線建議改用建置版） -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // 色彩 token 的數值統一定義在下方 :root，Tailwind 以 rgb 通道引用，因此 bg-brand-blue/10 等透明度寫法仍可使用
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: 'rgb(var(--rgb-primary) / <alpha-value>)',          // 主色 科技藍
+              violet: 'rgb(var(--rgb-secondary) / <alpha-value>)',      // 輔色 高級紫
+              mint: 'rgb(var(--rgb-accent) / <alpha-value>)',           // 強調色 薄荷綠
+              blueDeep: 'rgb(var(--rgb-primary-deep) / <alpha-value>)', // 深色變體：用於小字文字對比
+              violetDeep: 'rgb(var(--rgb-secondary-deep) / <alpha-value>)',
+              mintDeep: 'rgb(var(--rgb-accent-deep) / <alpha-value>)',
+              mist: 'rgb(var(--rgb-mist) / <alpha-value>)',                   // 霧面灰
+              sky: 'rgb(var(--rgb-sky) / <alpha-value>)',                     // 淡藍白
+              ink: 'rgb(var(--rgb-ink) / <alpha-value>)'                      // 深藍灰（文字）
+            }
+          },
+          fontFamily: { sans: ['"Noto Sans TC"', '"Microsoft JhengHei"', 'system-ui', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+
+  <!-- FontAwesome 圖示（CDN） -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <style>
+    /* ===== 色票（單一來源）：要改色只需修改這裡，CSS / Tailwind / SVG / Canvas 都會同步 ===== */
+    :root {
+      --c-primary: #2563eb;        --rgb-primary: 37 99 235;          /* 主色：科技藍 */
+      --c-secondary: #7c3aed;      --rgb-secondary: 124 58 237;       /* 輔色：高級紫 */
+      --c-accent: #10b981;         --rgb-accent: 16 185 129;          /* 強調色：薄荷綠 */
+      --c-primary-deep: #1d4ed8;   --rgb-primary-deep: 29 78 216;     /* 深色變體（小字文字、CTA 文字） */
+      --c-secondary-deep: #5b21b6; --rgb-secondary-deep: 91 33 182;
+      --c-accent-deep: #047857;    --rgb-accent-deep: 4 120 87;
+      --c-white: #ffffff;                                              /* 優雅白 */
+      --c-mist: #f8fafc;           --rgb-mist: 248 250 252;           /* 霧面灰 */
+      --c-sky: #eef4ff;            --rgb-sky: 238 244 255;            /* 淡藍白 */
+      --c-ink: #0f172a;            --rgb-ink: 15 23 42;               /* 深藍灰（文字） */
+    }
+
+    /* ===== 全站背景：白 → 霧面灰 → 淡藍白漸層 ===== */
+    body { background: linear-gradient(180deg, var(--c-white) 0%, var(--c-mist) 45%, var(--c-sky) 100%); color: var(--c-ink); overflow-x: hidden; }
+
+    /* AI 網格線背景（細緻、淡藍） */
+    .grid-bg {
+      position: fixed; inset: 0; z-index: -30; pointer-events: none;
+      background-image:
+        linear-gradient(rgb(var(--rgb-primary) / .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(var(--rgb-primary) / .06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
+              mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
+    }
+
+    /* 柔和流動的漸層光暈 */
+    .blob { position: fixed; z-index: -20; pointer-events: none; border-radius: 9999px; filter: blur(80px); opacity: .5; animation: float 18s ease-in-out infinite; }
+    .blob.b1 { width: 420px; height: 420px; left: -120px; top: 60px; background: var(--c-primary); opacity: .22; }
+    .blob.b2 { width: 380px; height: 380px; right: -100px; top: 30%; background: var(--c-secondary); opacity: .2; animation-delay: -6s; }
+    .blob.b3 { width: 340px; height: 340px; left: 30%; bottom: -140px; background: var(--c-accent); opacity: .2; animation-delay: -11s; }
+    @keyframes float { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-26px) scale(1.06); } }
+
+    /* ===== 玻璃擬態卡片 + hover 邊框漸層亮起 ===== */
+    .glass {
+      background: rgba(255,255,255,.66);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border: 1px solid rgba(148,163,184,.22);
+      box-shadow: 0 10px 40px -16px rgb(var(--rgb-primary) / .2);
+    }
+    .card { position: relative; transition: transform .35s ease, box-shadow .35s ease; }
+    .card::before { /* 漸層邊框，hover 時亮起 */
+      content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+      background: linear-gradient(135deg, var(--c-primary), var(--c-secondary), var(--c-accent));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: 0; transition: opacity .35s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px -18px rgb(var(--rgb-primary) / .35), 0 0 30px rgb(var(--rgb-secondary) / .08); }
+    .card:hover::before { opacity: 1; }
+
+    /* ===== CTA 按鈕：玻璃＋藍紫漸層邊框；hover 變薄荷綠光暈並顯示狀態 ===== */
+    .cta {
+      position: relative; display: inline-flex; align-items: center; justify-content: center;
+      min-width: 240px; height: 54px; padding: 0 28px; border-radius: 9999px;
+      font-weight: 700; color: var(--c-primary-deep); cursor: pointer; border: 2px solid transparent;
+      background: linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.88)) padding-box,
+                  linear-gradient(120deg, var(--c-primary), var(--c-secondary)) border-box;
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      box-shadow: 0 8px 28px -10px rgb(var(--rgb-primary) / .35);
+      transition: transform .3s ease, box-shadow .3s ease, color .3s ease, background .3s ease;
+    }
+    .cta .label-default, .cta .label-hover { transition: opacity .3s ease, transform .3s ease; }
+    .cta .label-hover { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; transform: translateY(10px); }
+    .cta:hover, .cta:focus-visible {
+      transform: translateY(-3px); color: var(--c-accent-deep);
+      background: linear-gradient(color-mix(in srgb, var(--c-accent) 10%, white), color-mix(in srgb, var(--c-accent) 22%, white)) padding-box,
+                  linear-gradient(120deg, color-mix(in srgb, var(--c-accent) 70%, white), var(--c-accent)) border-box;
+      box-shadow: 0 0 0 6px rgb(var(--rgb-accent) / .14), 0 14px 40px -8px rgb(var(--rgb-accent) / .55);
+    }
+    .cta:hover .label-default, .cta:focus-visible .label-default { opacity: 0; transform: translateY(-10px); }
+    .cta:hover .label-hover, .cta:focus-visible .label-hover { opacity: 1; transform: translateY(0); }
+    .cta:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
+    .dot-live { width: 8px; height: 8px; border-radius: 9999px; background: var(--c-accent); box-shadow: 0 0 0 0 rgb(var(--rgb-accent) / .6); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgb(var(--rgb-accent) / 0); } 100% { box-shadow: 0 0 0 0 rgb(var(--rgb-accent) / 0); } }
+
+    /* 次要按鈕 */
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 54px; padding: 0 26px; border-radius: 9999px; font-weight: 600; color: #334155; background: rgba(255,255,255,.55); border: 1px solid rgba(148,163,184,.35); transition: all .3s ease; }
+    .btn-ghost:hover { color: var(--c-primary); border-color: rgb(var(--rgb-primary) / .4); background: var(--c-white); transform: translateY(-3px); }
+
+    /* ===== 打字機游標 ===== */
+    .cursor { display: inline-block; width: 3px; height: 1em; margin-left: 4px; vertical-align: -.12em; background: var(--c-secondary); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ===== 首頁資料流 SVG 動畫 ===== */
+    .flow { stroke-dasharray: 6 8; animation: dash 1.6s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -28; } }
+    .node-float { animation: bob 6s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-5px); } }
+
+    /* ===== 進場動畫 ===== */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* 導覽列 active 狀態 */
+    .nav-link { position: relative; color: #475569; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: var(--c-primary); }
+    .nav-link.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--c-primary), var(--c-secondary)); }
+
+    /* 社群圖示按鈕 */
+    .social { color: #475569; background: rgba(255,255,255,.7); border: 1px solid rgba(148,163,184,.3); transition: all .3s ease; }
+    .social:hover { color: #fff; background: linear-gradient(135deg, var(--c-primary), var(--c-secondary)); border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 24px -8px rgb(var(--rgb-secondary) / .5); }
+
+    /* 表單欄位 */
+    .field { width: 100%; padding: .65rem .85rem; border-radius: .6rem; border: 1px solid #cbd5e1; background: rgba(255,255,255,.85); transition: border-color .2s, box-shadow .2s; }
+    .field:focus { outline: none; border-color: var(--c-primary); box-shadow: 0 0 0 4px rgb(var(--rgb-primary) / .12); }
+
+    /* TOP 按鈕 */
+    #toTop { opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .3s ease; }
+    #toTop.show { opacity: 1; visibility: visible; transform: none; }
+
+    /* 減少動態偏好：關閉所有動畫 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-brand-ink">
+  <!-- ========== 背景層：網格 / 光暈 / 粒子資料流 Canvas ========== -->
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+  <canvas id="bg" class="fixed inset-0 -z-10 pointer-events-none" aria-hidden="true"></canvas>
+
+  <!-- ========== 導覽列 ========== -->
+  <header class="fixed inset-x-0 top-0 z-40">
+    <nav class="glass mx-auto mt-3 flex h-16 max-w-6xl items-center justify-between rounded-2xl px-4 md:px-6" aria-label="主要導覽">
+      <a href="#home" class="flex items-center gap-3" aria-label="群創 MIS 首頁">
+        <img src="https://www.innolux.com/global/images/logo.png" alt="Innolux 群創光電標誌" class="h-7 w-auto rounded bg-white px-1">
+        <span class="hidden text-sm font-bold tracking-wide text-slate-700 sm:inline">MIS</span>
+      </a>
+
+      <!-- 桌機選單 -->
+      <div class="hidden items-center gap-6 text-sm lg:flex">
+        <a href="#home" class="nav-link" data-nav>首頁</a>
+        <a href="#about" class="nav-link" data-nav>關於我</a>
+        <a href="#solutions" class="nav-link" data-nav>AI 解決方案</a>
+        <a href="#portfolio" class="nav-link" data-nav>案例展示</a>
+        <a href="#blog" class="nav-link" data-nav>技術部落格</a>
+        <a href="#systems" class="nav-link" data-nav>核心系統</a>
+        <a href="#contact" class="nav-link" data-nav>聯絡我們</a>
+        <a href="innolux.html" class="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-500 transition hover:border-brand-blue hover:text-brand-blue">← 群創介紹</a>
+      </div>
+
+      <button id="menuBtn" type="button" class="grid h-10 w-10 place-items-center rounded-lg border border-slate-300 bg-white/70 text-slate-700 lg:hidden" aria-label="開啟選單" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+    </nav>
+
+    <!-- 手機選單 -->
+    <div id="mobileMenu" class="glass mx-4 mt-2 hidden flex-col gap-1 rounded-2xl p-3 text-sm lg:hidden">
+      <a href="#home" class="rounded-lg px-3 py-2 hover:bg-white">首頁</a>
+      <a href="#about" class="rounded-lg px-3 py-2 hover:bg-white">關於我</a>
+      <a href="#solutions" class="rounded-lg px-3 py-2 hover:bg-white">AI 解決方案</a>
+      <a href="#portfolio" class="rounded-lg px-3 py-2 hover:bg-white">案例展示</a>
+      <a href="#blog" class="rounded-lg px-3 py-2 hover:bg-white">技術部落格</a>
+      <a href="#systems" class="rounded-lg px-3 py-2 hover:bg-white">核心系統</a>
+      <a href="#contact" class="rounded-lg px-3 py-2 hover:bg-white">聯絡我們</a>
+      <a href="innolux.html" class="rounded-lg px-3 py-2 text-slate-500 hover:bg-white">← 群創介紹</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== 1. 首頁 Hero ========== -->
+    <section id="home" class="mx-auto grid min-h-screen max-w-6xl items-center gap-10 px-5 pb-16 pt-32 md:grid-cols-2">
+      <div>
+        <span class="reveal inline-flex items-center gap-2 rounded-full border border-brand-blue/20 bg-white/70 px-3 py-1 text-xs font-semibold tracking-widest text-brand-blue">
+          <span class="dot-live"></span> INNOLUX MIS · AP DEVELOPMENT
+        </span>
+
+        <!-- 打字機標題：aria-label 提供完整文字給輔助科技 -->
+        <h1 class="reveal mt-6 min-h-[2.5em] text-4xl font-extrabold leading-tight tracking-tight md:text-5xl lg:text-6xl" aria-label="以穩定的系統，支撐每一次關鍵決策">
+          <span id="typed" class="bg-gradient-to-r from-brand-blue via-brand-violet to-brand-blue bg-clip-text text-transparent" aria-hidden="true"></span><span class="cursor" aria-hidden="true"></span>
+        </h1>
+
+        <p class="reveal mt-5 max-w-lg text-base leading-relaxed text-slate-600">
+          群創 MIS 部門的 AP 應用開發團隊，專注協助生管與供應鏈同仁，用穩定的系統與 AI 技術守住資料完整性，讓每一次決策都有可靠的依據。
+        </p>
+
+        <div class="reveal mt-9 flex flex-wrap items-center gap-4">
+          <!-- 主要 CTA：hover 顯示 Status: Ready to Connect -->
+          <a href="#booking" class="cta">
+            <span class="label-default">預約諮詢</span>
+            <span class="label-hover"><span class="dot-live"></span>Status: Ready to Connect</span>
+          </a>
+          <a href="#solutions" class="btn-ghost">探索解決方案</a>
+        </div>
+      </div>
+
+      <!-- 首頁視覺：資料流示意（生管／供應鏈資料 → AI 檢核 → 看板／通知） -->
+      <div class="reveal glass card relative rounded-3xl p-4 sm:p-6">
+        <svg viewBox="0 0 420 340" class="h-auto w-full" role="img" aria-label="生管與供應鏈資料經過 AI 檢核，輸出資料看板與異常通知的流程示意圖">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--c-primary)"/><stop offset="1" stop-color="var(--c-secondary)"/></linearGradient>
+            <radialGradient id="g2"><stop offset="0" stop-color="var(--c-white)"/><stop offset="1" stop-color="var(--c-sky)"/></radialGradient>
+          </defs>
+
+          <!-- 資料流線條 -->
+          <g fill="none" stroke-width="2" stroke-linecap="round">
+            <path class="flow" d="M130 85 C 165 85, 160 150, 168 160" stroke="var(--c-primary)"/>
+            <path class="flow" d="M130 255 C 165 255, 160 190, 168 180" stroke="var(--c-primary)"/>
+            <path class="flow" d="M252 160 C 262 150, 255 85, 290 85" stroke="var(--c-secondary)"/>
+            <path class="flow" d="M252 180 C 262 190, 255 255, 290 255" stroke="var(--c-accent)"/>
+          </g>
+
+          <!-- 左：資料來源 -->
+          <g class="node-float">
+            <rect x="20" y="58" width="110" height="54" rx="14" fill="var(--c-white)" stroke="var(--c-primary)" stroke-opacity=".3"/>
+            <text x="75" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="var(--c-primary-deep)">生管資料</text>
+            <text x="75" y="99" text-anchor="middle" font-size="10" fill="#64748b">排程 / 工單</text>
+          </g>
+          <g class="node-float" style="animation-delay:-2s">
+            <rect x="20" y="228" width="110" height="54" rx="14" fill="var(--c-white)" stroke="var(--c-primary)" stroke-opacity=".3"/>
+            <text x="75" y="252" text-anchor="middle" font-size="13" font-weight="700" fill="var(--c-primary-deep)">供應鏈資料</text>
+            <text x="75" y="269" text-anchor="middle" font-size="10" fill="#64748b">庫存 / 物料</text>
+          </g>
+
+          <!-- 中：AI 檢核 -->
+          <circle cx="210" cy="170" r="58" fill="url(#g2)" stroke="url(#g1)" stroke-width="2.5"/>
+          <circle cx="210" cy="170" r="70" fill="none" stroke="var(--c-secondary)" stroke-opacity=".25" stroke-dasharray="3 7" class="flow"/>
+          <text x="210" y="165" text-anchor="middle" font-size="16" font-weight="800" fill="var(--c-secondary-deep)">AI 檢核</text>
+          <text x="210" y="185" text-anchor="middle" font-size="10" fill="#64748b">Data Integrity</text>
+
+          <!-- 右：輸出 -->
+          <g class="node-float" style="animation-delay:-4s">
+            <rect x="290" y="58" width="110" height="54" rx="14" fill="var(--c-white)" stroke="var(--c-secondary)" stroke-opacity=".3"/>
+            <text x="345" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="var(--c-secondary-deep)">資料看板</text>
+            <text x="345" y="99" text-anchor="middle" font-size="10" fill="#64748b">一眼掌握</text>
+          </g>
+          <g class="node-float" style="animation-delay:-1s">
+            <rect x="290" y="228" width="110" height="54" rx="14" fill="var(--c-white)" stroke="var(--c-accent)" stroke-opacity=".3"/>
+            <text x="345" y="252" text-anchor="middle" font-size="13" font-weight="700" fill="var(--c-accent-deep)">異常通知</text>
+            <text x="345" y="269" text-anchor="middle" font-size="10" fill="#64748b">即時提醒</text>
+          </g>
+        </svg>
+        <div class="mt-2 flex items-center justify-center gap-2 text-xs text-slate-500"><span class="dot-live"></span>資料完整性持續監控（示意圖）</div>
+      </div>
+    </section>
+
+    <!-- ========== 2. 關於我 ========== -->
+    <section id="about" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-blue">About Me</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">我是 MIS 的 AP 應用開發工程師</h2>
+        <p class="mt-4 text-slate-600">在群創 MIS 部門負責應用系統開發，與生管、供應鏈同仁並肩，把日常流程變成穩定、好用的系統服務。</p>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <article class="reveal glass card rounded-2xl p-7">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-brand-blue/10 text-xl">👤</div>
+          <h3 class="text-lg font-bold">我是誰</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">群創 MIS 部門的 AP 應用開發工程師，負責規劃與開發內部應用系統，並持續將 AI 技術導入既有流程。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-brand-violet/10 text-xl">🎯</div>
+          <h3 class="text-lg font-bold">服務誰</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">主要服務公司內部的生管、供應鏈相關人員，協助他們保持公司資料的完整性，讓排程與決策更有依據。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-brand-mint/10 text-xl">✨</div>
+          <h3 class="text-lg font-bold">為什麼選擇 MIS</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">群創 MIS 是公司主要的資訊部門，並隨時代演進，在 AI 浪潮下持續精進技術，期望為內部使用者提供更好的服務品質。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 3. AI 解決方案服務 ========== -->
+    <section id="solutions" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-violet">AI Solutions</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">AI 解決方案服務</h2>
+        <p class="mt-4 text-slate-600">從資料檢核到智慧助理，依生管與供應鏈的實際需求，彈性組合合適的解決方案。</p>
+      </div>
+
+      <!-- 服務卡片：如需增減項目，複製／刪除一個 <article> 即可 -->
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">01</span>
+          <h3 class="mt-2 text-lg font-bold">資料完整性檢核</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">建立主資料與交易資料的檢核規則，自動找出缺漏、重複與不一致，降低人工比對成本。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">02</span>
+          <h3 class="mt-2 text-lg font-bold">生管與供應鏈應用開發</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">依實際流程客製開發 AP 應用系統，整合既有資料來源，讓排程、物料與庫存作業更順暢。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">03</span>
+          <h3 class="mt-2 text-lg font-bold">資料看板與報表</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">將分散的資料整合成易讀的看板與報表，讓管理者與現場同仁快速掌握關鍵狀況。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">04</span>
+          <h3 class="mt-2 text-lg font-bold">流程自動化</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">把重複性的資料整理、報表產出與通知作業自動化，讓同仁把時間留給更有價值的工作。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">05</span>
+          <h3 class="mt-2 text-lg font-bold">AI 助理與知識查詢</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">導入 LLM 打造內部問答助理，協助查詢 SOP、系統操作與常見問題，縮短找資料的時間。</p>
+        </article>
+        <article class="reveal glass card rounded-2xl p-7">
+          <span class="text-xs font-semibold text-slate-400">06</span>
+          <h3 class="mt-2 text-lg font-bold">系統整合與維運支援</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">串接跨系統資料與 API，並提供上線後的監控與持續優化，確保系統穩定可靠。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 4. 作品集 / 案例展示 ========== -->
+    <section id="portfolio" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-mint">Case Studies</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">作品集 / 案例展示</h2>
+        <p class="mt-4 text-slate-600">以下為示意案例架構，請替換成實際專案的內容與成果。</p>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <!-- 案例範本：問題 → 做法 → 成效 -->
+        <article class="reveal glass card overflow-hidden rounded-2xl">
+          <div class="h-32 bg-gradient-to-br from-brand-blue/20 via-brand-blue/5 to-white p-5"><span class="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-brand-blue">範例案例</span></div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold">生管資料完整性檢核平台</h3>
+            <dl class="mt-3 space-y-2 text-sm text-slate-600">
+              <div><dt class="inline font-semibold text-brand-ink">問題：</dt><dd class="inline">資料分散，缺漏需人工逐筆比對。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">做法：</dt><dd class="inline">建立檢核規則並每日自動執行。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">成效：</dt><dd class="inline">請填入實際成果。</dd></div>
+            </dl>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs"><span class="rounded-full bg-brand-blue/10 px-2.5 py-1 text-brand-blue">資料檢核</span><span class="rounded-full bg-brand-blue/10 px-2.5 py-1 text-brand-blue">自動化</span></div>
+          </div>
+        </article>
+
+        <article class="reveal glass card overflow-hidden rounded-2xl">
+          <div class="h-32 bg-gradient-to-br from-brand-violet/20 via-brand-violet/5 to-white p-5"><span class="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-brand-violet">範例案例</span></div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold">供應鏈資訊看板</h3>
+            <dl class="mt-3 space-y-2 text-sm text-slate-600">
+              <div><dt class="inline font-semibold text-brand-ink">問題：</dt><dd class="inline">多來源資料難以即時整合檢視。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">做法：</dt><dd class="inline">整合資料來源並建置視覺化看板。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">成效：</dt><dd class="inline">請填入實際成果。</dd></div>
+            </dl>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs"><span class="rounded-full bg-brand-violet/10 px-2.5 py-1 text-brand-violet">看板</span><span class="rounded-full bg-brand-violet/10 px-2.5 py-1 text-brand-violet">系統整合</span></div>
+          </div>
+        </article>
+
+        <article class="reveal glass card overflow-hidden rounded-2xl">
+          <div class="h-32 bg-gradient-to-br from-brand-mint/20 via-brand-mint/5 to-white p-5"><span class="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-brand-mintDeep">範例案例</span></div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold">AI 知識查詢助理</h3>
+            <dl class="mt-3 space-y-2 text-sm text-slate-600">
+              <div><dt class="inline font-semibold text-brand-ink">問題：</dt><dd class="inline">SOP 與操作文件分散，查找費時。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">做法：</dt><dd class="inline">以 LLM 建立內部問答助理。</dd></div>
+              <div><dt class="inline font-semibold text-brand-ink">成效：</dt><dd class="inline">請填入實際成果。</dd></div>
+            </dl>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs"><span class="rounded-full bg-brand-mint/10 px-2.5 py-1 text-brand-mintDeep">LLM</span><span class="rounded-full bg-brand-mint/10 px-2.5 py-1 text-brand-mintDeep">知識庫</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 5. 技術部落格 ========== -->
+    <section id="blog" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-blue">Tech Blog</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">技術部落格</h2>
+        <p class="mt-4 text-slate-600">分享 AP 開發、資料治理與 AI 應用的實作心得（以下為文章主題示意）。</p>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <!-- 文章卡片：之後可將 <div> 換成 <a href="文章連結"> -->
+        <div class="reveal glass card rounded-2xl p-7">
+          <span class="rounded-full bg-brand-blue/10 px-2.5 py-1 text-xs font-semibold text-brand-blue">資料治理</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug">如何用檢核規則守住生管資料完整性</h3>
+          <p class="mt-2 text-sm text-slate-500">撰寫中</p>
+        </div>
+        <div class="reveal glass card rounded-2xl p-7">
+          <span class="rounded-full bg-brand-violet/10 px-2.5 py-1 text-xs font-semibold text-brand-violet">AI 應用</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug">LLM 導入企業內部知識查詢的實作重點</h3>
+          <p class="mt-2 text-sm text-slate-500">撰寫中</p>
+        </div>
+        <div class="reveal glass card rounded-2xl p-7">
+          <span class="rounded-full bg-brand-mint/10 px-2.5 py-1 text-xs font-semibold text-brand-mintDeep">自動化</span>
+          <h3 class="mt-4 text-lg font-bold leading-snug">把重複報表交給自動化：AP 系統的設計思路</h3>
+          <p class="mt-2 text-sm text-slate-500">撰寫中</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 5-1. 核心系統（相關網頁，位於聯絡區之前） ========== -->
+    <section id="systems" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-mint">Core Systems</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">核心系統</h2>
+        <p class="mt-4 text-slate-600">常用的內部系統入口，點擊即可在新分頁開啟。<span class="text-slate-400">（需連上公司內部網路）</span></p>
+      </div>
+
+      <!-- 系統卡片：新增系統時複製一個 <a>，並更換 href、圖示 class（fa-solid fa-xxx）與文字 -->
+      <div class="grid gap-5 md:grid-cols-3">
+        <a href="https://pgppc.cminl.oa/Forms/Form_57_RPT_PPC_INOUT_INFO.aspx" target="_blank" rel="noopener noreferrer" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-blue to-brand-violet text-2xl text-white shadow-lg shadow-brand-blue/20"><i class="fa-solid fa-industry" aria-hidden="true"></i></div>
+          <h3 class="text-lg font-bold">PPC 生產規劃系統</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">生產規劃系統</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-blue transition-all group-hover:gap-3">前往系統 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+
+        <a href="https://ems.cminl.oa/welcome.do?lang=zh_TW" target="_blank" rel="noopener noreferrer" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-violet to-brand-blue text-2xl text-white shadow-lg shadow-brand-violet/20"><i class="fa-solid fa-flask" aria-hidden="true"></i></div>
+          <h3 class="text-lg font-bold">EMS 實驗單系統</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">EMS 實驗單系統。</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-violet transition-all group-hover:gap-3">前往系統 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+
+        <a href="https://pgppc.cminl.oa/APS/UI1.aspx" target="_blank" rel="noopener noreferrer" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-mint to-brand-blue text-2xl text-white shadow-lg shadow-brand-mint/20"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></div>
+          <h3 class="text-lg font-bold">APS 急單上傳系統</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">APS 急單上傳系統。</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-mintDeep transition-all group-hover:gap-3">前往系統 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== 6. 聯絡我們（位於「預約」區塊之前） ========== -->
+    <section id="contact" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-violet">Contact Us</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">聯絡我們</h2>
+        <p class="mt-4 text-slate-600">有資料問題、系統需求或 AI 應用想法，歡迎透過以下管道聯絡我們。</p>
+      </div>
+
+      <!-- 聯絡資訊卡片：電話 / 網站 / 供應鏈相關業務網站 -->
+      <div class="grid gap-5 md:grid-cols-3">
+        <a href="tel:+88665051888" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-blue to-brand-violet text-2xl text-white shadow-lg shadow-brand-blue/20"><i class="fa-solid fa-phone" aria-hidden="true"></i></div>
+          <p class="text-xs tracking-widest text-slate-400">PHONE</p>
+          <h3 class="mt-1 text-xl font-bold">06-5051888</h3>
+          <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-blue transition-all group-hover:gap-3">撥打電話 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+
+        <a href="https://inep.cminl.oa/ezdoor/pic/index.html" target="_blank" rel="noopener noreferrer" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-violet to-brand-blue text-2xl text-white shadow-lg shadow-brand-violet/20"><i class="fa-solid fa-globe" aria-hidden="true"></i></div>
+          <p class="text-xs tracking-widest text-slate-400">WEBSITE</p>
+          <h3 class="mt-1 text-xl font-bold">部門網站</h3>
+          <p class="mt-1 break-all text-xs text-slate-500">inep.cminl.oa/ezdoor/pic/index.html</p>
+          <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-violet transition-all group-hover:gap-3">前往網站 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+
+        <a href="https://inep.cminl.oa/ezdoor/pic/indexExample.html?platform=%E7%94%9F%E7%94%A2%E8%A8%88%E5%8A%83%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0&amp;entryVersion=20260930g" target="_blank" rel="noopener noreferrer" class="reveal glass card group block rounded-2xl p-7">
+          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-mint to-brand-blue text-2xl text-white shadow-lg shadow-brand-mint/20"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></div>
+          <p class="text-xs tracking-widest text-slate-400">SUPPLY CHAIN</p>
+          <h3 class="mt-1 text-xl font-bold">供應鏈相關業務網站</h3>
+          <p class="mt-1 text-xs text-slate-500">生產計劃管理平台</p>
+          <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-mintDeep transition-all group-hover:gap-3">前往網站 <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </a>
+      </div>
+
+      <!-- 社群圖示：請將 href 替換成實際的帳號連結 -->
+      <div class="reveal mt-10 flex flex-wrap items-center gap-4">
+        <span class="text-sm text-slate-500">追蹤我們</span>
+        <a href="https://line.me/" target="_blank" rel="noopener noreferrer" aria-label="LINE" class="social grid h-12 w-12 place-items-center rounded-full text-xl"><i class="fa-brands fa-line" aria-hidden="true"></i></a>
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social grid h-12 w-12 place-items-center rounded-full text-xl"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social grid h-12 w-12 place-items-center rounded-full text-xl"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="social grid h-12 w-12 place-items-center rounded-full text-xl"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+      </div>
+    </section>
+
+    <!-- ========== 7. 預約諮詢 ========== -->
+    <section id="booking" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-24">
+      <div class="reveal mb-10">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-brand-blue">Booking</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">預約諮詢</h2>
+        <p class="mt-4 text-slate-600">留下需求，我們會盡快與您聯絡。</p>
+      </div>
+
+      <div>
+        <form id="contactForm" class="reveal glass rounded-3xl p-6 md:p-8">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div><label for="name" class="mb-1 block text-sm text-slate-600">姓名</label><input id="name" name="name" class="field" required autocomplete="name"></div>
+            <div><label for="dept" class="mb-1 block text-sm text-slate-600">所屬單位</label><input id="dept" name="dept" class="field" required></div>
+          </div>
+          <div class="mt-4">
+            <label for="type" class="mb-1 block text-sm text-slate-600">諮詢類型</label>
+            <select id="type" name="type" class="field">
+              <option>資料完整性檢核</option><option>生管 / 供應鏈應用開發</option><option>資料看板與報表</option>
+              <option>流程自動化</option><option>AI 助理與知識查詢</option><option>其他</option>
+            </select>
+          </div>
+          <div class="mt-4"><label for="message" class="mb-1 block text-sm text-slate-600">需求說明</label><textarea id="message" name="message" rows="5" class="field" required></textarea></div>
+
+          <button type="submit" class="cta mt-6 w-full sm:w-auto">
+            <span class="label-default">送出需求</span>
+            <span class="label-hover"><span class="dot-live"></span>Status: Ready to Connect</span>
+          </button>
+          <p class="mt-3 text-xs text-slate-400">送出後會開啟您的郵件軟體，並自動帶入內容。</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mx-auto max-w-6xl px-5 pb-10 pt-6 text-xs text-slate-400">
+    <div class="flex flex-col justify-between gap-2 border-t border-slate-200 pt-6 sm:flex-row">
+      <span>群創 MIS 部門｜AP 應用開發</span>
+      <span>本頁為部門示意網站，案例與文章內容請依實際情況調整。</span>
+    </div>
+  </footer>
+
+  <!-- 回到頂端 -->
+  <button id="toTop" type="button" class="glass fixed bottom-5 right-5 z-40 grid h-12 w-12 place-items-center rounded-full text-xs font-bold text-brand-blue" aria-label="回到頁面頂端">TOP</button>
+
+  <script>
+    (() => {
+      /* ===== 可修改設定 ===== */
+      const CONTACT_EMAIL = 'mis@example.com'; // 請改成實際聯絡信箱
+      const HEADLINES = [ // 打字機標題；多句時會輪播，單句打完後停留
+        '以穩定的系統，支撐每一次關鍵決策'
+      ];
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ===== 打字機效果 ===== */
+      const typed = document.getElementById('typed');
+      if (reduceMotion) {
+        typed.textContent = HEADLINES[0];
+      } else {
+        let phrase = 0, index = 0, deleting = false;
+        const tick = () => {
+          const text = HEADLINES[phrase];
+          index += deleting ? -1 : 1;
+          typed.textContent = text.slice(0, index);
+          let delay = deleting ? 40 : 95;
+          if (!deleting && index === text.length) {
+            if (HEADLINES.length === 1) return; // 單句標語：打完即停止
+            deleting = true; delay = 2400;       // 打完停留
+          }
+          else if (deleting && index === 0) { deleting = false; phrase = (phrase + 1) % HEADLINES.length; delay = 450; }
+          setTimeout(tick, delay);
+        };
+        tick();
+      }
+
+      /* ===== 背景：淡藍粒子連線 + 淺色資料流線條 ===== */
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [], t = 0;
+      // 讀取色票變數（如 "37 99 235" → "37,99,235"），讓 Canvas 與 CSS 同步
+      const rootStyle = getComputedStyle(document.documentElement);
+      const rgb = (name) => rootStyle.getPropertyValue(name).trim().split(/\s+/).join(',');
+      const PRIMARY = rgb('--rgb-primary'), SECONDARY = rgb('--rgb-secondary'), ACCENT = rgb('--rgb-accent');
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.min(70, Math.floor(W * H / 24000));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25,
+          r: Math.random() * 1.6 + .8
+        }));
+        if (reduceMotion) render();
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, W, H);
+
+        // 資料流線條：緩慢起伏的曲線，上面有流動的小圓點
+        for (let i = 0; i < 3; i++) {
+          const base = H * (.22 + i * .24), amp = 36 + i * 10;
+          const yAt = (x) => base + Math.sin(x * .004 + t * (1 + i * .3) + i * 2) * amp;
+          ctx.beginPath();
+          for (let x = 0; x <= W; x += 12) x ? ctx.lineTo(x, yAt(x)) : ctx.moveTo(x, yAt(x));
+          ctx.strokeStyle = `rgba(${PRIMARY},.08)`; ctx.lineWidth = 1.2; ctx.stroke();
+          const px = ((t * 90 * (i + 1) * .6) + i * 300) % W;
+          ctx.beginPath(); ctx.arc(px, yAt(px), 2.6, 0, Math.PI * 2);
+          ctx.fillStyle = i === 1 ? `rgba(${ACCENT},.55)` : `rgba(${SECONDARY},.45)`; ctx.fill();
+        }
+
+        // 粒子與連線
+        for (const p of particles) {
+          if (!reduceMotion) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > W) p.vx *= -1;
+            if (p.y < 0 || p.y > H) p.vy *= -1;
+          }
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${PRIMARY},.35)`; ctx.fill();
+        }
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i], b = particles[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < 130) {
+              ctx.strokeStyle = `rgba(${PRIMARY},${(1 - d / 130) * .16})`; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function loop() { t += .004; render(); requestAnimationFrame(loop); }
+      window.addEventListener('resize', resize);
+      resize();
+      if (!reduceMotion) loop();
+
+      /* ===== 手機選單 ===== */
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const setMenu = (open) => {
+        mobileMenu.classList.toggle('hidden', !open);
+        mobileMenu.classList.toggle('flex', open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menuBtn.textContent = open ? '✕' : '☰';
+      };
+      menuBtn.addEventListener('click', () => setMenu(mobileMenu.classList.contains('hidden')));
+      mobileMenu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+
+      /* ===== 進場動畫 ===== */
+      const reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+          if (en.isIntersecting) { en.target.classList.add('show'); io.unobserve(en.target); }
+        }), { threshold: .12 });
+        reveals.forEach((el, i) => { el.style.transitionDelay = `${(i % 3) * 90}ms`; io.observe(el); });
+      } else reveals.forEach((el) => el.classList.add('show'));
+
+      /* ===== 導覽列 scroll spy（目前區塊高亮） ===== */
+      const navLinks = document.querySelectorAll('[data-nav]');
+      const sections = [...document.querySelectorAll('main section[id]')];
+      if ('IntersectionObserver' in window) {
+        const spy = new IntersectionObserver((entries) => entries.forEach((en) => {
+          if (en.isIntersecting) navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${en.target.id}`));
+        }), { rootMargin: '-45% 0px -50% 0px' });
+        sections.forEach((s) => spy.observe(s));
+      }
+
+      /* ===== TOP 按鈕 ===== */
+      const toTop = document.getElementById('toTop');
+      const onScroll = () => toTop.classList.toggle('show', window.scrollY > 500);
+      window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+      toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      /* ===== 聯絡表單：以 mailto 開啟郵件軟體 ===== */
+      document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const f = new FormData(e.target);
+        const body = `姓名：${f.get('name')}\n單位：${f.get('dept')}\n類型：${f.get('type')}\n\n${f.get('message')}`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('[MIS 諮詢] ' + f.get('type'))}&body=${encodeURIComponent(body)}`;
+      });
+    })();
+  </script>
+</body>
+</html>
